@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="../../../static/styles/init.css">
+  <link rel="stylesheet" href="../../../static/styles/create_today.css">
+  <title>create_today</title>
+</head>
+<body>
+  <!-- navbar -->
+    <header id="header">
+        <div class="container">
+            <nav class="navi">
+                <div class="logo">
+                    <!-- <img src="{% static 'img/planT_logo.svg' %}" alt="Plant_logo"> -->
+                    <img src="../static/img/planT_logo.svg" alt="">
+                </div>
+                <div class="gnb-area">
+                    <ul class="gnb tit">
+                        <li>
+                            <a href="">PLANNER</a>
+                        </li>
+                        <li><span>/</span></li>
+                        <li>
+                            <a href="">STUDY</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="user-area">
+                    <div class="calerdar">
+                        <a href="">
+                            <span class="material-symbols-outlined">
+                                date_range
+                            </span>
+                        </a>
+                    </div>
+                    <div class="user-prof">
+                        <img src="" alt="">
+                    </div>
+                    <p class="username">
+                        username
+                    </p>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- navbar -->
+    <!-- section -->
+    <section class="today-section">
+        <div class="container">
+            <div class="box-area">
+                <div class="box">
+                    <!-- today todo Form -->
+                    <form action="" method="post" id="today-form">
+                        <input type="text" name="" value="task title" class="today_task-title">
+                        <div class="keyword-box"><span>keyword</span></div>
+                        <textarea name="" class="today_task-textarea" cols="30" rows="10"></textarea>
+                        <input type="file" name="" class="today_task-img" id="">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+            {% block body %}{% endblock body %}
+    <footer>
+        <div>
+            <p>
+                &copy; Plan-T 2022
+            </p>
+        </div>
+    </footer>
+<div class="toggle">
+
+</div>
+  
+</body>
+</html>

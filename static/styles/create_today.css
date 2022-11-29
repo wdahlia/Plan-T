@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700;900&display=swap");
+@import url(./fontall.css);
+@import url(./main.css);
+
+#today-form{
+  display: flex;
+  flex-direction: column;
+}
+
+#today-form .today_task-title{
+  height: 49px;
+  background: var(--bg);
+  border: 2px solid var(--main);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 1rem;
+}
+
+#today-form .keyword-box{
+  margin: 1rem 0;
+  width: 113px;
+  height: 34px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  background-color: var(--bg);
+  text-align: center;
+}
+
+#today-form .keyword-box span{
+  line-height: 34px;
+}
+
+#today-form .today_task-textarea{
+  border-radius: 20px;
+  height: 283px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg);
+  border: 0;
+  padding: 3rem;
+}
+
+#today-form .today_task-img{
+  margin: 1rem 0;
+  padding: 5rem 0;
+  border-radius: 20px;
+  border: 1px dashed var(--bg-dark);
+  filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.1));
+}
