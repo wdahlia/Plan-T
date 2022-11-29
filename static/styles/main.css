@@ -3,17 +3,108 @@
 
 :root {
 	--main: #3cddaa;
+	--sub: #3cddaa36;
 	--txt: #232931;
+	--txtgr: #9e9e9e;
 	--bg: #f9f9f9;
 	--gr: #eeeeee;
+	--deact: #ebebeb;
 	--bg-dark: #393e46;
 }
 
 body {
 	font-family: "Noto Sans KR", sans-serif;
+	background: var(--bg);
 	color: var(--txt);
+	font-size: 16px;
+	font-weight: 400;
+}
+
+/* commons */
+
+.container {
+	margin: 0 auto;
+	max-width: 1000px;
 }
 
 .tit {
 	font-family: "NanumSquareNeo", sans-serif;
+	font-size: 1.25rem;
 }
+
+.box {
+	background: var(--bg);
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+	border-radius: 20px;
+	padding: 1.5rem;
+}
+.task {
+	background: var(--sub);
+	border-radius: 30px;
+	padding: 1rem 1.2rem;
+}
+.task.activate {
+	background: var(--bg);
+	border: 2px solid var(--main);
+}
+.task.deactivate {
+	background: var(--deact);
+	color: var(--txtgr);
+}
+
+/* header */
+#header {
+	background: var(--bg);
+	box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+	padding: 1rem 0;
+}
+
+#header .navi {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#header .logo {
+	width: 120px;
+}
+
+#header .navi .user-area {
+	display: flex;
+	align-items: center;
+}
+
+#header .navi .gnb-area .gnb {
+	display: flex;
+}
+#header .navi .gnb-area .gnb li {
+	margin-right: 0.6rem;
+	transition: 0.5s;
+}
+#header .navi .gnb-area .gnb li:last-child {
+	margin-right: 0;
+}
+#header .navi .gnb-area .gnb li a {
+	padding: 0.5rem;
+	position: relative;
+}
+#header .navi .gnb-area .gnb li a::after {
+	content: "";
+	display: block;
+	background: var(--main);
+	width: 0%;
+	height: 2px;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	transition: 0.2s;
+}
+#header .navi .gnb-area .gnb li:hover a {
+	font-weight: 700;
+	color: var(--main);
+}
+#header .navi .gnb-area .gnb li:hover a::after {
+	width: 100%;
+}
+
+/* footer */
