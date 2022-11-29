@@ -1,0 +1,154 @@
+@import url(./main.css);
+
+/* main login page */
+#main-login .container {
+	max-width: 1440px;
+	display: flex;
+	justify-content: center;
+}
+#main-login .slide {
+	width: 65%;
+}
+#main-login .login {
+	padding: 3rem;
+	width: 35%;
+}
+#main-login .login .logo,
+#signup .logo {
+	width: 200px;
+	margin: 5rem auto 3rem;
+}
+#main-login .login #login-form,
+#signup #signup-form {
+	text-align: center;
+}
+#main-login .login #login-form .input-area,
+#signup #signup-form .input-area {
+	position: relative;
+	max-width: 210px;
+	margin: 0 auto;
+}
+
+#main-login .login #login-form input,
+#signup #signup-form input {
+	border-radius: 15px;
+	border: 1px solid rgba(0, 0, 0, 0);
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+	padding: 0.6rem;
+	margin-bottom: 0.95rem;
+}
+#main-login .login #login-form input:last-child,
+#signup #signup-form input:last-child {
+	margin-bottom: 0;
+}
+#main-login .login #login-form label,
+#signup #signup-form label {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background: var(--bg);
+	transform: scale(1) translate(20px, 10px);
+	transition: 0.2s;
+	opacity: 0.6;
+	/* z-index: -1; */
+}
+#main-login .login #login-form input:focus,
+#main-login .login #login-form .input-area.activate input,
+#signup #signup-form input:focus,
+#signup #signup-form .input-area.activate input {
+	border: 1px solid var(--main);
+}
+#main-login .login #login-form input:focus + label,
+#main-login .login #login-form .input-area.activate label,
+#signup #signup-form input:focus + label,
+#signup #signup-form .input-area.activate label {
+	color: var(--main);
+	transform: scale(0.8) translate(20px, -10px);
+	opacity: 1;
+}
+#main-login .login #login-form .btn {
+	margin: 1rem 0 1.8rem;
+}
+
+#main-login .login .link-area a {
+	display: block;
+	margin-bottom: 1.2rem;
+	text-align: center;
+	transition: 0.2s;
+}
+#main-login .login .link-area a:hover {
+	color: var(--main);
+}
+
+/* sign up */
+
+#signup {
+	width: 550px;
+	margin-top: 5rem;
+}
+
+#signup #signup-form .btn {
+	margin: 1.2rem 0;
+}
+
+/* my page */
+#mypage {
+	position: relative;
+	max-width: 650px;
+	margin: 8rem auto 0;
+}
+
+#mypage .user-info .profile-img {
+	position: absolute;
+	left: 50px;
+	top: -80px;
+	border-radius: 50%;
+	overflow: hidden;
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+#mypage .user-info .tit {
+	font-size: 2rem;
+	font-weight: 700;
+	margin-left: 15rem;
+}
+
+#mypage .todo-achieve {
+	margin-top: 4rem;
+	position: relative;
+}
+#mypage .todo-achieve .achieve-bg,
+#mypage .todo-achieve .achieve-per {
+	height: 30px;
+	border-radius: 30px;
+}
+#mypage .todo-achieve .achieve-bg {
+	background: var(--gr);
+	margin-top: 1rem;
+}
+#mypage .todo-achieve .achieve-per {
+	background: var(--main);
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 45%;
+}
+#mypage .todo-achieve .achieve-per span {
+	position: absolute;
+	left: 80%;
+	bottom: 30%;
+	color: var(--bg);
+	font-weight: 700;
+}
+
+#mypage .box {
+	margin-top: 2rem;
+}
+#mypage .user-tag .tit {
+	margin-bottom: 1.5rem;
+}
+#mypage .user-tag .tag {
+	border-radius: 20px;
+	padding: 0.5rem 1rem;
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
