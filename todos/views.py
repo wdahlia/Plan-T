@@ -85,3 +85,22 @@ def delete(request, todos_pk):
         todo = Todos.objects.get(pk=todos_pk)
         todo.delete()
     return redirect("todos:today")  # 추후에 비동기로 바꾸는거 권장
+
+
+def read_all(request):
+    todos = Todos.objects.filter(user_id=request.user)
+    # 알고리즘 잘 작동하나 확인 필요
+    # 예상 모형 [[2022-10-12,2022-10-12,2022-10-12],[2022-10-13,2022-10-13,2022-10-13],[2022-10-14,2022-10-14,2022-10-14]]
+    time = ""
+    all_days = []
+    for todo in todos:
+        if time != todo.started_at:
+            time = todo.started_at
+            all_days.append()
+            all_days[-1].append(time)
+        else:
+            all_days[-1].append(time)
+    context = {
+        "all_days": all_days,
+    }
+    return render(request, "todos/working/read_all.html", context)
