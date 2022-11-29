@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
+from datetime import datetime
 
 # Create your models here.
 class Todos(models.Model):
@@ -15,8 +16,8 @@ class Todos(models.Model):
         format="JPEG",
         options={"quality": 80},
     )
-    started_at = models.DateTimeField(blank=True)
-    expired_at = models.DateTimeField(blank=True)
+    started_at = models.DateTimeField(null=True)
+    expired_at = models.DateTimeField(null=True)
 
 
 class Timetable(models.Model):
