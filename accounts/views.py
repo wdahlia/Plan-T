@@ -98,3 +98,8 @@ def update(request):
 
     # 바꿔야 함!
     return render(request, "test/form.html", context)
+
+
+# 데코레이터 추가 필요
+def profile(request):
+    return render(request, "test/profile.html")
