@@ -1,6 +1,9 @@
-from django.shortcuts import render, redirect
-from .forms import TodosForm
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import get_user_model as User
+from .forms import TimetableForm, TodosForm
 from .models import Timetable, Todos
+from datetime import datetime
+
 
 # Create your views here.
 def today(request):
@@ -19,6 +22,18 @@ def today(request):
     }
     return render(request, "todos/working/index.html", context)
 
+def timetable(request):
+    # today = str(datetime.now())[:10]
+    # timetable = Timetable.objects.filter(today__contain=today)
+    if request.method == "POST":
+        timetable_form = TimetableForm(request.POST)
+        if timetable_form.is_valid():
+            save_file = timetable_form.save()
+    else:
+        timetable_form = TimetableForm()
+    # context = {"timetable_form": timetable_form, "timetable": timetable}
+    context = {"timetable_form": timetable_form}
+    return render(request, "todos/working/timetable.html", context)
 
 def week(request):
     # 미완성

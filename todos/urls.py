@@ -4,6 +4,8 @@ from . import views
 app_name = "todos"
 
 urlpatterns = [
+    path("todos/", views.index, name="index"),
+    path("timetable/", views.timetable, name="timetable"),
     path("today", views.today, name="today"),
     path("week", views.week, name="week"),
     path("create", views.create, name="create"),
