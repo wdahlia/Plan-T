@@ -3,6 +3,7 @@
 
 :root {
 	--main: #3cddaa;
+	--main-hl: #78f0ca;
 	--sub: #3cddaa36;
 	--txt: #232931;
 	--txtgr: #9e9e9e;
@@ -26,10 +27,25 @@ body {
 	margin: 0 auto;
 	max-width: 1000px;
 }
-
+.shd {
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
 .tit {
 	font-family: "NanumSquareNeo", sans-serif;
 	font-size: 1.25rem;
+}
+
+.btn {
+	background: var(--main);
+	padding: 0.9rem 1.2rem;
+	border-radius: 15px;
+	font-size: 1.05rem;
+	font-weight: 700;
+	cursor: pointer;
+	transition: 0.3s ease-out;
+}
+.btn:hover {
+	background: var(--main-hl);
 }
 
 .box {
@@ -69,11 +85,6 @@ body {
 	width: 120px;
 }
 
-#header .navi .user-area {
-	display: flex;
-	align-items: center;
-}
-
 #header .navi .gnb-area .gnb {
 	display: flex;
 }
@@ -85,28 +96,53 @@ body {
 	margin-right: 0;
 }
 #header .navi .gnb-area .gnb li a {
-	padding: 0.5rem;
+	padding: 0.3rem;
 	position: relative;
 }
 #header .navi .gnb-area .gnb li a::after {
 	content: "";
 	display: block;
-	background: var(--main);
+	background: var(--txt);
 	width: 0%;
-	height: 2px;
+	height: 3px;
 	position: absolute;
 	bottom: 0px;
 	left: 0px;
 	transition: 0.2s;
 }
 #header .navi .gnb-area .gnb li:hover a {
-	font-weight: 700;
-	color: var(--main);
+	font-weight: 800;
 }
 #header .navi .gnb-area .gnb li:hover a::after {
 	width: 100%;
 }
+#header .navi .user-area {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+#header .navi .user-area .calendar {
+	margin-right: 0.8rem;
+	padding: 0.3rem 0.4rem;
+	border-radius: 50%;
+	cursor: pointer;
+	line-height: 0.6rem;
+	transition: 0.3s ease-out;
+}
+#header .navi .user-area .calendar span {
+	font-size: 1.8rem;
+}
+#header .navi .user-area .calendar:hover {
+	background: var(--main);
+	color: var(--bg);
+}
 
+#header .navi .user-area .user-prof {
+	border-radius: 50%;
+	height: 30px;
+	overflow: hidden;
+	margin-right: 0.5rem;
+}
 /* footer */
 footer {
 	text-align: center;
