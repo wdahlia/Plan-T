@@ -51,3 +51,11 @@ def week(request):
         "todos": todos,
     }
     return render(request, "todos/working/week.html", context)
+
+
+def create(request):
+    if request.method == "POST":
+        todoForm = TodosForm(request.POST, request.FILES)
+        if todoForm.is_valid():
+            todoForm.save()
+    return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
