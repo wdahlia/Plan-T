@@ -24,16 +24,16 @@ def today(request):
 
 
 def timetable(request):
-    # today = str(datetime.now())[:10]
-    # timetable = Timetable.objects.filter(today__contain=today)
+    today = str(datetime.now())[:10]
+    timetables = Timetable.objects.filter(today__startswith=today)
+
     if request.method == "POST":
         timetable_form = TimetableForm(request.POST)
         if timetable_form.is_valid():
-            save_file = timetable_form.save()
+            timetable_form.save()
     else:
         timetable_form = TimetableForm()
-    # context = {"timetable_form": timetable_form, "timetable": timetable}
-    context = {"timetable_form": timetable_form}
+    context = {"timetable_form": timetable_form, "timetables": timetables}
     return render(request, "todos/working/timetable.html", context)
 
 
@@ -74,7 +74,9 @@ def create(request):
     if request.method == "POST":
         todoForm = TodosForm(request.POST, request.FILES)
         if todoForm.is_valid():
-            todoForm.save()
+            todo = todoForm.save(commit=False)
+            todo.user_id = request.user
+            todo.save()
     return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
 
 
