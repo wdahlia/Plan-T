@@ -74,3 +74,10 @@ def create(request):
         if todoForm.is_valid():
             todoForm.save()
     return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
+
+
+def delete(request, todos_pk):
+    if request.method == "POST":
+        todo = Todos.objects.get(pk=todos_pk)
+        todo.delete()
+    return redirect("todos:today")  # 추후에 비동기로 바꾸는거 권장
