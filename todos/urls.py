@@ -5,4 +5,5 @@ app_name = "todos"
 
 urlpatterns = [
     path("today", views.today, name="today"),
+    path("week", views.week, name="week"),
 ]
