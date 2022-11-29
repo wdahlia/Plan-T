@@ -12,11 +12,11 @@ def today(request):
     else:
         # 아직 테스트는 안해봤음.
         today = "2022-11-29"  # pk or input 으로 받을지 정해야됨. 임시
-        todos = TodosForm()
+        todosForm = TodosForm()
         today_todos = Todos.objects.filter(started_at=today)
         today_timetable = Timetable.objects.filter(today=today)  # 이 부분은 작동하는지 모르겠음.
     context = {
-        "todos": todos,
+        "todosForm": todosForm,
         "today_todos": today_todos,
         "today_timetable": today_timetable,
     }
@@ -78,3 +78,10 @@ def create(request):
             todo.user_id = request.user
             todo.save()
     return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
+
+
+def delete(request, todos_pk):
+    if request.method == "POST":
+        todo = Todos.objects.get(pk=todos_pk)
+        todo.delete()
+    return redirect("todos:today")  # 추후에 비동기로 바꾸는거 권장

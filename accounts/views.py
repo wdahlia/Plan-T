@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 # 임시 함수
@@ -51,8 +52,19 @@ def login(request):
     return render(request, "test/form.html", context)
 
 
+# 데코레이터 추가 필요
 def logout(request):
-    auth_logout(request)
+    if request.user.is_authenticated:
+        auth_logout(request)
+
+    # 바꿔야 함!
+    return redirect("accounts:test")
+
+
+# 데코레이터 추가 필요
+def delete(request):
+    if request.user.is_authenticated:
+        request.user.delete()
 
     # 바꿔야 함!
     return redirect("accounts:test")

@@ -1,0 +1,231 @@
+@import url(./main.css);
+
+#today .lnb {
+	margin: 2rem auto;
+	background: var(--deact);
+	border-radius: 20px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	text-align: center;
+	padding: 0.6rem;
+	width: 300px;
+	position: relative;
+	z-index: 2;
+	overflow: hidden;
+}
+#today .lnb input[type="radio"] {
+	display: none;
+}
+#today .lnb input[type="radio"]:checked + label {
+	font-weight: 700;
+}
+#today .lnb input[id="tab1"]:checked ~ .glider {
+	transform: translateX(-115%);
+}
+#today .lnb input[id="tab2"]:checked ~ .glider {
+	transform: translateX(10%);
+}
+#today .lnb input[id="tab3"]:checked ~ .glider {
+	transform: translateX(125%);
+}
+#today .lnb .tab {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	padding: 0.2rem 0.5rem;
+	/* margin-right: 1.5rem; */
+}
+#today .lnb .glider {
+	position: absolute;
+	/* left: 50%; */
+	display: flex;
+	height: 33px;
+	width: 80px;
+	border-radius: 30px;
+	background: var(--main);
+	transition: 0.25s ease-out;
+	z-index: -1;
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+#today .box-area {
+	margin-top: 2rem;
+	display: flex;
+	justify-content: center;
+}
+
+/* #today .box {
+	text-align: center;
+} */
+
+#today .today-info {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 0.8rem;
+}
+#today .today-date {
+	font-weight: 700;
+	margin-right: 2rem;
+	text-align: center;
+}
+
+#today .today-date .today-date-month {
+	font-size: 2rem;
+	position: relative;
+	margin-bottom: 0.7rem;
+}
+#today .today-date .today-date-month::after {
+	content: "";
+	display: block;
+	background: var(--main);
+	width: 100%;
+	height: 5px;
+	position: absolute;
+	bottom: -10px;
+	left: 50%;
+	transform: translateX(-50%);
+	transition: 0.2s;
+}
+#today .today-date .today-date-day {
+	font-size: 2.5rem;
+}
+
+#today .today-task-add {
+	border: 2px solid var(--main);
+	border-radius: 15px;
+	max-width: 75%;
+	text-align: left;
+	padding: 0.7rem 1rem;
+	margin: 0 auto;
+	position: relative;
+}
+#today .today-task-add .btn-plus {
+	position: absolute;
+	right: 0.5rem;
+	top: 50%;
+	transform: translateY(-50%);
+	color: var(--main);
+}
+
+/* task area */
+#today .today-task-area {
+	display: flex;
+	justify-content: center;
+	margin-right: 1.5rem;
+	width: 70%;
+}
+/* task timetable */
+#today .today-task-list {
+	margin-right: 2rem;
+}
+#today .today-task-list .task {
+	width: 300px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 0.5rem;
+}
+#today .today-task-list .task .task-chb {
+	position: relative;
+	top: 1px;
+	width: 25px;
+	height: 25px;
+	border: 2px solid var(--main);
+	border-radius: 3px;
+	transition: background 0.1s ease;
+	cursor: pointer;
+	display: block;
+}
+#today .today-task-list .task .task-chb::after {
+	content: "";
+	position: absolute;
+	top: 2px;
+	left: 8px;
+	width: 7px;
+	height: 14px;
+	opacity: 0;
+	transform: rotate(45deg) scale(0);
+	border-right: 2px solid #fff;
+	border-bottom: 2px solid #fff;
+	transition: all 0.3s ease;
+	transition-delay: 0.15s;
+}
+#today .today-task-list .task input[type="checkbox"] {
+	display: none;
+}
+#today .today-task-list .task input[type="checkbox"]:checked ~ .task-chb {
+	border-color: transparent;
+	background: var(--main);
+	animation: jelly 0.6s ease;
+}
+
+#today
+	.today-task-list
+	.task
+	input[type="checkbox"]:checked
+	~ .task-chb::after {
+	opacity: 1;
+	transform: rotate(45deg) scale(1);
+}
+/* #today .today-timetable .timetable-hour:first-child {
+	margin-top: 0.3rem;
+} */
+#today .today-timetable .timetable-hour {
+	display: flex;
+	align-items: center;
+	padding: 0.43rem 0;
+}
+#today .today-timetable .timetable-min {
+	width: 35px;
+	height: 35px;
+	background: var(--gr);
+	margin-right: 0.3rem;
+}
+#today .today-timetable .timetable-min.activate {
+	background: var(--main);
+}
+
+/* study area */
+#today .today-study-area {
+	width: 30%;
+}
+#today .today-study-area .tit {
+	font-weight: 700;
+	margin-bottom: 1rem;
+	text-align: center;
+}
+
+/* animation */
+
+@keyframes jelly {
+	from {
+		transform: scale(1, 1);
+	}
+
+	30% {
+		transform: scale(1.25, 0.75);
+	}
+
+	40% {
+		transform: scale(0.75, 1.25);
+	}
+
+	50% {
+		transform: scale(1.15, 0.85);
+	}
+
+	65% {
+		transform: scale(0.95, 1.05);
+	}
+
+	75% {
+		transform: scale(1.05, 0.95);
+	}
+
+	to {
+		transform: scale(1, 1);
+	}
+}
