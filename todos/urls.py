@@ -7,4 +7,5 @@ urlpatterns = [
     path("today", views.today, name="today"),
     path("week", views.week, name="week"),
     path("create", views.create, name="create"),
+    path("delete/<int:todos_pk>", views.delete, name="delete"),
 ]
