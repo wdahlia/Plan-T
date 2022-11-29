@@ -49,3 +49,10 @@ def login(request):
 
     # 바꿔야 함!
     return render(request, "test/form.html", context)
+
+
+def logout(request):
+    auth_logout(request)
+
+    # 바꿔야 함!
+    return redirect("accounts:test")
