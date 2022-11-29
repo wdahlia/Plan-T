@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="../static/styles/init.css">
+    <link rel="stylesheet" href="../static/styles/main.css">
+    <!-- <link rel="stylesheet" href="{% static 'styles/init.css' %}"> -->
+    <!-- <link rel="stylesheet" href="{% static 'styles/main.css' %}"> -->
+    <title>Plan-T</title>
+</head>
+
+<body>
+    <header id="header">
+        <div class="container">
+            <nav class="navi">
+                <div class="logo">
+                    <!-- <img src="{% static 'img/planT_logo.svg' %}" alt="Plant_logo"> -->
+                    <img src="../static/img/planT_logo.svg" alt="">
+                </div>
+                <div class="gnb-area">
+                    <ul class="gnb tit">
+                        <li>
+                            <a href="">PLANNER</a>
+                        </li>
+                        <li><span>/</span></li>
+                        <li>
+                            <a href="">STUDY</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="user-area">
+                    <div class="calerdar">
+                        <a href="">
+                            <span class="material-symbols-outlined">
+                                date_range
+                            </span>
+                        </a>
+                    </div>
+                    <div class="user-prof">
+                        <img src="" alt="">
+                    </div>
+                    <p class="username">
+                        username
+                    </p>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main id="main">
+        <div class="container">
+            <div class="box-area">
+
+                <div class="box">
+                    <h3 class="tit">Todo</h3>
+                    <div class="task activate">
+                        task
+                    </div>
+                    <div class="task">
+                        task
+                    </div>
+                    <div class="task deactivate">
+                        task
+                    </div>
+                </div>
+                <div class="box">
+                    test
+                </div>
+            </div>
+
+            {% block body %}{% endblock body %}
+        </div>
+    </main>
+    <footer>
+        <div>
+            <p>
+                &copy; Plan-T 2022
+            </p>
+        </div>
+    </footer>
+    <div class="toggle">
+
+    </div>
+</body>
+
+</html>
