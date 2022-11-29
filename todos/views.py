@@ -12,15 +12,16 @@ def today(request):
     else:
         # 아직 테스트는 안해봤음.
         today = "2022-11-29"  # pk or input 으로 받을지 정해야됨. 임시
-        todos = TodosForm()
+        todosForm = TodosForm()
         today_todos = Todos.objects.filter(started_at=today)
         today_timetable = Timetable.objects.filter(today=today)  # 이 부분은 작동하는지 모르겠음.
     context = {
-        "todos": todos,
+        "todosForm": todosForm,
         "today_todos": today_todos,
         "today_timetable": today_timetable,
     }
     return render(request, "todos/working/index.html", context)
+
 
 def timetable(request):
     # today = str(datetime.now())[:10]
@@ -34,6 +35,7 @@ def timetable(request):
     # context = {"timetable_form": timetable_form, "timetable": timetable}
     context = {"timetable_form": timetable_form}
     return render(request, "todos/working/timetable.html", context)
+
 
 def week(request):
     # 미완성
