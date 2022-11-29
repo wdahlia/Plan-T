@@ -27,14 +27,9 @@
     {{ timetable_form.as_p }}
     <button type="submit">ok</button>
   </form>
-  <div>
-    <div id="1" class="box"></div>
-    <div id="2" class="box"></div>
-    <div id="3" class="box"></div>
-    <div id="4" class="box"></div>
-    <div id="5" class="box"></div>
-    <div id="6" class="box"></div>
-  </div>
+  {% for timetable in timetables %}
+  <h1>{{ timetable.start }} {{ timetable.end }}</h1>
+  {% endfor %}
 </body>
 
 </html>
