@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib.auth import (
+    login as auth_login, 
+    logout as auth_logout,
+    update_session_auth_hash
+)
 from django.views.decorators.http import require_POST
 
 # Create your views here.
@@ -68,3 +72,29 @@ def delete(request):
 
     # 바꿔야 함!
     return redirect("accounts:test")
+
+
+# 데코레이터 추가 필요
+def update(request):
+    if request.method == "POST":
+        form = CustomUserChangeForm(request.user, request.POST)
+
+        if form.is_valid():
+            form.save()
+            # 비밀번호가 변경되면 기존 세션과 회원 인증 정보가
+            # 일치하지 않게 되기 때문에 새로운 password hash 로
+            # 세션을 업데이트 해주는 메소드이다.
+            update_session_auth_hash(request, form.user)
+
+            # 바꿔야 함!
+            return redirect("accounts:test")
+
+    else:
+        form = CustomUserChangeForm(request.user)
+
+    context = {
+        "form": form,
+    }
+
+    # 바꿔야 함!
+    return render(request, "test/form.html", context)
