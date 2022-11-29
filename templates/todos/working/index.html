@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
 
-  <body>
-    <h1>123</h1>
-    <div>
-      {{todos.as_p}}
-    </div>
-  </body>
+<body>
+  <h1>Today</h1>
+
+  <form action="{% url 'todos:create' %}" method="POST">
+    {% csrf_token %}
+    {{ todosForm }}
+    <button type="submit">ok</button>
+  </form>
+  <form action="{% url 'todos:timetable' %}" method="POST">
+    {% csrf_token %}
+    {{ timetableForm }}
+    <button type="submit">ok</button>
+  </form>
+
+  <div>
+    {% for todo in user_todos %}
+    <p>{{ todo.title }}</p>
+    {% endfor %}
+
+    {% for timetable in timetables %}
+    <p>{{ timetable.start }} {{ timetable.end }}</p>
+    {% endfor %}
+  </div>
+</body>
 
 </html>

@@ -1,40 +1,62 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model as User
-from .forms import TimetableForm, TodosForm
+from .forms import TodosForm, TimetableForm
 from .models import Timetable, Todos
 from datetime import datetime
 
 
 # Create your views here.
 def today(request):
-    if request.method == "POST":
-        pass  # 은진 누나 완성되면 합칠 예정.
-    else:
-        # 아직 테스트는 안해봤음.
-        today = "2022-11-29"  # pk or input 으로 받을지 정해야됨. 임시
-        todosForm = TodosForm()
-        today_todos = Todos.objects.filter(started_at=today)
-        today_timetable = Timetable.objects.filter(today=today)  # 이 부분은 작동하는지 모르겠음.
+    user_pk = request.user.pk
+    today = str(datetime.now())[:10]
+
+    user_todos = Todos.objects.filter(user_id=user_pk)
+    # started_at__lte=today, expired_at__gte=today
+    # filter 에 추가할 조건
+    # started 보다 today가 많고, expired 보다 today가 적다는 조건
+    timetables = Timetable.objects.filter(today__startswith=today)
+    # todo_id=user_todos
+    # filter에 추가해야하는데 역참조 조건 달기가 까다로움
+    # todo_id는 todo에 달린 user_id 가 request.user의 pk 이다
+    # 아니면 todo_id는 user_todos 의 pk와 같다 라고 하면 되는데
+    # 구현이 잘 안 됨
+
+    todosForm = TodosForm()
+    timetableForm = TimetableForm()
+
     context = {
         "todosForm": todosForm,
-        "today_todos": today_todos,
-        "today_timetable": today_timetable,
+        "timetableForm": timetableForm,
+        "user_todos": user_todos,
+        "timetables": timetables,
     }
     return render(request, "todos/working/index.html", context)
 
 
-def timetable(request):
-    today = str(datetime.now())[:10]
-    timetables = Timetable.objects.filter(today__startswith=today)
+def create(request):
+    user = request.user
+    if request.method == "POST":
+        todoForm = TodosForm(request.POST, request.FILES)
+        if todoForm.is_valid():
+            todo = todoForm.save(commit=False)
+            todo.user_id = user
+            todo.save()
+    return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
 
+
+def timetable(request):
     if request.method == "POST":
         timetable_form = TimetableForm(request.POST)
         if timetable_form.is_valid():
             timetable_form.save()
-    else:
-        timetable_form = TimetableForm()
-    context = {"timetable_form": timetable_form, "timetables": timetables}
-    return render(request, "todos/working/timetable.html", context)
+    return redirect("todos:today")
+
+
+def delete(request, todos_pk):
+    if request.method == "POST":
+        todo = Todos.objects.get(pk=todos_pk)
+        todo.delete()
+    return redirect("todos:today")  # 추후에 비동기로 바꾸는거 권장
 
 
 def week(request):
@@ -68,23 +90,6 @@ def week(request):
         "todos": todos,
     }
     return render(request, "todos/working/week.html", context)
-
-
-def create(request):
-    if request.method == "POST":
-        todoForm = TodosForm(request.POST, request.FILES)
-        if todoForm.is_valid():
-            todo = todoForm.save(commit=False)
-            todo.user_id = request.user
-            todo.save()
-    return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
-
-
-def delete(request, todos_pk):
-    if request.method == "POST":
-        todo = Todos.objects.get(pk=todos_pk)
-        todo.delete()
-    return redirect("todos:today")  # 추후에 비동기로 바꾸는거 권장
 
 
 def read_all(request):
