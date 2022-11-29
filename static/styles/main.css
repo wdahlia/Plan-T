@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700;900&display=swap");
+@import url(./fontall.css);
+
+:root {
+	--main: #3cddaa;
+	--txt: #232931;
+	--bg: #f9f9f9;
+	--gr: #eeeeee;
+	--bg-dark: #393e46;
+}
+
+body {
+	font-family: "Noto Sans KR", sans-serif;
+	color: var(--txt);
+}
+
+.tit {
+	font-family: "NanumSquareNeo", sans-serif;
+}
