@@ -9,36 +9,18 @@ from datetime import datetime
 def today(request):
     user_pk = request.user.pk
     today = str(datetime.now())[:10]
-
+    # 로그인 유저의 today todos 찾기
     user_todos = Todos.objects.filter(user_id=request.user)
     today_todos_all = Todos.objects.filter(started_at=today)
     today_todos = user_todos & today_todos_all
-    # 테스트
-    for i in today_todos:
-        print(i)
-    #
-    # started_at__lte=today, expired_at__gte=today
-    # filter 에 추가할 조건
-    # started 보다 today가 많고, expired 보다 today가 적다는 조건
-    timetables = Timetable.objects.filter(today__startswith=today)
-    # todo_id=user_todos
-    # filter에 추가해야하는데 역참조 조건 달기가 까다로움
-    # todo_id는 todo에 달린 user_id 가 request.user의 pk 이다
-    # 아니면 todo_id는 user_todos 의 pk와 같다 라고 하면 되는데
-    # 구현이 잘 안 됨
-
     todosForm = TodosForm()
-    timetableForm = TimetableForm()
 
     context = {
         "today_todos": today_todos,
         "todosForm": todosForm,
-        "timetableForm": timetableForm,
         "user_todos": user_todos,
-        "timetables": timetables,
     }
     return render(request, "todos/complete/today_main.html", context)
-
 
 
 def create(request):
