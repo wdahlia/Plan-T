@@ -1,12 +1,24 @@
 @import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700;900&display=swap");
 @import url(./fontall.css);
 @import url(./main.css);
+@import url(./create_today.css);
 
 
-section .task-timeline .box-area{
+#timeline-box-area{
   display: flex;
+  align-items: center;
+  border-radius: 20px;
 }
 
+.task-timeline #time-box{
+  margin-right: 2rem;
+}
+
+.task-timeline #timedetail-form-area{
+  width: 30%;
+}
+
+/* timeline area */
 .task-timeline .past-timeline{
   overflow-y: scroll;
   margin-top: 1rem;
@@ -70,10 +82,12 @@ section .task-timeline .box-area{
   background-color: var(--bg);
   border: 2px solid var(--bg-dark);
   border-radius: 15px;
-  min-width: 500px;
+  width: 500px;
   text-align: start;
   padding: .8rem 1rem;
+  margin-right: 1rem;
 }
+
 
 .past-date_all .past-task_list{
   margin-left: 7rem;
@@ -105,3 +119,11 @@ input[id="past-check"] + label{
   position: relative;
 }
 
+/* timedetail-from-area */
+#today-detail-form .keyword-box{
+  width: 90px;
+}
+
+#today-detail-form .today_task-img{
+  padding: 2.6rem 0;
+}

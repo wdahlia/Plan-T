@@ -14,8 +14,8 @@
   <!-- timeline section -->
   <section class="task-timeline">
     <div class="container">
-      <div class="box-area">
-        <div class="box">
+      <div class="box-area" id="timeline-box-area">
+        <div class="box" id="time-box">
           <div class="past-timeline">
             <div class="timeline-box">
               <span class="arrow-icon">
@@ -99,7 +99,14 @@
             </div>
           </div>
         </div>
-      
+        <div class="box" id="timedetail-form-area">
+          <form action="" method="post" id="today-detail-form">
+            <input type="text" name="" value="task title" class="today_task-title">
+            <div class="keyword-box"><span>keyword</span></div>
+            <textarea name="" class="today_task-textarea" cols="30" rows="10"></textarea>
+            <input type="file" name="" class="today_task-img" id="">
+          </form>
+        </div>
       </div>
     </div>
   </section>
