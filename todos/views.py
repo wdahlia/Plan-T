@@ -1,20 +1,36 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model as User
-from .forms import TodosForm, TimetableForm
-from .models import Timetable, Todos
+from .forms import TodosForm
+from .models import Todos
 from datetime import datetime
 
 
 # Create your views here.
 def today(request):
-    user_pk = request.user.pk
     today = str(datetime.now())[:10]
+    # 로그인 유저의 today todos 찾기
+    user_todos = Todos.objects.filter(user_id=request.user)
+    today_todos_all = Todos.objects.filter(started_at=today)
+    today_todos = user_todos & today_todos_all
+    start = 0
+    time_list = []
+    for todo in today_todos:
 
-    user_todos = Todos.objects.filter(user_id=user_pk)
+        hour = int(todo.started_at[:2])
+        minute = int(todo.started_at[3:5])
+        start = ((hour - 6) * 6) + (minute // 10)
+
+        hour = int(todo.expired_at[:2])
+        minute = int(todo.expired_at[3:5])
+        end = ((hour - 6) * 6) + (minute // 10)
+        time = end - start
+        # 어떤 형식으로 보내줘야 하는지 안 정해서 임의로 만듬.
+        # 테스트 아직 안해봄
+        time_list.append(start)
+        time_list.append(time)
     # started_at__lte=today, expired_at__gte=today
     # filter 에 추가할 조건
     # started 보다 today가 많고, expired 보다 today가 적다는 조건
-    timetables = Timetable.objects.filter(today__startswith=today)
     # todo_id=user_todos
     # filter에 추가해야하는데 역참조 조건 달기가 까다로움
     # todo_id는 todo에 달린 user_id 가 request.user의 pk 이다
@@ -22,13 +38,11 @@ def today(request):
     # 구현이 잘 안 됨
 
     todosForm = TodosForm()
-    timetableForm = TimetableForm()
 
     context = {
+        "time_list": time_list,
+        "today_todos": today_todos,
         "todosForm": todosForm,
-        "timetableForm": timetableForm,
-        "user_todos": user_todos,
-        "timetables": timetables,
     }
     return render(request, "todos/complete/today_main.html", context)
 
@@ -36,20 +50,26 @@ def today(request):
 def create(request):
     user = request.user
     if request.method == "POST":
+        # 테스트
+        date = request.POST.get("date")
+        day = request.POST.get("day")
+        #
         todoForm = TodosForm(request.POST, request.FILES)
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
             todo.user_id = user
+            # 테스트
+            todo.started_at = date
+            todo.expired_at = date
+            #
             todo.save()
-    return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
-
-
-def timetable(request):
-    if request.method == "POST":
-        timetable_form = TimetableForm(request.POST)
-        if timetable_form.is_valid():
-            timetable_form.save()
-    return redirect("todos:today")
+        return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
+    else:  # 테스트용
+        todoForm = TodosForm()
+    context = {
+        "todoForm": todoForm,
+    }
+    return render(request, "todos/working/test_create.html", context)
 
 
 def delete(request, todos_pk):
@@ -93,18 +113,20 @@ def week(request):
 
 
 def read_all(request):
-    todos = Todos.objects.filter(user_id=request.user)
-    # 알고리즘 잘 작동하나 확인 필요
-    # 예상 모형 [[2022-10-12,2022-10-12,2022-10-12],[2022-10-13,2022-10-13,2022-10-13],[2022-10-14,2022-10-14,2022-10-14]]
+    todos = Todos.objects.filter(user_id=request.user).order_by("started_at")
+    # 값 보내기 위한 알고리즘
     time = ""
+    time2 = ""
     all_days = []
     for todo in todos:
         if time != todo.started_at:
             time = todo.started_at
-            all_days.append()
-            all_days[-1].append(time)
+            time2 = todo
+            all_days.append([])
+            all_days[-1].append(time2)
         else:
-            all_days[-1].append(time)
+            time2 = todo
+            all_days[-1].append(time2)
     context = {
         "all_days": all_days,
     }
