@@ -2,149 +2,172 @@
 {% load static %}
 {% block body %}
 
-  <div class="container" id="today">
+<div class="container" id="today">
 
-    <div class="lnb-area">
-      <div class="lnb">
-        <input type="radio" name="tabmenu" id="tab1" class="tabs">
-        <label for="tab1" class="tab">WEEK</label>
-        <input type="radio" name="tabmenu" id="tab2" class="tabs" checked="checked">
-        <label for="tab2" class="tab">TODAY</label>
-        <input type="radio" name="tabmenu" id="tab3" class="tabs">
-        <label for="tab3" class="tab">ALL</label>
-        <span class="glider"></span>
+  <div class="lnb-area">
+    <div class="lnb">
+      <input type="radio" name="tabmenu" id="tab1" class="tabs">
+      <label for="tab1" class="tab">WEEK</label>
+      <input type="radio" name="tabmenu" id="tab2" class="tabs" checked="checked">
+      <label for="tab2" class="tab">TODAY</label>
+      <input type="radio" name="tabmenu" id="tab3" class="tabs">
+      <label for="tab3" class="tab">ALL</label>
+      <span class="glider"></span>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="today-info">
+      <div class="today-date">
+        <p class="today-date-month">
+          11
+        </p>
+        <p class="today-date-day">29</p>
+      </div>
+      <div class="today-progress">
+        <canvas id="today-progress-crc" width="100" height="100"></canvas>
+        <div id="progress-per">0</div>
       </div>
     </div>
+    <div class="today-task-add">
+      <form action="#">
+        <input type="text" name="todayTask" id="" placeholder="할일 추가하기">
+        <span class="material-symbols-outlined btn-plus">
+          add_circle
+        </span>
+      </form>
+    </div>
 
-    <div class="box">
-      <div class="today-info">
-        <div class="today-date">
-          <p class="today-date-month">
-            11
-          </p>
-          <p class="today-date-day">29</p>
-        </div>
-        <div class="today-progress">
-          <canvas id="today-progress-crc" width="100" height="100"></canvas>
-          <div id="progress-per">0</div>
-        </div>
-      </div>
-      <div class="today-task-add">
-        <form action="#">
-          <input type="text" name="todayTask" id="" placeholder="할일 추가하기">
-          <span class="material-symbols-outlined btn-plus">
-            add_circle
-          </span>
+    <section class="today-section">
+      <div class="today-task-add-spec">
+        <!-- today todo Form -->
+        <form action="" method="post" id="today-form">
+          <input type="text" name="" value="task title" class="today_task-title">
+          <div class="keyword-box"><span>keyword</span></div>
+          <textarea name="" class="today_task-textarea" cols="30" rows="10"></textarea>
+          <input type="file" name="" class="today_task-img" id="">
+          <div class="btn-area">
+            <button type="submit" class="btn">할일 추가</button>
+          </div>
         </form>
       </div>
-    </div>
-    <div class="box-area">
-      <div class="box today-task-area">
-        <ul class="today-task-list">
-          <li class="task activate">
-            <p class="task-cont">task</p>
-            <input type="checkbox" name="task-chb1" id="task-chb1">
-            <label for="task-chb1" class="task-chb"></label>
-          </li>
-          <li class="task">
-            <p class="task-cont">task</p>
-            <input type="checkbox" name="task-chb2" id="task-chb2">
-            <label for="task-chb2" class="task-chb"></label>
-          </li>
-          <li class="task">
-            <p class="task-cont">task</p>
-            <input type="checkbox" name="task-chb3" id="task-chb3">
-            <label for="task-chb3" class="task-chb"></label>
-          </li>
-        </ul>
-        <div class="today-timetable">
-          <div class="timetable-col">
-            <div class="timetable-hour">
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min "></p>
-            </div>
-            <div class="timetable-hour">
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min activate"></p>
-            </div>
-            <div class="timetable-hour">
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-            </div>
-          </div>
-          <div class="timetable-col">
-            <div class="timetable-hour">
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min "></p>
-            </div>
-            <div class="timetable-hour">
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min activate"></p>
-            </div>
-            <div class="timetable-hour">
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-      <div class="box today-study-area">
-        <h3 class="tit">Study</h3>
-        <ul class="study-task-list">
-          <li class="task">task</li>
-        </ul>
-      </div>
-    </div>
-    
-    {% comment %} 수정예정 {% endcomment %}
-    <div class="box">
-      <form action="{% url 'todos:create' %}" method="POST">
-        {% csrf_token %}
-        {{ todosForm }}
-        <button type="submit">ok</button>
-      </form>
-      <form action="{% url 'todos:timetable' %}" method="POST">
-        {% csrf_token %}
-        {{ timetableForm }}
-        <button type="submit">ok</button>
-      </form>
-
-      <div>
-        {% for todo in user_todos %}
-          <p>{{ todo.title }}</p>
-        {% endfor %}
-
-        {% for timetable in timetables %}
-          <p>{{ timetable.start }}
-            {{ timetable.end }}</p>
-        {% endfor %}
-      </div>
-    </div>
-
+    </section>
   </div>
+
+
+  <div class="box-area">
+    <div class="box today-task-area">
+      <ul class="today-task-list">
+        <li class="task activate">
+          <a class="task-btn btn-edit">수정</a>
+          <a class="task-btn btn-del">삭제</a>
+          <p class="task-cont">task00000000</p>
+          <input type="checkbox" name="task-chb1" id="task-chb1">
+          <label for="task-chb1" class="task-chb"></label>
+        </li>
+        <li class="task">
+          <a class="task-btn btn-edit">수정</a>
+          <a class="task-btn btn-del">삭제</a>
+          <p class="task-cont">task</p>
+          <input type="checkbox" name="task-chb2" id="task-chb2">
+          <label for="task-chb2" class="task-chb"></label>
+        </li>
+        <li class="task">
+          <a class="task-btn btn-edit">수정</a>
+          <a class="task-btn btn-del">삭제</a>
+          <p class="task-cont">task</p>
+          <input type="checkbox" name="task-chb3" id="task-chb3">
+          <label for="task-chb3" class="task-chb"></label>
+        </li>
+      </ul>
+      <div class="today-timetable">
+        <div class="timetable-col">
+          <div class="timetable-hour">
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min "></p>
+          </div>
+          <div class="timetable-hour">
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min activate"></p>
+          </div>
+          <div class="timetable-hour">
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+          </div>
+        </div>
+        <div class="timetable-col">
+          <div class="timetable-hour">
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min "></p>
+          </div>
+          <div class="timetable-hour">
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min activate"></p>
+          </div>
+          <div class="timetable-hour">
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="box today-study-area">
+      <h3 class="tit">Study</h3>
+      <ul class="study-task-list">
+        <li class="task">task</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- {% comment %} 수정예정 {% endcomment %}
+  <div class="box">
+    <form action="{% url 'todos:create' %}" method="POST">
+      {% csrf_token %}
+      {{ todosForm }}
+      <button type="submit">ok</button>
+    </form>
+    <form action="{% url 'todos:timetable' %}" method="POST">
+      {% csrf_token %}
+      {{ timetableForm }}
+      <button type="submit">ok</button>
+    </form>
+
+    <div>
+      {% for todo in user_todos %}
+      <p>{{ todo.title }}</p>
+      {% endfor %}
+
+      {% for timetable in timetables %}
+      <p>{{ timetable.start }}
+        {{ timetable.end }}</p>
+      {% endfor %}
+    </div>
+  </div> -->
+
+</div>
 {% endblock body %}
