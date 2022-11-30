@@ -1,6 +1,7 @@
 @import url(./main.css);
 
-#today .lnb {
+#today .lnb,
+#week .lnb {
 	margin: 2rem auto;
 	background: var(--deact);
 	border-radius: 20px;
@@ -14,22 +15,28 @@
 	z-index: 2;
 	overflow: hidden;
 }
-#today .lnb input[type="radio"] {
+#today .lnb input[type="radio"],
+#week .lnb input[type="radio"] {
 	display: none;
 }
-#today .lnb input[type="radio"]:checked + label {
+#today .lnb input[type="radio"]:checked + label,
+#week .lnb input[type="radio"]:checked + label {
 	font-weight: 700;
 }
-#today .lnb input[id="tab1"]:checked ~ .glider {
+#today .lnb input[id="tab1"]:checked ~ .glider,
+#week .lnb input[id="tab1"]:checked ~ .glider {
 	transform: translateX(-115%);
 }
-#today .lnb input[id="tab2"]:checked ~ .glider {
+#today .lnb input[id="tab2"]:checked ~ .glider,
+#week .lnb input[id="tab2"]:checked ~ .glider {
 	transform: translateX(10%);
 }
-#today .lnb input[id="tab3"]:checked ~ .glider {
+#today .lnb input[id="tab3"]:checked ~ .glider,
+#week .lnb input[id="tab3"]:checked ~ .glider {
 	transform: translateX(125%);
 }
-#today .lnb .tab {
+#today .lnb .tab,
+#week .lnb .tab {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -37,7 +44,8 @@
 	padding: 0.2rem 0.5rem;
 	/* margin-right: 1.5rem; */
 }
-#today .lnb .glider {
+#today .lnb .glider,
+#week .lnb .glider {
 	position: absolute;
 	/* left: 50%; */
 	display: flex;
@@ -50,7 +58,8 @@
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-#today .box-area {
+#today .box-area,
+#week .box-area {
 	margin-top: 2rem;
 	display: flex;
 	justify-content: center;
@@ -96,6 +105,7 @@
 #today .today-progress {
 	position: relative;
 }
+
 #today .today-progress #progress-per {
 	position: absolute;
 	left: 50%;
@@ -121,6 +131,7 @@
 	top: 50%;
 	transform: translateY(-50%);
 	color: var(--main);
+	cursor: pointer;
 }
 
 /* task area */
@@ -134,14 +145,16 @@
 #today .today-task-list {
 	margin-right: 2rem;
 }
-#today .today-task-list .task {
+#today .today-task-list .task,
+#week .task-list .task {
 	width: 300px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 0.5rem;
 }
-#today .today-task-list .task .task-chb {
+#today .today-task-list .task .task-chb,
+#week .task-list .task .task-chb {
 	position: relative;
 	top: 1px;
 	width: 25px;
@@ -152,7 +165,8 @@
 	cursor: pointer;
 	display: block;
 }
-#today .today-task-list .task .task-chb::after {
+#today .today-task-list .task .task-chb::after,
+#week .task-list .task .task-chb::after {
 	content: "";
 	position: absolute;
 	top: 2px;
@@ -166,20 +180,19 @@
 	transition: all 0.3s ease;
 	transition-delay: 0.15s;
 }
-#today .today-task-list .task input[type="checkbox"] {
+#today .today-task-list .task input[type="checkbox"],
+#week .task-list .task input[type="checkbox"] {
 	display: none;
 }
-#today .today-task-list .task input[type="checkbox"]:checked ~ .task-chb {
+#today .today-task-list .task input[type="checkbox"]:checked ~ .task-chb,
+#week .task-list .task input[type="checkbox"]:checked ~ .task-chb {
 	border-color: transparent;
 	background: var(--main);
 	animation: jelly 0.6s ease;
 }
 
-#today
-	.today-task-list
-	.task
-	input[type="checkbox"]:checked
-	~ .task-chb::after {
+#today .today-task-list .task input[type="checkbox"]:checked ~ .task-chb::after,
+#week .task-list .task input[type="checkbox"]:checked ~ .task-chb::after {
 	opacity: 1;
 	transform: rotate(45deg) scale(1);
 }
@@ -209,6 +222,13 @@
 	font-weight: 700;
 	margin-bottom: 1rem;
 	text-align: center;
+}
+
+#week .week-area .tit {
+	border-radius: 20px;
+	padding: 0.5rem;
+	text-align: center;
+	margin-bottom: 1.6rem;
 }
 
 /* animation */
