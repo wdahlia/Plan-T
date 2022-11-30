@@ -10,7 +10,7 @@ def today(request):
     today = str(datetime.now())[:10]
     # 로그인 유저의 today todos 찾기
     user_todos = Todos.objects.filter(user_id=request.user)
-    today_todos_all = Todos.objects.filter(started_at=today)
+    today_todos_all = Todos.objects.filter(when=today)
     today_todos = user_todos & today_todos_all
     start = 0
     time_list = []
@@ -52,12 +52,16 @@ def create(request):
     if request.method == "POST":
         start = request.POST.get("start")
         end = request.POST.get("end")
+        when = request.POST.get("when")
         todoForm = TodosForm(request.POST, request.FILES)
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
             todo.user_id = user
-            todo.started_at = start
-            todo.expired_at = end
+            todo.when = when
+            if start != "":
+                todo.started_at = start
+            if end != "":
+                todo.expired_at = end
             todo.save()
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:  # 테스트용
@@ -78,16 +82,15 @@ def delete(request, todos_pk):
 def week(request):
     # 미완성
     # 1
-    # 날짜를 어떻게 받을지 아직 못정함.
-    # 화면에 할일을 클릭은 주소 url이 좋을거 같지만
-    # 여기서 값을 받는것은 JS를 활용한 input값 받기 일거 같다.
-    # sunday_todos = Todos.objects.filter(started_at="일")
-    # monday_todos = Todos.objects.filter(started_at="월")
-    # tuesday_todos = Todos.objects.filter(started_at="화")
-    # wednesday_todos = Todos.objects.filter(started_at="수")
-    # thursday_todos = Todos.objects.filter(started_at="목")
-    # friday_todos = Todos.objects.filter(started_at="금")
-    # saturday_todos = Todos.objects.filter(started_at="토")
+    # 우선 일요일 날짜를 받아준다.(방식은 미정)
+    sunday = request.GET.get("sunday")
+    sunday_todos = Todos.objects.filter(when=sunday)
+    # monday_todos = Todos.objects.filter(when="월")
+    # tuesday_todos = Todos.objects.filter(when="화")
+    # wednesday_todos = Todos.objects.filter(when="수")
+    # thursday_todos = Todos.objects.filter(when="목")
+    # friday_todos = Todos.objects.filter(when="금")
+    # saturday_todos = Todos.objects.filter(when="토")
     # 다음주 지난주 클릭은 비동기로 axios를 사용하여 서버와 통신하게 만들어야 될 거 같다.
 
     # 2
