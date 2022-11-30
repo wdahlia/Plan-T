@@ -128,11 +128,6 @@
         {{ todosForm }}
         <button type="submit">ok</button>
       </form>
-      <form action="{% url 'todos:timetable' %}" method="POST">
-        {% csrf_token %}
-        {{ timetableForm }}
-        <button type="submit">ok</button>
-      </form>
 
       <div>
         {% for todo in user_todos %}
