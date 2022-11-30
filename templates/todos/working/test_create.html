@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+
+  <body>
+    <h1>123</h1>
+    <div>
+      <form action="" method="POST">
+        {% csrf_token %}
+        {{todoForm.as_p}}
+        <input type="date" name="date" id="date">
+        <input type="number" name="day" id="day">
+        <button type="submit" class="" value="작성">작성</button>
+      </form>
+    </div>
+    <script>
+      let today = new Date();
+      // 날짜 조작하기
+      today.setMonth(today.getMonth()); // 월 바꾸기
+      today.setDate(today.getDate() + 1); // 일 바꾸기
+      console.log(today) // 확인
+      // 날짜 뽑아내기
+      let year = today.getFullYear(); // 년도
+      let month = today.getMonth() + 1; // 월
+      let date = today.getDate(); // 날짜
+      let day = today.getDay(); // 요일
+      year = String(year)
+      if (month < 10) {
+        month = '0' + String(month)
+      } else {
+        month = String(month)
+      }
+      if (date < 10) {
+        date = '0' + String(date)
+      } else {
+        date = String(date)
+      }
+      console.log(month) // 확인
+      const datee = document.querySelector("#date")
+      const dayy = document.querySelector("#day")
+      datee.value = year + '-' + month + '-' + date
+      console.log(datee.value) // 확인
+      dayy.value = day
+    </script>
+  </body>
+
+</html>
