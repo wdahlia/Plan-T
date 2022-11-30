@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import (
-    login as auth_login, 
+    login as auth_login,
     logout as auth_logout,
-    update_session_auth_hash
+    update_session_auth_hash,
 )
 from django.views.decorators.http import require_POST
 
@@ -32,7 +32,7 @@ def signup(request):
     }
 
     # 바꿔야 함!
-    return render(request, "test/form.html", context)
+    return render(request, "accounts/complete/accounts_form.html", context)
 
 
 def login(request):

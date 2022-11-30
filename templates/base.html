@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -16,10 +17,10 @@
     <!-- google font icon -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet" href="../static/styles/init.css">
-    <link rel="stylesheet" href="../static/styles/main.css">
-    <!-- <link rel="stylesheet" href="{% static 'styles/init.css' %}"> -->
-    <!-- <link rel="stylesheet" href="{% static 'styles/main.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'styles/init.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/accounts.css' %}">
+    <script src="{% static 'script/script.js' %}" defer></script>
     <title>Plan-T</title>
 </head>
 
@@ -28,8 +29,7 @@
         <div class="container">
             <nav class="navi">
                 <div class="logo">
-                    <!-- <img src="{% static 'img/planT_logo.svg' %}" alt="Plant_logo"> -->
-                    <img src="../static/img/planT_logo.svg" alt="">
+                    <img src="{% static 'img/planT_logo.svg' %}" alt="Plant_logo">
                 </div>
                 <div class="gnb-area">
                     <ul class="gnb tit">
@@ -60,7 +60,9 @@
     </header>
     <main id="main">
         <div class="container">
-            {% block body %}{% endblock body %}
+            {% block body %}
+
+            {% endblock body %}
         </div>
     </main>
     <footer>
