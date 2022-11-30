@@ -8,14 +8,11 @@ from datetime import datetime
 # Create your views here.
 def today(request):
     today = str(datetime.now())[:10]
-
+    # 로그인 유저의 today todos 찾기
     user_todos = Todos.objects.filter(user_id=request.user)
     today_todos_all = Todos.objects.filter(started_at=today)
     today_todos = user_todos & today_todos_all
-    # 테스트
-    for i in today_todos:
-        print(i)
-    #
+
     # started_at__lte=today, expired_at__gte=today
     # filter 에 추가할 조건
     # started 보다 today가 많고, expired 보다 today가 적다는 조건
@@ -33,7 +30,6 @@ def today(request):
         "user_todos": user_todos,
     }
     return render(request, "todos/complete/today_main.html", context)
-
 
 
 def create(request):
