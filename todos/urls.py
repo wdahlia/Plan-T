@@ -9,4 +9,5 @@ urlpatterns = [
     path("delete/<int:todos_pk>", views.delete, name="delete"),
     path("timetable/", views.timetable, name="timetable"),
     path("week", views.week, name="week"),
+    path("read_all", views.read_all, name="read_all"),
 ]
