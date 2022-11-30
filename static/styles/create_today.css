@@ -2,12 +2,14 @@
 @import url(./fontall.css);
 @import url(./main.css);
 
-#today-form{
+/* todayList Form */
+#today-form, #today-detail-form{
   display: flex;
   flex-direction: column;
 }
 
-#today-form .today_task-title{
+#today-form .today_task-title,
+#today-detail-form .today_task-title{
   height: 49px;
   background: var(--bg);
   border: 2px solid var(--main);
@@ -17,8 +19,12 @@
 }
 
 #today-form .keyword-box{
-  margin: 1rem 0;
   width: 113px;
+}
+
+#today-form .keyword-box,
+#today-detail-form .keyword-box{
+  margin: 1rem 0;
   height: 34px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
@@ -26,22 +32,40 @@
   text-align: center;
 }
 
-#today-form .keyword-box span{
+#today-form .keyword-box span,
+#today-detail-form .keyword-box span{
   line-height: 34px;
 }
 
-#today-form .today_task-textarea{
+#today-form .today_task-textarea,
+#today-detail-form .today_task-textarea{
   border-radius: 20px;
   height: 283px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
   background-color: var(--bg);
   border: 0;
   padding: 3rem;
+  resize: none;
+  transition: .18s;
+}
+
+#today-form .today_task-textarea:active,
+#today-detail-form .today_task-textarea:active{
+  border: none;
+}
+
+#today-form .today_task-textarea:focus,
+#today-detail-form .today_task-textarea:focus{
+  outline: var(--main) solid 2px;
 }
 
 #today-form .today_task-img{
-  margin: 1rem 0;
   padding: 5rem 0;
+}
+
+#today-form .today_task-img,
+#today-detail-form .today_task-img{
+  margin: 1rem 0;
   border-radius: 20px;
   border: 1px dashed var(--bg-dark);
   filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.1));

@@ -1,16 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% if request.user.is_authenticated %}
-        {{ request.user.username }} 님 반갑습니다! 여기는 테스트용 프로필입니다!
-    {% else %}
-        <h1>당신은 접근 권한이 없습니다.</h1>
-    {% endif %}
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+    <div class="container">
+        <div class="box" id="mypage">
+            <div class="user-info">
+                <div class="profile-img">
+                    <img src="https://dummyimage.com/150x150" alt="">
+                </div>
+                {% if request.user.is_authenticated %}
+                <h2 class="tit">{{ request.user.username }}</h2>
+                {% else %}
+                <h1>당신은 접근 권한이 없습니다.</h1>
+                {% endif %}
+            </div>
+            <div class="todo-achieve">
+                <h4 class="tit">TODO 달성률</h4>
+                <p class="achieve-bg"></p>
+                <p class="achieve-per"><span>45%</span></p>
+            </div>
+            <div class="user-log box">
+                <p>유저 그래프 https://pixe.la/</p>
+            </div>
+            <div class="user-tag box">
+                <h4 class="tit">제일 많이 쓴 태그</h4>
+                <span class="tag">tag</span>
+            </div>
+            <div class="user-log box">
+                <h4 class="tit">나의 스터디 현황</h4>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

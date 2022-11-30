@@ -9,7 +9,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="../../../static/styles/init.css">
     <link rel="stylesheet" href="../../../static/styles/accounts.css">
-    <script src="../../../static/script/script.js" defer></script>
+    <script src="../../../static/script/script.js" defer="defer"></script>
     <title>Document</title>
 </head>
 
@@ -20,18 +20,26 @@
             <div class="logo">
                 <img src="../../../static/img/planT_logo.svg" alt="plan-t logo">
             </div>
-            <form action="#" id="signup-form">
+            <form action="" id="signup-form" method="POST">
                 <div class="input-area">
-                    <input type="text" name="" id="userId" autofocus>
-                    <label for="">이름</label>
+                    <input type="text" name="username" id="id_username" autofocus="autofocus">
+                    <label for="username">아이디</label>
                 </div>
                 <div class="input-area">
-                    <input type="text" name="" id="userEmail">
+                    <input type="text" name="nickname" id="id_nickname" autofocus="autofocus">
+                    <label for="nickname">닉네임</label>
+                </div>
+                <div class="input-area">
+                    <input type="password" name="password1" id="id_password1">
+                    <label for="password1">비밀번호</label>
+                </div>
+                <div class="input-area">
+                    <input type="password" name="password2" id="id_password1">
+                    <label for="password2">비밀번호 확인</label>
+                </div>
+                <div class="input-area">
+                    <input type="email" name="email" id="id_email">
                     <label for="">이메일</label>
-                </div>
-                <div class="input-area">
-                    <input type="password" name="" id="userPw">
-                    <label for="">비밀번호</label>
                 </div>
                 <button type="submit" class="btn">회원가입 하기</button>
             </form>
