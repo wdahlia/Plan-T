@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{% static 'styles/init.css' %}">
     <link rel="stylesheet" href="{% static 'styles/main.css' %}">
     <link rel="stylesheet" href="{% static 'styles/accounts.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/today.css' %}">
     <script src="{% static 'script/script.js' %}" defer></script>
     <title>Plan-T</title>
 </head>
@@ -51,9 +52,9 @@
                     <div class="user-prof">
                         <img src="https://dummyimage.com/30x30" alt="">
                     </div>
-                    <p class="username">
+                    <a href="accounts:profile" class="username">
                         username
-                    </p>
+                    </a>
                 </div>
             </nav>
         </div>
@@ -61,7 +62,6 @@
     <main id="main">
         <div class="container">
             {% block body %}
-
             {% endblock body %}
         </div>
     </main>

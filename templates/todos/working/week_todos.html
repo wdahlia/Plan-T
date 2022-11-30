@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+  <div class="container" id="week">
+    <div class="lnb-area">
+      <div class="lnb">
+        <input type="radio" name="tabmenu" id="tab1" class="tabs">
+        <label for="tab1" class="tab">WEEK</label>
+        <input type="radio" name="tabmenu" id="tab2" class="tabs" checked="checked">
+        <label for="tab2" class="tab">TODAY</label>
+        <input type="radio" name="tabmenu" id="tab3" class="tabs">
+        <label for="tab3" class="tab">ALL</label>
+        <span class="glider"></span>
+      </div>
+    </div>
+    <div class="box-area week-area">
+      <div class="box">
+        <h3 class="tit shd">Sunday</h3>
+        <ul class="task-list">
+          <li class="task">
+            <p class="task-cont">task</p>
+            <input type="checkbox" name="task-chb1" id="task-chb1">
+            <label for="task-chb1" class="task-chb"></label>
+          </li>
+          <li class="task deactivate">
+            <p class="task-cont">task</p>
+            <input type="checkbox" name="task-chb1" id="task-chb1">
+            <label for="task-chb1" class="task-chb"></label>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+{% endblock body %}

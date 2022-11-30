@@ -30,7 +30,7 @@ def today(request):
         "user_todos": user_todos,
         "timetables": timetables,
     }
-    return render(request, "todos/working/index.html", context)
+    return render(request, "todos/complete/today_main.html", context)
 
 
 def create(request):
@@ -65,13 +65,13 @@ def week(request):
     # 날짜를 어떻게 받을지 아직 못정함.
     # 화면에 할일을 클릭은 주소 url이 좋을거 같지만
     # 여기서 값을 받는것은 JS를 활용한 input값 받기 일거 같다.
-    sunday_todos = Todos.objects.filter(started_at="일")
-    monday_todos = Todos.objects.filter(started_at="월")
-    tuesday_todos = Todos.objects.filter(started_at="화")
-    wednesday_todos = Todos.objects.filter(started_at="수")
-    thursday_todos = Todos.objects.filter(started_at="목")
-    friday_todos = Todos.objects.filter(started_at="금")
-    saturday_todos = Todos.objects.filter(started_at="토")
+    # sunday_todos = Todos.objects.filter(started_at="일")
+    # monday_todos = Todos.objects.filter(started_at="월")
+    # tuesday_todos = Todos.objects.filter(started_at="화")
+    # wednesday_todos = Todos.objects.filter(started_at="수")
+    # thursday_todos = Todos.objects.filter(started_at="목")
+    # friday_todos = Todos.objects.filter(started_at="금")
+    # saturday_todos = Todos.objects.filter(started_at="토")
     # 다음주 지난주 클릭은 비동기로 axios를 사용하여 서버와 통신하게 만들어야 될 거 같다.
 
     # 2
@@ -89,7 +89,7 @@ def week(request):
     context = {
         "todos": todos,
     }
-    return render(request, "todos/working/week.html", context)
+    return render(request, "todos/working/week_todos.html", context)
 
 
 def read_all(request):
