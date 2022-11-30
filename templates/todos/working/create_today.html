@@ -19,8 +19,19 @@
                     <!-- today todo Form -->
                     <form action="" method="post" id="today-form">
                         <input type="text" name="" value="task title" class="today_task-title">
-                        <div class="keyword-box"><span>keyword</span></div>
+                        <div class="timepicker-area">
+                            <div class="starttime-select">     
+                                <label for="starttime-pick">시작 시간</label>
+                                <input type="text" id="starttime-pick" value="" name="start" class="time-pickable" readonly>
+                            </div>
+                            <span class="time-tilder">~</span>
+                            <div class="endtime-select">
+                                <label for="endtime-pick">종료 시간</label>
+                                <input type="text" id="endtime-pick" value="" name="end" class="time-pickable" readonly>
+                            </div>
+                        </div>
                         <textarea name="" class="today_task-textarea" cols="30" rows="10"></textarea>
+                        <div class="keyword-box"><span>keyword</span></div>
                         <input type="file" name="" class="today_task-img" id="">
                     </form>
                 </div>
@@ -28,5 +39,144 @@
         </div>
     </section>
     <!-- section -->
+    <script>
+        function activate() {
+            document.head.insertAdjacentHTML("beforeend", `
+                <style>
+               
+                    .time-picker {
+                        position: absolute;
+                        display: inline-block;
+                        padding: 10px;
+                        background: var(--main);
+                        border-radius: 10px;
+                        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+                        width: 400px;
+                        margin-top: 10px;
+                    }
+
+                    .time-picker__select {
+                        -webkit-appearance: none;
+                        -moz-appearance: none;
+                        appearance: none;
+                        outline: none;
+                        text-align: center;
+                        border: 2px solid var(--main);
+                        border-radius: 6px;
+                        padding: 6px 10px;
+                        background: var(--bg);
+                        cursor: pointer;
+                        font-family: 'Heebo', sans-serif;
+                    }
+
+                    .time-pickable {
+                        background-color: var(--bg);
+                    }
+                </style>
+            `);
+
+            document.querySelectorAll(".time-pickable").forEach(timePickable => {
+                let activePicker = null;
+
+                timePickable.addEventListener("focus", () => {
+                    if (activePicker) return;
+
+                    activePicker = show(timePickable);
+
+                    const onClickAway = ({ target }) => {
+                        if (
+                            target === activePicker
+                            || target === timePickable
+                            || activePicker.contains(target)
+                        ) {
+                            return;
+                        }
+
+                        document.removeEventListener("mousedown", onClickAway);
+                        document.body.removeChild(activePicker);
+                        activePicker = null;
+                    };
+
+                    document.addEventListener("mousedown", onClickAway);
+                });
+            });
+        }
+
+        function show(timePickable) {
+            const picker = buildPicker(timePickable);
+            const { bottom: top, left } = timePickable.getBoundingClientRect();
+
+            picker.style.top = `${top}px`;
+            picker.style.left = `${left}px`;
+
+            document.body.appendChild(picker);
+
+            return picker;
+        }
+
+        function buildPicker(timePickable) {
+            const picker = document.createElement("div");
+            const hourOptions = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map(numberToOption);
+            const minuteOptions = [0, 10, 20, 30, 40, 50].map(numberToOption);
+
+            picker.classList.add("time-picker");
+            picker.innerHTML = `  
+                <select class="time-picker__select">
+                    ${hourOptions.join("")}
+                </select>
+                :
+                <select class="time-picker__select">
+                    ${minuteOptions.join("")}
+                </select>
+            `;
+
+            const selects = getSelectsFromPicker(picker);
+
+            selects.hour.addEventListener("change", () => timePickable.value = getTimeStringFromPicker(picker));
+            selects.minute.addEventListener("change", () => timePickable.value = getTimeStringFromPicker(picker));
+
+            if (timePickable.value) {
+                const { hour, minute, meridiem } = getTimePartsFromPickable(timePickable);
+
+                selects.hour.value = hour;
+                selects.minute.value = minute;
+            }
+
+            return picker;
+        }
+
+        function getTimePartsFromPickable(timePickable) {
+            const pattern = /^(\d+):(\d+) (am|pm)$/;
+            const [hour, minute] = Array.from(timePickable.value.match(pattern)).splice(1);
+
+            return {
+                hour,
+                minute,
+            };
+        }
+
+        function getSelectsFromPicker(timePicker) {
+            const [hour, minute] = timePicker.querySelectorAll(".time-picker__select");
+
+            return {
+                hour,
+                minute,
+            };
+        }
+
+        function getTimeStringFromPicker(timePicker) {
+            const selects = getSelectsFromPicker(timePicker);
+
+            return `${selects.hour.value}:${selects.minute.value}`;
+        }
+
+        function numberToOption(number) {
+            const padded = number.toString().padStart(2, "0");
+
+            return `<option value="${padded}">${padded}</option>`;
+        }
+
+        activate();
+    </script>
 </body>
 </html>
