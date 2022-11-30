@@ -70,3 +70,43 @@
   border: 1px dashed var(--bg-dark);
   filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.1));
 }
+
+/* timepicker */
+
+#today-form .timepicker-area{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+#today-form .timepicker-area .starttime-select,
+#today-form .timepicker-area .endtime-select{
+  display: flex;
+  flex-direction: column;
+}
+
+#today-form label{
+  text-indent: 20px;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--main);
+}
+
+#today-form #starttime-pick,
+#today-form #endtime-pick{
+  width: 400px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  padding: .65rem;
+  border-radius: 20px;
+  text-align: center;
+  margin-top: .2rem;
+}
+
+#today-form .time-tilder{
+  font-size: 30px;
+  width: 50px;
+  color: var(--main);
+  text-align: center;
+  vertical-align: center;
+}
