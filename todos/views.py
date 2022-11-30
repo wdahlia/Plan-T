@@ -1,13 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model as User
-from .forms import TodosForm, TimetableForm
-from .models import Timetable, Todos
+from .forms import TodosForm
+from .models import Todos
 from datetime import datetime
 
 
 # Create your views here.
 def today(request):
-    user_pk = request.user.pk
     today = str(datetime.now())[:10]
 
     user_todos = Todos.objects.filter(user_id=request.user)
@@ -20,7 +19,6 @@ def today(request):
     # started_at__lte=today, expired_at__gte=today
     # filter 에 추가할 조건
     # started 보다 today가 많고, expired 보다 today가 적다는 조건
-    timetables = Timetable.objects.filter(today__startswith=today)
     # todo_id=user_todos
     # filter에 추가해야하는데 역참조 조건 달기가 까다로움
     # todo_id는 todo에 달린 user_id 가 request.user의 pk 이다
@@ -28,14 +26,11 @@ def today(request):
     # 구현이 잘 안 됨
 
     todosForm = TodosForm()
-    timetableForm = TimetableForm()
 
     context = {
         "today_todos": today_todos,
         "todosForm": todosForm,
-        "timetableForm": timetableForm,
         "user_todos": user_todos,
-        "timetables": timetables,
     }
     return render(request, "todos/complete/today_main.html", context)
 
@@ -64,14 +59,6 @@ def create(request):
         "todoForm": todoForm,
     }
     return render(request, "todos/working/test_create.html", context)
-
-
-def timetable(request):
-    if request.method == "POST":
-        timetable_form = TimetableForm(request.POST)
-        if timetable_form.is_valid():
-            timetable_form.save()
-    return redirect("todos:today")
 
 
 def delete(request, todos_pk):
