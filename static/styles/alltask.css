@@ -1,0 +1,107 @@
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700;900&display=swap");
+@import url(./fontall.css);
+@import url(./main.css);
+
+
+section .task-timeline .box-area{
+  display: flex;
+}
+
+.task-timeline .past-timeline{
+  overflow-y: scroll;
+  margin-top: 1rem;
+}
+
+.task-timeline .past-timeline:first-child{
+  margin-top: 0;
+}
+
+.task-timeline .timeline-box{
+  display: flex;
+}
+
+.task-timeline .timeline-box .time-point{
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg);
+  border-radius: 20px;
+  padding: 0 4.8rem;
+  height: 39px;
+  line-height: 43px;
+}
+
+.timeline-box:hover > .arrow-icon{
+  transform: rotate(90deg);
+}
+.timeline-box:active > .arrow-icon{
+  transform: rotate(90deg);
+}
+
+.past-timeline .timeline-box .arrow-icon{
+  transition: 0.3s;
+}
+
+.past-timeline .past-date_all{
+  margin-top: 1rem;
+}
+
+.past-date:hover > .arrow-icon{
+  transform: rotate(90deg);
+}
+
+.past-date:active > .arrow-icon{
+  transform: rotate(90deg);
+}
+
+.past-date_all .past-date .arrow-icon{
+  transition: 0.3s;
+}
+
+.past-date_all .past-date{
+  display: flex;
+  margin-left: 2.8rem;
+}
+
+.past-date_all .past-date:first-child{
+  margin-top: 0;
+}
+
+.past-date_all .past-date .datetime{
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg);
+  border: 2px solid var(--bg-dark);
+  border-radius: 15px;
+  min-width: 500px;
+  text-align: start;
+  padding: .8rem 1rem;
+}
+
+.past-date_all .past-task_list{
+  margin-left: 7rem;
+}
+
+.past-date_all .past-task_list .past-task{
+  background-color: var(--sub);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  height: 50px;
+  max-width: 480px;
+  margin-top: 1rem;
+  display: flex;
+  padding: 1rem 2rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+input[id="past-check"]{
+  display: none;
+}
+
+input[id="past-check"] + label{
+  display: inline-block;
+  background-color: var(--bg);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--main);
+  position: relative;
+}
+
