@@ -50,18 +50,14 @@ def today(request):
 def create(request):
     user = request.user
     if request.method == "POST":
-        # 테스트
-        date = request.POST.get("date")
-        day = request.POST.get("day")
-        #
+        start = request.POST.get("start")
+        end = request.POST.get("end")
         todoForm = TodosForm(request.POST, request.FILES)
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
             todo.user_id = user
-            # 테스트
-            todo.started_at = date
-            todo.expired_at = date
-            #
+            todo.started_at = start
+            todo.expired_at = end
             todo.save()
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:  # 테스트용
