@@ -12,7 +12,29 @@ def today(request):
     user_todos = Todos.objects.filter(user_id=request.user)
     today_todos_all = Todos.objects.filter(started_at=today)
     today_todos = user_todos & today_todos_all
+    start = 0
+    time_list = []
+    for todo in today_todos:
+        if todo.started_at[-2:] == "PM":
+            hour = int(todo.started_at[:2]) + 12
+            minute = int(todo.started_at[3:5])
+        else:
+            hour = int(todo.started_at[:2])
+            minute = int(todo.started_at[3:5])
+        start = (hour - 6) * 6 + minute // 10
 
+        if todo.expired_at[-2:] == "PM":
+            hour = int(todo.expired_at[:2]) + 12
+            minute = int(todo.expired_at[3:5])
+        else:
+            hour = int(todo.expired_at[:2])
+            minute = int(todo.expired_at[3:5])
+        end = (hour - 6) * 6 + minute // 10
+        time = end - start
+        # 어떤 형식으로 보내줘야 하는지 안 정해서 임의로 만듬.
+        # 테스트 아직 안해봄
+        time_list.append(start)
+        time_list.append(time)
     # started_at__lte=today, expired_at__gte=today
     # filter 에 추가할 조건
     # started 보다 today가 많고, expired 보다 today가 적다는 조건
@@ -25,9 +47,9 @@ def today(request):
     todosForm = TodosForm()
 
     context = {
+        "time_list": time_list,
         "today_todos": today_todos,
         "todosForm": todosForm,
-        "user_todos": user_todos,
     }
     return render(request, "todos/complete/today_main.html", context)
 
