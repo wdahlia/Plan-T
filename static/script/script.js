@@ -41,10 +41,10 @@ try {
 
         document.getElementById('progress-per').innerHTML = Math.round((r1 * 180 / Math.PI + 90) / 360 * 100) + "%";
     }
-    const progress = setInterval(graph, 40);
-    setTimeout(function () {
-        clearInterval(progress)
-    }, 6000);
+    // const progress = setInterval(graph, 40);
+    // setTimeout(function () {
+    //     clearInterval(progress)
+    // }, 6000);
 
 } catch { }
 
@@ -151,13 +151,61 @@ try {
 try {
     const todayDate = document.querySelector('#id_when');
     const currentDate = new Date().toISOString();
-
     const todayMonth = document.querySelector('.today-date-month');
     const todayDay = document.querySelector('.today-date-day');
 
     todayDate.value = currentDate.substring(0, 10);
-
     todayMonth.innerText = currentDate.substring(5, 7);
     todayDay.innerText = currentDate.substring(8, 10);
 
+
 } catch { }
+
+try {
+    const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',]
+    // weekday.classList.add('activate')
+    // weekday.innerText = week[new Date().getDay()]
+    const weekdayNow = week[new Date().getDay()];
+
+    console.log(weekdayNow);
+    const weekArea = document.querySelector('.week-area');
+    const weekdayAll = document.querySelectorAll('.weekday');
+
+    for (i = 0; i < week.length; i++) {
+        // console.log(weekdayAll[i].innerText)
+        // console.log(week[i]);
+        //     weekArea.insertAdjacentHTML('afterbegin', `
+        //     <div class="box">
+        //     <h3 class="tit shd">${week[i]}</h3>
+        //     <ul class="task-list">
+        //       <li class="task">
+        //         <p class="task-cont">task</p>
+        //         <input type="checkbox" name="task-chb1" id="task-chb1">
+        //         <label for="task-chb1" class="task-chb"></label>
+        //       </li>
+        //       <li class="task deactivate">
+        //         <p class="task-cont">task</p>
+        //         <input type="checkbox" name="task-chb1" id="task-chb1">
+        //         <label for="task-chb1" class="task-chb"></label>
+        //       </li>
+        //     </ul>
+        //   </div>
+        //     `)
+        if (weekdayAll[i].innerText === weekdayNow) {
+            weekdayAll[i].classList.add('activate');
+            const boxWidth = document.querySelector('.box').clientWidth;
+            const scrollPos = boxWidth * i;
+
+            weekArea.scrollTo({
+                top: 0,
+                left: scrollPos,
+                behavior: 'smooth'
+            });
+
+        }
+    }
+
+
+} catch {
+
+}

@@ -7,7 +7,7 @@
   <div class="lnb-area">
     <div class="lnb">
       <input type="radio" name="tabmenu" id="tab1" class="tabs">
-      <label for="tab1" class="tab">WEEK</label>
+      <label for="tab1" class="tab"><a href="{% url 'todos:week' %}">WEEK</a></label>
       <input type="radio" name="tabmenu" id="tab2" class="tabs" checked="checked">
       <label for="tab2" class="tab">TODAY</label>
       <input type="radio" name="tabmenu" id="tab3" class="tabs">
@@ -26,7 +26,7 @@
       </div>
       <div class="today-progress">
         <canvas id="today-progress-crc" width="100" height="100"></canvas>
-        <div id="progress-per">0</div>
+        <div id="progress-per">0%</div>
       </div>
     </div>
     <div class="today-task-add">
