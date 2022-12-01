@@ -69,7 +69,7 @@ def create(request):
     context = {
         "todoForm": todoForm,
     }
-    return render(request, "todos/working/test_create.html", context)
+    return render(request, "todos/complete/today_main.html", context)
 
 
 def delete(request, todos_pk):
