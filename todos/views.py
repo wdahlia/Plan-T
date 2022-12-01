@@ -4,29 +4,34 @@ from .forms import TodosForm
 from .models import Todos
 from datetime import datetime, timedelta
 from django.http import JsonResponse
+from django.contrib import messages
+
+
+def change_value(value):
+    if value == "":
+        index = value
+        return index
+    else:
+        hour, min = map(int, value.split(":"))
+        index = ((hour - 6) * 6) + (min // 10)
+        return index
 
 
 # Create your views here.
 def today(request):
     today = str(datetime.now())[:10]
     # 로그인 유저의 today todos 찾기
-    user_todos = Todos.objects.filter(user_id=request.user)
-    today_todos_all = Todos.objects.filter(when=today)
-    today_todos = user_todos & today_todos_all
+    today_todos = Todos.objects.filter(user_id=request.user, when=today).order_by(
+        "started_at"
+    )
     start = 0
     time_list = []
     for todo in today_todos:
         if todo.started_at is not None:
-            hour = int(todo.started_at[:2])
-            minute = int(todo.started_at[3:5])
-            start = ((hour - 6) * 6) + (minute // 10)
-
-            hour = int(todo.expired_at[:2])
-            minute = int(todo.expired_at[3:5])
-            end = ((hour - 6) * 6) + (minute // 10)
+            start = change_value(todo.started_at)
+            end = change_value(todo.expired_at)
             time = end - start
-            # 어떤 형식으로 보내줘야 하는지 안 정해서 임의로 만듬.
-            # 테스트 아직 안해봄
+
             time_list.append(start)
             time_list.append(time)
     # started_at__lte=today, expired_at__gte=today
@@ -48,37 +53,37 @@ def today(request):
     return render(request, "todos/complete/today_main.html", context)
 
 
-def change_value(value):
-    hour, min = map(int, value.split(":"))
-    index = ((hour - 6) * 6) + (min // 10)
-    return index
-
-
 def create(request):
-    user = request.user
-    today = str(datetime.now())[:10]
-    user_todos = Todos.objects.filter(user_id=request.user)
-    today_todos_all = Todos.objects.filter(when=today)
-    today_todos = user_todos & today_todos_all
-
-    exist = set()
-    for todo in today_todos:
-        if todo.started_at is not None:
-            st = change_value(todo.started_at)
-            ed = change_value(todo.expired_at)
-            for t in range(st, ed + 1):
-                exist.add(t)
-
     if request.method == "POST":
         start = request.POST.get("started_at")
         end = request.POST.get("expired_at")
         when = request.POST.get("when")
-        timetable = set(range(change_value(start), change_value(end) + 1))
         todoForm = TodosForm(request.POST, request.FILES)
-        if todoForm.is_valid() and (start < end) and timetable.isdisjoint(exist):
 
+        # timetable 체크 및 중복되면 저장 x
+        user = request.user
+        today = str(datetime.now())[:10]
+        today_todos = Todos.objects.filter(user_id=request.user, when=today)
+        exist = set()
+        for todo in today_todos:
+            if todo.started_at is not None:
+                st = change_value(todo.started_at)
+                ed = change_value(todo.expired_at)
+                for t in range(st, ed + 1):
+                    exist.add(t)
+        if start or end != "":
+            timetable = set(range(change_value(start), change_value(end) + 1))
+            if (start < end) and timetable.isdisjoint(exist):
+                pass
+            else:
+                start = ""
+                end = ""
+                messages.warning(request, "시간이 잘못되었습니다.")
+
+        if todoForm.is_valid():
             todo = todoForm.save(commit=False)
             todo.user_id = user
+            when += " 09:00:00"
             todo.when = when
             if start != "":
                 todo.started_at = start
@@ -103,12 +108,13 @@ def delete(request, todos_pk):
 
 
 def week(request):
-    today = datetime.today().weekday() + 1
-    print("today :", today)
-    now = datetime.now()
-    print("현재 : ", now)
     # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
-    week = now - timedelta(weeks=0, days=today % 7)
+    few_weeks = 0
+    today = datetime.today().weekday() + 1
+    now = datetime.now()
+    week = now + timedelta(weeks=few_weeks, days=-(today % 7))
+    print("today :", today)
+    print("현재 : ", now)
     print("기준 날짜 : ", week)
 
     time_list = []
