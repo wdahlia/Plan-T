@@ -111,5 +111,38 @@
     </div>
   </section>
   
+
+  <script>
+    const timelineBtn = document.querySelectorAll('.time-point');
+    timelineBtn.forEach(el => {
+      el.addEventListener('click', function(el){
+        const parentDiv = el.target.parentElement.parentElement;
+        const dateList = parentDiv.querySelectorAll('.past-date_all');
+        for (let i=0; i < dateList.length; i++) {
+          if (dateList[i].style.display === "none") {
+            dateList[i].style.display = "block";
+        } else {
+          dateList[i].style.display = "none";
+        }
+        }
+      });
+    })
+
+    const timeBtn = document.querySelectorAll('.datetime')
+    timeBtn.forEach(e => {
+      e.addEventListener('click', function(e){
+        const parentElem = e.target.parentElement.parentElement
+        const timeList = parentElem.querySelectorAll('.past-task');
+        for (let j=0; j < timeList.length; j++) {
+          if (timeList[j].style.display === "none") {
+            timeList[j].style.display = "flex";
+          } else {
+            timeList[j].style.display = "none";
+          }
+        }
+      });
+    });
+    
+  </script>
 </body>
 </html>
