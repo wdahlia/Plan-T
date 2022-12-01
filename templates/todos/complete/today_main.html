@@ -20,9 +20,9 @@
     <div class="today-info">
       <div class="today-date">
         <p class="today-date-month">
-          11
+          M
         </p>
-        <p class="today-date-day">29</p>
+        <p class="today-date-day">D</p>
       </div>
       <div class="today-progress">
         <canvas id="today-progress-crc" width="100" height="100"></canvas>
@@ -72,6 +72,19 @@
   <div class="box-area">
     <div class="box today-task-area">
       <ul class="today-task-list">
+        {% for todo in today_todos %}
+        <li class="task">
+          <a class="task-btn btn-edit">수정</a>
+          <a class="task-btn btn-del">삭제</a>
+          <!-- <p>{{ todo.when }}</p> -->
+          <p class="task-cont">{{ todo.title }}</p>
+          <p>{{ todo.started_at }}</p>
+          <p>{{ todo.expired_at }}</p>
+          <input type="checkbox" name="task-chb1" id="task-chb1">
+          <label for="task-chb1" class="task-chb"></label>
+        </li>
+        {% endfor %}
+
         <li class="task activate">
           <a class="task-btn btn-edit">수정</a>
           <a class="task-btn btn-del">삭제</a>
@@ -85,13 +98,6 @@
           <p class="task-cont">task</p>
           <input type="checkbox" name="task-chb2" id="task-chb2">
           <label for="task-chb2" class="task-chb"></label>
-        </li>
-        <li class="task">
-          <a class="task-btn btn-edit">수정</a>
-          <a class="task-btn btn-del">삭제</a>
-          <p class="task-cont">task</p>
-          <input type="checkbox" name="task-chb3" id="task-chb3">
-          <label for="task-chb3" class="task-chb"></label>
         </li>
       </ul>
       <div class="today-timetable">
@@ -165,17 +171,17 @@
     <form action="" method="POST"> {% csrf_token %} {{ timetableForm }} <button type="submit">ok</button> </form> -->
     <div>
       <h2>---todo test---</h2>
-      {% for todo in today_todos %}
+      <!-- {% for todo in today_todos %}
       <p>{{ todo.when }}</p>
       <p>{{ todo.title }}</p>
       <p>{{ todo.content }}</p>
       <p>{{ todo.started_at }}</p>
       <p>{{ todo.expired_at }}</p>
-      {% endfor %}
+      {% endfor %} -->
 
-      {% for time in time_list %}
+      <!-- {% for time in time_list %}
       <p>{{ time }}</p>
-      {% endfor %}
+      {% endfor %} -->
     </div>
   </div>
 
@@ -183,38 +189,6 @@
 
 <script>
   function activate() {
-    document.head.insertAdjacentHTML("beforeend", `
-          <style>
-              .time-picker {
-                  position: absolute;
-                  display: inline-block;
-                  padding: 10px;
-                  background: var(--main);
-                  border-radius: 10px;
-                  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
-                  width: 400px;
-                  margin-top: 10px;
-              }
-
-              .time-picker__select {
-                  -webkit-appearance: none;
-                  -moz-appearance: none;
-                  appearance: none;
-                  outline: none;
-                  text-align: center;
-                  border: 2px solid var(--main);
-                  border-radius: 6px;
-                  padding: 6px 10px;
-                  background: var(--bg);
-                  cursor: pointer;
-                  font-family: 'Heebo', sans-serif;
-              }
-
-              .time-pickable {
-                  background-color: var(--bg);
-              }
-          </style>
-      `);
 
     document.querySelectorAll(".time-pickable").forEach(timePickable => {
       let activePicker = null;
