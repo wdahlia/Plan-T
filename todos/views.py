@@ -24,7 +24,7 @@ def today(request):
     today_todos = Todos.objects.filter(user_id=request.user, when=today).order_by(
         "started_at"
     )
-    start = 0
+    # timetable 넘겨주기 위해
     time_list = []
     for todo in today_todos:
         if todo.started_at is not None:
@@ -34,6 +34,7 @@ def today(request):
 
             time_list.append(start)
             time_list.append(time)
+
     # started_at__lte=today, expired_at__gte=today
     # filter 에 추가할 조건
     # started 보다 today가 많고, expired 보다 today가 적다는 조건
@@ -90,8 +91,8 @@ def create(request):
             if end != "":
                 todo.expired_at = end
             todo.save()
-
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
+
     else:  # 테스트용
         todoForm = TodosForm()
     context = {
@@ -132,20 +133,18 @@ def week(request):
 
 
 def read_all(request):
-    todos = Todos.objects.filter(user_id=request.user).order_by("started_at")
+    todos = Todos.objects.filter(user_id=request.user).order_by("when")
     # 값 보내기 위한 알고리즘
-    time = ""
-    time2 = ""
+    time_separation = ""
     all_days = []
     for todo in todos:
-        if time != todo.started_at:
-            time = todo.started_at
-            time2 = todo
+        if time_separation != todo.when:
+            time_separation = todo.when
             all_days.append([])
-            all_days[-1].append(time2)
+
+            all_days[-1].append(todo)
         else:
-            time2 = todo
-            all_days[-1].append(time2)
+            all_days[-1].append(todo)
     context = {
         "all_days": all_days,
     }
