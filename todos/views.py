@@ -84,7 +84,7 @@ def create(request):
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
             todo.user_id = user
-            when += " 09:00:00"
+            when += " 09:00:00"  # 시간 저장할때 9시간을 더해줘야 한국시간으로 잘 저장이 된다.
             todo.when = when
             if start != "":
                 todo.started_at = start
