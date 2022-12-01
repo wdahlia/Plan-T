@@ -11,10 +11,10 @@
   <body>
     <h1>
       {% for day in all_days %}
-        <p>{{day.started_at}}날짜</p>
+        <p>{{day.when}}날짜</p>
 
         {% for d in day %}
-          <p>{{ d.started_at |date:'Y-m-d'}}</p>
+          <p>{{ d.when |date:'Y-m-d'}}</p>
         {% endfor %}
       {% endfor %}
     </h1>
