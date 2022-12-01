@@ -6,12 +6,13 @@
 
 #timeline-box-area{
   display: flex;
-  align-items: center;
+  align-items: start;
   border-radius: 20px;
 }
 
 .task-timeline #time-box{
   margin-right: 2rem;
+  width: 70%;
 }
 
 .task-timeline #timedetail-form-area{
@@ -54,6 +55,7 @@
 
 .past-timeline .past-date_all{
   margin-top: 1rem;
+  display: none;
 }
 
 .past-date:hover > .arrow-icon{
@@ -100,7 +102,7 @@
   height: 50px;
   max-width: 480px;
   margin-top: 1rem;
-  display: flex;
+  display: none;
   padding: 1rem 2rem;
   align-items: center;
   justify-content: space-between;
