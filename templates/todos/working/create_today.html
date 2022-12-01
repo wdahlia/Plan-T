@@ -47,15 +47,19 @@
                     .time-picker {
                         position: absolute;
                         display: inline-block;
-                        padding: 10px;
+                        padding: 10px 0;
+                        padding-inline: 50px;
                         background: var(--main);
                         border-radius: 10px;
                         box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
                         width: 400px;
                         margin-top: 10px;
+                        text-align: center;
+                        transition: .5s;
                     }
 
-                    .time-picker__select {
+                    .hour-picker__button {
+                        position: relative;
                         -webkit-appearance: none;
                         -moz-appearance: none;
                         appearance: none;
@@ -66,12 +70,34 @@
                         padding: 6px 10px;
                         background: var(--bg);
                         cursor: pointer;
-                        font-family: 'Heebo', sans-serif;
+                        font-family: 'NanumSquareNeo', sans-serif;
+                        font-size: 20px;
+                        font-weight: 900;
                     }
 
-                    .time-pickable {
-                        background-color: var(--bg);
+                    .minute-picker__button {
+                        -webkit-appearance: none;
+                        -moz-appearance: none;
+                        appearance: none;
+                        outline: none;
+                        text-align: center;
+                        border: 2px solid var(--main);
+                        border-radius: 6px;
+                        padding: 6px 10px;
+                        background: var(--bg);
+                        cursor: pointer;
+                        font-family: 'NanumSquareNeo', sans-serif;
+                        font-size: 20px;
+                        font-weight: 900;
                     }
+
+                    .hour-picker__select{
+                        position: absolute;
+                        overflow: scroll;
+                        height: 200px;
+                    }
+
+                    
                 </style>
             `);
 
@@ -120,23 +146,25 @@
             const minuteOptions = [0, 10, 20, 30, 40, 50].map(numberToOption);
 
             picker.classList.add("time-picker");
-            picker.innerHTML = `  
-                <select class="time-picker__select">
+            picker.innerHTML = `
+                <button type="button" class="hour-picker__button">06</button>
+                <ul class="hour-picker__select">
                     ${hourOptions.join("")}
-                </select>
-                :
-                <select class="time-picker__select">
+                </ul>
+                    :
+                <button type="button" class="minute-picker__button">00</button>
+                <ul class="minute-picker__select">
                     ${minuteOptions.join("")}
-                </select>
+                </ul>
             `;
 
             const selects = getSelectsFromPicker(picker);
 
-            selects.hour.addEventListener("change", () => timePickable.value = getTimeStringFromPicker(picker));
-            selects.minute.addEventListener("change", () => timePickable.value = getTimeStringFromPicker(picker));
+            // selects.hour.addEventListener("change", () => timePickable.value = getTimeStringFromPicker(picker));
+            // selects.minute.addEventListener("change", () => timePickable.value = getTimeStringFromPicker(picker));
 
             if (timePickable.value) {
-                const { hour, minute, meridiem } = getTimePartsFromPickable(timePickable);
+                const { hour, minute } = getTimePartsFromPickable(timePickable);
 
                 selects.hour.value = hour;
                 selects.minute.value = minute;
@@ -146,7 +174,7 @@
         }
 
         function getTimePartsFromPickable(timePickable) {
-            const pattern = /^(\d+):(\d+) (am|pm)$/;
+            const pattern = /^(\d+):(\d+)$/;
             const [hour, minute] = Array.from(timePickable.value.match(pattern)).splice(1);
 
             return {
@@ -172,8 +200,22 @@
 
         function numberToOption(number) {
             const padded = number.toString().padStart(2, "0");
+            // const selectboxOption = document.createElement("ul");
+            // selectboxOption.classList.add("selectbox-option")
 
-            return `<option value="${padded}">${padded}</option>`;
+            return `<li><button type="button" onclick="changeTime(this)">${padded}</button></li>`;
+        }
+
+        function changeTime(e) {
+            if (e.parentNode.parentNode.classList == "hour-picker__select") {
+                const hourPicker = document.querySelector(".hour-picker__button")
+                hourPicker.innerText = e.innerText
+                const startPicker = document.querySelector("#starttime-pick")
+                startPicker.value = e.innerText
+            } else {
+                const minutePicker = document.querySelector(".minute-picker__button")
+                minutePicker.innerText = e.innerText
+            }
         }
 
         activate();
