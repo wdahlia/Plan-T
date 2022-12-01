@@ -190,7 +190,7 @@
 	text-align: center;
 	color: var(--main);
 	border: 2px solid var(--main);
-	transition: 0.3s ease-in-out;
+	transition: 0.2s ease-in-out;
 	z-index: -1;
 	opacity: 0;
 }
@@ -286,11 +286,67 @@
 	text-align: center;
 }
 
+/*  week */
+#week .lnb-area {
+	position: relative;
+}
+
+#week .week-btn-area {
+	display: flex;
+	justify-content: space-between;
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+#week .week-btn-area .week-btn {
+	cursor: pointer;
+	transition: 0.2s;
+}
+#week .week-btn-area .week-btn:hover,
+#week .week-btn-area .week-btn:hover .week-btn-prev,
+#week .week-btn-area .week-btn:hover .week-btn-next {
+	color: var(--main-hl);
+	transform: scale(1.1);
+}
+#week .week-btn-area .week-btn span {
+	vertical-align: middle;
+}
+#week .week-btn-area .week-btn-prev,
+#week .week-btn-area .week-btn-next {
+	font-size: 3rem;
+	font-weight: 900;
+	color: var(--main);
+	transition: 0.2s;
+}
+
+#week .week-area {
+	justify-content: flex-start;
+	overflow-x: scroll;
+	height: 80vh;
+	padding: 0 1rem;
+}
+/* #week .week-area::-webkit-scrollbar {
+	display: none;
+	border-radius: 5px;
+} */
+
+/* #week .week-area ::-webkit-scrollbar-thumb,
+#week .week-area ::-webkit-scrollbar-track {
+	border-radius: 10px;
+} */
+
+#week .week-area .box {
+	margin: 2rem 1rem 2.5rem;
+}
 #week .week-area .tit {
 	border-radius: 20px;
 	padding: 0.5rem;
 	text-align: center;
 	margin-bottom: 1.6rem;
+}
+#week .week-area .tit.activate {
+	background: var(--main);
+	font-weight: 800;
 }
 
 /* animation */

@@ -25,7 +25,7 @@ body {
 
 .container {
 	margin: 0 auto;
-	max-width: 1000px;
+	max-width: 90vw;
 }
 .shd {
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
@@ -72,7 +72,7 @@ body {
 #header {
 	background: var(--bg);
 	box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
-	padding: 1rem 0;
+	padding: 1rem 2rem;
 }
 
 #header .navi {
@@ -110,10 +110,12 @@ body {
 	left: 0px;
 	transition: 0.2s;
 }
-#header .navi .gnb-area .gnb li:hover a {
+#header .navi .gnb-area .gnb li:hover a,
+#header .navi .gnb-area .gnb li.activate a {
 	font-weight: 800;
 }
-#header .navi .gnb-area .gnb li:hover a::after {
+#header .navi .gnb-area .gnb li:hover a::after,
+#header .navi .gnb-area .gnb li.activate a::after {
 	width: 100%;
 }
 #header .navi .user-area {
