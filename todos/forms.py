@@ -9,7 +9,4 @@ class TodosForm(forms.ModelForm):
             "title",
             "content",
             "image",
-            # "started_at",
-            # "expired_at",
         ]
-
