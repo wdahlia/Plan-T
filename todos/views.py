@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model as User
 from .forms import TodosForm
 from .models import Todos
-from datetime import datetime
+from datetime import datetime, timedelta
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -80,33 +81,24 @@ def delete(request, todos_pk):
 
 
 def week(request):
-    # 미완성
-    # 1
-    # 우선 일요일 날짜를 받아준다.(방식은 미정)
-    sunday = request.GET.get("sunday")
-    sunday_todos = Todos.objects.filter(when=sunday)
-    # monday_todos = Todos.objects.filter(when="월")
-    # tuesday_todos = Todos.objects.filter(when="화")
-    # wednesday_todos = Todos.objects.filter(when="수")
-    # thursday_todos = Todos.objects.filter(when="목")
-    # friday_todos = Todos.objects.filter(when="금")
-    # saturday_todos = Todos.objects.filter(when="토")
-    # 다음주 지난주 클릭은 비동기로 axios를 사용하여 서버와 통신하게 만들어야 될 거 같다.
+    today = datetime.today().weekday() + 1
+    print("today :", today)
+    now = datetime.now()
+    print("현재 : ", now)
+    # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
+    week = now - timedelta(weeks=0, days=today % 7)
+    print("기준 날짜 : ", week)
 
-    # 2
-    # 과거인지 지금 혹은 미래인지 구분하기
-    # 장고에서 날짜 비교가 되는지 모르겠다.
-    # 비교가 된다면
-    # if 2022-11-29 <= 2022-12-01:
-    #   a = True
-    # else:
-    #   a = False
-    # 해서 7개의 변수를 만들어서 context로 보내준다.
-
-    # 3
+    time_list = []
+    for i in range(7):
+        temp = week + timedelta(days=i)
+        # RuntimeWarning: 이 나온다.
+        temp_time = temp.strftime("%Y-%m-%d")
+        time_list.append(Todos.objects.filter(when=temp_time))
     todos = TodosForm()
     context = {
         "todos": todos,
+        "time_list": time_list,
     }
     return render(request, "todos/working/week_todos.html", context)
 
