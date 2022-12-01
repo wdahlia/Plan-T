@@ -16,6 +16,6 @@ class Todos(models.Model):
         options={"quality": 80},
     )
     when = models.DateTimeField()
-    started_at = models.DateTimeField(null=True)
-    expired_at = models.DateTimeField(null=True)
+    started_at = models.CharField(max_length=5, null=True)
+    expired_at = models.CharField(max_length=5, null=True)
     is_completed = models.BooleanField(default=False)
