@@ -30,22 +30,18 @@
         <div class="logo">
           <img src="../../../static/img/planT_logo.svg" alt="plan-t logo">
         </div>
-        <form action="" id="signup-form" method="POST">
+        <form action="{% url 'accounts:signup' %}" id="signup-form" method="POST">
           {% csrf_token %}
           <div class="input-area">
             <input type="text" name="username" id="id_username" autofocus="autofocus">
             <label for="username">아이디</label>
           </div>
           <div class="input-area">
-            <input type="text" name="nickname" id="id_nickname" autofocus="autofocus">
-            <label for="nickname">닉네임</label>
-          </div>
-          <div class="input-area">
             <input type="password" name="password1" id="id_password1">
             <label for="password1">비밀번호</label>
           </div>
           <div class="input-area">
-            <input type="password" name="password2" id="id_password1">
+            <input type="password" name="password2" id="id_password2">
             <label for="password2">비밀번호 확인</label>
           </div>
           <div class="input-area">
