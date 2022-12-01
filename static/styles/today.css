@@ -138,6 +138,9 @@
 	margin-top: 2rem;
 	display: none;
 }
+#today .today-section input[type="date"] {
+	display: none;
+}
 #today .today-section .btn-area {
 	text-align: center;
 }

@@ -15,9 +15,7 @@ try {
     }
 
 
-} catch {
-
-}
+} catch { }
 
 try {
 
@@ -48,9 +46,7 @@ try {
         clearInterval(progress)
     }, 6000);
 
-} catch {
-
-}
+} catch { }
 
 try {
     // const toggleBtn = document.querySelector('.btn-plus');
@@ -149,5 +145,19 @@ try {
     tasks.forEach(task => {
         task.addEventListener('click', taskMenu);
     })
+
+} catch { }
+
+try {
+    const todayDate = document.querySelector('#id_when');
+    const currentDate = new Date().toISOString();
+
+    const todayMonth = document.querySelector('.today-date-month');
+    const todayDay = document.querySelector('.today-date-day');
+
+    todayDate.value = currentDate.substring(0, 10);
+
+    todayMonth.innerText = currentDate.substring(5, 7);
+    todayDay.innerText = currentDate.substring(8, 10);
 
 } catch { }
