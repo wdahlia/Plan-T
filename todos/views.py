@@ -47,14 +47,35 @@ def today(request):
     return render(request, "todos/complete/today_main.html", context)
 
 
+def change_value(value):
+    hour, min = map(int, value.split(":"))
+    index = ((hour - 6) * 6) + (min // 10)
+    return index
+
+
 def create(request):
     user = request.user
+    today = str(datetime.now())[:10]
+    user_todos = Todos.objects.filter(user_id=request.user)
+    today_todos_all = Todos.objects.filter(when=today)
+    today_todos = user_todos & today_todos_all
+
+    exist = set()
+    for todo in today_todos:
+        if todo.started_at is not None:
+            st = change_value(todo.started_at)
+            ed = change_value(todo.expired_at)
+            for t in range(st, ed + 1):
+                exist.add(t)
+
     if request.method == "POST":
-        start = request.POST.get("start")
-        end = request.POST.get("end")
+        start = request.POST.get("started_at")
+        end = request.POST.get("expired_at")
         when = request.POST.get("when")
+        timetable = set(range(change_value(start), change_value(end) + 1))
         todoForm = TodosForm(request.POST, request.FILES)
-        if todoForm.is_valid():
+        if todoForm.is_valid() and (start < end) and timetable.isdisjoint(exist):
+
             todo = todoForm.save(commit=False)
             todo.user_id = user
             todo.when = when
@@ -63,6 +84,7 @@ def create(request):
             if end != "":
                 todo.expired_at = end
             todo.save()
+
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:  # 테스트용
         todoForm = TodosForm()
