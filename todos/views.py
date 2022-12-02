@@ -34,10 +34,7 @@ def today(request):
     # 아니면 todo_id는 user_todos 의 pk와 같다 라고 하면 되는데
     # 구현이 잘 안 됨
     todosForm = TodosForm()
-    print(0)
-    print(today_todos)
-    for i in today_todos:
-        print(i)
+
     context = {
         "time_list": time_list,
         "today_todos": today_todos,
@@ -59,6 +56,8 @@ def create(request):
         user = request.user
         today = str(datetime.now())[:10]
         today_todos = Todos.objects.filter(user_id=request.user, when=today)
+
+        # 시간 입력이 잘못되었을때
         exist = set()
         for todo in today_todos:
             if todo.started_at is not None:
@@ -66,30 +65,24 @@ def create(request):
                 ed = change_value(todo.expired_at)
                 for t in range(st, ed + 1):
                     exist.add(t)
-
-        if start and end != "":
+        if (start and end) != "":
             timetable = set(range(change_value(start), change_value(end) + 1))
             if (start < end) and timetable.isdisjoint(exist):
                 pass
             else:
-                start = ""
-                end = ""
                 messages.warning(request, "시간이 잘못되었습니다.")
                 return redirect("todos:today")
-
-        # 시작시간만 입력하거나 끝나는 시간만 입력했을 때
         elif start != "" and end == "":
             messages.error(request, "끝나는 시간을 입력해주세요.")
             return redirect("todos:today")
         elif start == "" and end != "":
             messages.error(request, "시작 시간을 입력해주세요.")
             return redirect("todos:today")
-        else:
-            pass
+        #
 
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
-            when += " 09:00:00"  # 시간 저장할때 9시간을 더해줘야 한국시간으로 잘 저장이 된다.
+            # when += " 09:00:00"  # 시간 저장할때 9시간을 더해줘야 한국시간으로 잘 저장이 된다.
             todo.user_id, todo.when, todo.started_at, todo.expired_at = (
                 user,
                 when,
@@ -110,7 +103,6 @@ def delete(request, todos_pk):
     return redirect("todos:today")  # 추후에 비동기로 바꾸는거 권장
 
 
-
 def update(request, pk):
     if request.method == "POST":
         todo = get_object_or_404(Todos, pk=pk)
@@ -125,7 +117,7 @@ def update(request, pk):
         today = str(datetime.now())[:10]
         today_todos = Todos.objects.filter(user_id=request.user, when=today)
 
-        # 타임테이블 중복 여부 판별
+        # 시작시간만 입력하거나 끝나는 시간만 입력했을 때
         exist = set()
         for todo in today_todos:
             if todo.started_at is not None:
@@ -133,30 +125,24 @@ def update(request, pk):
                 ed = change_value(todo.expired_at)
                 for t in range(st, ed + 1):
                     exist.add(t)
-
         if (start and end) != "":
             timetable = set(range(change_value(start), change_value(end) + 1))
             if (start < end) and timetable.isdisjoint(exist):
                 pass
             else:
-                start = ""
-                end = ""
                 messages.warning(request, "시간이 잘못되었습니다.")
                 return redirect("todos:today")
-
-        # 시작시간만 입력하거나 끝나는 시간만 입력했을 때
         elif start != "" and end == "":
             messages.error(request, "끝나는 시간을 입력해주세요.")
             return redirect("todos:today")
         elif start == "" and end != "":
             messages.error(request, "시작 시간을 입력해주세요.")
             return redirect("todos:today")
-        else:
-            pass
+        #
 
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
-            when += " 09:00:00"  # 시간 저장할때 9시간을 더해줘야 한국시간으로 잘 저장이 된다.
+            # when += " 09:00:00"  # 시간 저장할때 9시간을 더해줘야 한국시간으로 잘 저장이 된다.
             todo.user_id, todo.when, todo.started_at, todo.expired_at = (
                 user,
                 when,
@@ -168,6 +154,7 @@ def update(request, pk):
     else:
         messages.warning(request, "잘 못 된 접근입니다.")
         return redirect("todos:today")
+
 
 def week(request, few_week):
     # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
