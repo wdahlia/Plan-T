@@ -17,13 +17,17 @@ def today(request):
     # timetable 넘겨주기 위해
     time_list = []
     for todo in today_todos:
-        if todo.started_at is not None:
-            start = change_value(todo.started_at)
-            end = change_value(todo.expired_at)
-            time = end - start
+        if todo.started_at is not None and todo.expired_at is not None:
+            if todo.started_at == "" and todo.expired_at == "":
+                pass
+            else:
+                print(todo.started_at, todo.expired_at)
+                start = change_value(todo.started_at)
+                end = change_value(todo.expired_at)
+                time = int(end) - int(start)
 
-            time_list.append(start)
-            time_list.append(time)
+                time_list.append(start)
+                time_list.append(time)
 
     # started_at__lte=today, expired_at__gte=today
     # filter 에 추가할 조건
@@ -57,28 +61,28 @@ def create(request):
         today = str(datetime.now())[:10]
         today_todos = Todos.objects.filter(user_id=request.user, when=today)
 
-        # 시간 입력이 잘못되었을때
-        exist = set()
-        for todo in today_todos:
-            if todo.started_at is not None:
-                st = change_value(todo.started_at)
-                ed = change_value(todo.expired_at)
-                for t in range(st, ed + 1):
-                    exist.add(t)
-        if (start and end) != "":
-            timetable = set(range(change_value(start), change_value(end) + 1))
-            if (start < end) and timetable.isdisjoint(exist):
-                pass
-            else:
-                messages.warning(request, "시간이 잘못되었습니다.")
-                return redirect("todos:today")
-        elif start != "" and end == "":
-            messages.error(request, "끝나는 시간을 입력해주세요.")
-            return redirect("todos:today")
-        elif start == "" and end != "":
-            messages.error(request, "시작 시간을 입력해주세요.")
-            return redirect("todos:today")
-        #
+        # # 시간 입력이 잘못되었을때
+        # exist = set()
+        # for todo in today_todos:
+        #     if todo.started_at is not None:
+        #         st = change_value(todo.started_at)
+        #         ed = change_value(todo.expired_at)
+        #         for t in range(st, ed + 1):
+        #             exist.add(t)
+        # if (start and end) != "":
+        #     timetable = set(range(change_value(start), change_value(end) + 1))
+        #     if (start < end) and timetable.isdisjoint(exist):
+        #         pass
+        #     else:
+        #         messages.warning(request, "시간이 잘못되었습니다.")
+        #         return redirect("todos:today")
+        # elif start != "" and end == "":
+        #     messages.error(request, "끝나는 시간을 입력해주세요.")
+        #     return redirect("todos:today")
+        # elif start == "" and end != "":
+        #     messages.error(request, "시작 시간을 입력해주세요.")
+        #     return redirect("todos:today")
+        # #
 
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
@@ -117,28 +121,28 @@ def update(request, pk):
         today = str(datetime.now())[:10]
         today_todos = Todos.objects.filter(user_id=request.user, when=today)
 
-        # 시작시간만 입력하거나 끝나는 시간만 입력했을 때
-        exist = set()
-        for todo in today_todos:
-            if todo.started_at is not None:
-                st = change_value(todo.started_at)
-                ed = change_value(todo.expired_at)
-                for t in range(st, ed + 1):
-                    exist.add(t)
-        if (start and end) != "":
-            timetable = set(range(change_value(start), change_value(end) + 1))
-            if (start < end) and timetable.isdisjoint(exist):
-                pass
-            else:
-                messages.warning(request, "시간이 잘못되었습니다.")
-                return redirect("todos:today")
-        elif start != "" and end == "":
-            messages.error(request, "끝나는 시간을 입력해주세요.")
-            return redirect("todos:today")
-        elif start == "" and end != "":
-            messages.error(request, "시작 시간을 입력해주세요.")
-            return redirect("todos:today")
-        #
+        # # 시작시간만 입력하거나 끝나는 시간만 입력했을 때
+        # exist = set()
+        # for todo in today_todos:
+        #     if todo.started_at is not None:
+        #         st = change_value(todo.started_at)
+        #         ed = change_value(todo.expired_at)
+        #         for t in range(st, ed + 1):
+        #             exist.add(t)
+        # if (start and end) != "":
+        #     timetable = set(range(change_value(start), change_value(end) + 1))
+        #     if (start < end) and timetable.isdisjoint(exist):
+        #         pass
+        #     else:
+        #         messages.warning(request, "시간이 잘못되었습니다.")
+        #         return redirect("todos:today")
+        # elif start != "" and end == "":
+        #     messages.error(request, "끝나는 시간을 입력해주세요.")
+        #     return redirect("todos:today")
+        # elif start == "" and end != "":
+        #     messages.error(request, "시작 시간을 입력해주세요.")
+        #     return redirect("todos:today")
+        # #
 
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
