@@ -93,11 +93,17 @@
       <div class="box">
         <h3 class="tit shd weekday">Thursday</h3>
         <ul class="task-list">
-          <li class="task">
-            <p class="task-cont">task</p>
-            <input type="checkbox" name="task-chb1" id="task-chb1">
-            <label for="task-chb1" class="task-chb"></label>
-          </li>
+          {% for todo_list in time_list %}
+            <p>{{todo_list}}</p>
+            {% comment %} {% for todo in todo_list %}
+              <li class="task">
+                <p class="task-cont">{{todo.title}}</p>
+                <p class="class">{{todo.when}}</p>
+                <input type="checkbox" name="task-chb1" id="task-chb1">
+                <label for="task-chb1" class="task-chb"></label>
+              </li>
+            {% endfor %} {% endcomment %}
+          {% endfor %}
           <li class="task deactivate">
             <p class="task-cont">task</p>
             <input type="checkbox" name="task-chb1" id="task-chb1">

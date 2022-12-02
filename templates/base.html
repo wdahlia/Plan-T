@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{% static 'styles/today.css' %}">
     <link rel="stylesheet" href="{% static 'styles/create_today.css' %}">
     <link rel="stylesheet" href="{% static 'styles/alltask.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{% static 'script/script.js' %}" defer></script>
     <title>Plan-T</title>
 </head>
@@ -55,7 +56,7 @@
                         <img src="https://dummyimage.com/30x30" alt="">
                     </div>
                     <a href="accounts:profile" class="username">
-                        username
+                        {{request.user}}
                     </a>
                 </div>
             </nav>

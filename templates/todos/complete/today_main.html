@@ -2,6 +2,7 @@
 {% load static %}
 {% block body %}
 
+
   <div class="container" id="today">
 
     <div class="lnb-area">
@@ -70,90 +71,108 @@
         </div>
       </section>
     </div>
-
-    <div class="box-area">
-      <div class="box today-task-area">
-        <ul class="today-task-list">
-          {% for todo in today_todos %}
-            <li class="task">
-              <a class="task-btn btn-edit">수정</a>
-              <a class="task-btn btn-del">삭제</a>
-              <!-- <p>{{ todo.when }}</p> -->
-              <p class="task-cont">{{ todo.title }}</p>
-              <p>{{ todo.started_at }}</p>
-              <p>{{ todo.expired_at }}</p>
-              <input type="checkbox" name="task-chb1" id="task-chb1">
-              <label for="task-chb1" class="task-chb"></label>
-            </li>
-          {% endfor %}
-
-          <li class="task activate">
-            <a class="task-btn btn-edit">수정</a>
-            <a class="task-btn btn-del">삭제</a>
-            <p class="task-cont">task00000000</p>
-            <input type="checkbox" name="task-chb1" id="task-chb1">
-            <label for="task-chb1" class="task-chb"></label>
-          </li>
-          <li class="task">
-            <a class="task-btn btn-edit">수정</a>
-            <a class="task-btn btn-del">삭제</a>
-            <p class="task-cont">task</p>
-            <input type="checkbox" name="task-chb2" id="task-chb2">
-            <label for="task-chb2" class="task-chb"></label>
-          </li>
-        </ul>
-        <div class="today-timetable">
-          <div class="timetable-col">
-            <div class="timetable-hour">
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min "></p>
+    <section class="today-section">
+      <div class="today-task-add-spec">
+        <!-- today todo Form -->
+        <form action="{% url 'todos:create' %}" method="post" id="today-form">
+          {% csrf_token %}
+          <input type="date" name="when" id="id_when">
+          <input type="text" name="title" value="task title" class="today_task-title">
+          <div class="timepicker-area">
+            <div class="starttime-select">
+              <label for="starttime-pick">시작 시간</label>
+              <input type="text" id="starttime-pick" value="" name="started_at" class="time-pickable"
+                readonly="readonly">
             </div>
-            <div class="timetable-hour">
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min activate"></p>
-            </div>
-            <div class="timetable-hour">
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
+            <span class="time-tilder">~</span>
+            <div class="endtime-select">
+              <label for="endtime-pick">종료 시간</label>
+              <input type="text" id="endtime-pick" value="" name="expired_at" class="time-pickable" readonly="readonly">
             </div>
           </div>
-          <div class="timetable-col">
-            <div class="timetable-hour">
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min "></p>
-            </div>
-            <div class="timetable-hour">
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min activate"></p>
-            </div>
-            <div class="timetable-hour">
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min activate"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-              <p class="timetable-min"></p>
-            </div>
+      
+  <div class="box-area">
+    <div class="box today-task-area">
+      <ul class="today-task-list">
+        {% for todo in today_todos %}
+        <li class="task">
+          <a class="task-btn btn-edit">수정</a>
+          <a class="task-btn btn-del">삭제</a>
+          <p>{{ todo.when }}</p>
+          <p class="task-cont">{{ todo.title }}</p>
+          <p>{{ todo.started_at }}</p>
+          <p>{{ todo.expired_at }}</p>
+          <input type="checkbox" name="task-chb1" id="task-chb1">
+          <label for="task-chb1" class="task-chb"></label>
+        </li>
+        {% endfor %}
+
+        <li class="task activate">
+          <a class="task-btn btn-edit">수정</a>
+          <a class="task-btn btn-del">삭제</a>
+          <p class="task-cont">task</p>
+          <input type="checkbox" name="task-chb1" id="task-chb1">
+          <label for="task-chb1" class="task-chb"></label>
+        </li>
+        <li class="task">
+          <a class="task-btn btn-edit">수정</a>
+          <a class="task-btn btn-del">삭제</a>
+          <p class="task-cont">task</p>
+          <input type="checkbox" name="task-chb2" id="task-chb2">
+          <label for="task-chb2" class="task-chb"></label>
+        </li>
+      </ul>
+      <div class="today-timetable">
+        <div class="timetable-col">
+          <div class="timetable-hour">
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min "></p>
+          </div>
+          <div class="timetable-hour">
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min activate"></p>
+          </div>
+          <div class="timetable-hour">
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+          </div>
+        </div>
+        <div class="timetable-col">
+          <div class="timetable-hour">
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min "></p>
+          </div>
+          <div class="timetable-hour">
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min activate"></p>
+          </div>
+          <div class="timetable-hour">
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min activate"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
+            <p class="timetable-min"></p>
           </div>
 
         </div>
@@ -173,13 +192,20 @@
         <h2>---todo test---</h2>
         <!-- {% for todo in today_todos %} <p>{{ todo.when }}</p> <p>{{ todo.title }}</p> <p>{{ todo.content }}</p> <p>{{ todo.started_at }}</p> <p>{{ todo.expired_at }}</p> {% endfor %} -->
 
-        <!-- {% for time in time_list %} <p>{{ time }}</p> {% endfor %} -->
-      </div>
-    </div>
 
+  <div class="box">
+    <!-- <form action="{% url 'todos:create' %}" method="POST"> {% csrf_token %} {{ todosForm }} <button type="submit">ok</button> </form> <form action="" method="POST"> {% csrf_token %} {{ timetableForm }} <button type="submit">ok</button> </form> -->
+    <div>
+      <h2>---todo test---</h2>
+      <!-- {% for todo in today_todos %} <p>{{ todo.when }}</p> <p>{{ todo.title }}</p> <p>{{ todo.content }}</p> <p>{{ todo.started_at }}</p> <p>{{ todo.expired_at }}</p> {% endfor %} -->
+
+      <!-- {% for time in time_list %} <p>{{ time }}</p> {% endfor %} -->
+    </div>
   </div>
 
-  <script>
+</div>
+
+ <script>
     function activate() {
 
       document
@@ -213,6 +239,11 @@
     function show(timePickable) {
       const picker = buildPicker(timePickable);
       const {bottom: top, left} = timePickable.getBoundingClientRect();
+
+
+    document
+      .body
+      .appendChild(picker);
 
       picker.style.top = `${top}px`;
       picker.style.left = `${left}px`;
@@ -260,6 +291,7 @@
         .classList
         .add("time-picker");
       picker.innerHTML = `  
+
           <select class="time-picker__select">
               ${hourOptions.join("")}
           </select>
@@ -288,6 +320,7 @@
       return picker;
     }
 
+
     function getTimePartsFromPickable(timePickable) {
       const pattern = /^(\d+):(\d+) (am|pm)$/;
       const [hour, minute] = Array
@@ -297,8 +330,10 @@
       return {hour, minute};
     }
 
+
     function getSelectsFromPicker(timePicker) {
       const [hour, minute] = timePicker.querySelectorAll(".time-picker__select");
+
 
       return {hour, minute};
     }
