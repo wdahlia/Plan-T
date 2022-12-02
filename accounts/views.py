@@ -21,8 +21,7 @@ def signup(request):
         if form.is_valid():
             form.save()
 
-            # 바꿔야 함!
-            return redirect("accounts:test")
+            return redirect("todos:today")
 
     else:
         form = CustomUserCreationForm()
@@ -42,8 +41,7 @@ def login(request):
         if form.is_valid():
             auth_login(request, form.get_user())
 
-            # 바꿔야 함!
-            return redirect("accounts:test")
+            return redirect("todos:today")
 
     else:
         form = AuthenticationForm(request)

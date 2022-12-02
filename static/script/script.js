@@ -167,7 +167,7 @@ try {
     // weekday.innerText = week[new Date().getDay()]
     const weekdayNow = week[new Date().getDay()];
 
-    console.log(weekdayNow);
+    // console.log(weekdayNow);
     const weekArea = document.querySelector('.week-area');
     const weekdayAll = document.querySelectorAll('.weekday');
 
@@ -194,8 +194,7 @@ try {
         if (weekdayAll[i].innerText === weekdayNow) {
             weekdayAll[i].classList.add('activate');
             const boxWidth = document.querySelector('.box').clientWidth;
-            const scrollPos = boxWidth * i;
-
+            const scrollPos = (boxWidth * i) + boxWidth;
             weekArea.scrollTo({
                 top: 0,
                 left: scrollPos,
@@ -206,6 +205,31 @@ try {
     }
 
 
-} catch {
+} catch { }
 
-}
+try {
+    const weekBtn = document.querySelectorAll('.week-btn');
+    console.log(weekBtn);
+    const weekMove = function (e) {
+        axios({
+            method: 'get',
+            url: '/todos/week',
+        })
+            .then((res) => {
+                const isPrev = res.data.isPrev;
+                if (isPrev === true) {
+                    // e.target
+                    console.log();
+                } else {
+
+                }
+            });
+    };
+
+    weekBtn.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            console.log(e.target);
+        })
+    })
+
+} catch { }

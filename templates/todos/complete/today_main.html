@@ -7,7 +7,9 @@
   <div class="lnb-area">
     <div class="lnb">
       <input type="radio" name="tabmenu" id="tab1" class="tabs">
-      <label for="tab1" class="tab"><a href="{% url 'todos:week' %}">WEEK</a></label>
+      <label for="tab1" class="tab">
+        <a href="{% url 'todos:week' %}">WEEK</a>
+      </label>
       <input type="radio" name="tabmenu" id="tab2" class="tabs" checked="checked">
       <label for="tab2" class="tab">TODAY</label>
       <input type="radio" name="tabmenu" id="tab3" class="tabs">
@@ -48,12 +50,13 @@
           <div class="timepicker-area">
             <div class="starttime-select">
               <label for="starttime-pick">시작 시간</label>
-              <input type="text" id="starttime-pick" value="" name="started_at" class="time-pickable" readonly>
+              <input type="text" id="starttime-pick" value="" name="started_at" class="time-pickable"
+                readonly="readonly">
             </div>
             <span class="time-tilder">~</span>
             <div class="endtime-select">
               <label for="endtime-pick">종료 시간</label>
-              <input type="text" id="endtime-pick" value="" name="expired_at" class="time-pickable" readonly>
+              <input type="text" id="endtime-pick" value="" name="expired_at" class="time-pickable" readonly="readonly">
             </div>
           </div>
           <textarea name="content" class="today_task-textarea" id="id_content" cols="30" rows="10"></textarea>
@@ -76,7 +79,7 @@
         <li class="task">
           <a class="task-btn btn-edit">수정</a>
           <a class="task-btn btn-del">삭제</a>
-          <!-- <p>{{ todo.when }}</p> -->
+          <p>{{ todo.when }}</p>
           <p class="task-cont">{{ todo.title }}</p>
           <p>{{ todo.started_at }}</p>
           <p>{{ todo.expired_at }}</p>
@@ -88,7 +91,7 @@
         <li class="task activate">
           <a class="task-btn btn-edit">수정</a>
           <a class="task-btn btn-del">삭제</a>
-          <p class="task-cont">task00000000</p>
+          <p class="task-cont">task</p>
           <input type="checkbox" name="task-chb1" id="task-chb1">
           <label for="task-chb1" class="task-chb"></label>
         </li>
@@ -166,22 +169,12 @@
   </div>
 
   <div class="box">
-    <!-- <form action="{% url 'todos:create' %}" method="POST"> {% csrf_token %} {{ todosForm }} <button
-        type="submit">ok</button> </form>
-    <form action="" method="POST"> {% csrf_token %} {{ timetableForm }} <button type="submit">ok</button> </form> -->
+    <!-- <form action="{% url 'todos:create' %}" method="POST"> {% csrf_token %} {{ todosForm }} <button type="submit">ok</button> </form> <form action="" method="POST"> {% csrf_token %} {{ timetableForm }} <button type="submit">ok</button> </form> -->
     <div>
       <h2>---todo test---</h2>
-      <!-- {% for todo in today_todos %}
-      <p>{{ todo.when }}</p>
-      <p>{{ todo.title }}</p>
-      <p>{{ todo.content }}</p>
-      <p>{{ todo.started_at }}</p>
-      <p>{{ todo.expired_at }}</p>
-      {% endfor %} -->
+      <!-- {% for todo in today_todos %} <p>{{ todo.when }}</p> <p>{{ todo.title }}</p> <p>{{ todo.content }}</p> <p>{{ todo.started_at }}</p> <p>{{ todo.expired_at }}</p> {% endfor %} -->
 
-      <!-- {% for time in time_list %}
-      <p>{{ time }}</p>
-      {% endfor %} -->
+      <!-- {% for time in time_list %} <p>{{ time }}</p> {% endfor %} -->
     </div>
   </div>
 
@@ -190,31 +183,32 @@
 <script>
   function activate() {
 
-    document.querySelectorAll(".time-pickable").forEach(timePickable => {
-      let activePicker = null;
+    document
+      .querySelectorAll(".time-pickable")
+      .forEach(timePickable => {
+        let activePicker = null;
 
-      timePickable.addEventListener("focus", () => {
-        if (activePicker) return;
-
-        activePicker = show(timePickable);
-
-        const onClickAway = ({ target }) => {
-          if (
-            target === activePicker
-            || target === timePickable
-            || activePicker.contains(target)
-          ) {
+        timePickable.addEventListener("focus", () => {
+          if (activePicker)
             return;
-          }
 
-          document.removeEventListener("mousedown", onClickAway);
-          document.body.removeChild(activePicker);
-          activePicker = null;
-        };
+          activePicker = show(timePickable);
 
-        document.addEventListener("mousedown", onClickAway);
+          const onClickAway = ({ target }) => {
+            if (target === activePicker || target === timePickable || activePicker.contains(target)) {
+              return;
+            }
+
+            document.removeEventListener("mousedown", onClickAway);
+            document
+              .body
+              .removeChild(activePicker);
+            activePicker = null;
+          };
+
+          document.addEventListener("mousedown", onClickAway);
+        });
       });
-    });
   }
 
   function show(timePickable) {
@@ -224,17 +218,48 @@
     picker.style.top = `${top}px`;
     picker.style.left = `${left}px`;
 
-    document.body.appendChild(picker);
+    document
+      .body
+      .appendChild(picker);
 
     return picker;
   }
 
   function buildPicker(timePickable) {
     const picker = document.createElement("div");
-    const hourOptions = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map(numberToOption);
-    const minuteOptions = [0, 10, 20, 30, 40, 50].map(numberToOption);
+    const hourOptions = [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24
+    ].map(numberToOption);
+    const minuteOptions = [
+      0,
+      10,
+      20,
+      30,
+      40,
+      50
+    ].map(numberToOption);
 
-    picker.classList.add("time-picker");
+    picker
+      .classList
+      .add("time-picker");
     picker.innerHTML = `  
           <select class="time-picker__select">
               ${hourOptions.join("")}
@@ -247,8 +272,12 @@
 
     const selects = getSelectsFromPicker(picker);
 
-    selects.hour.addEventListener("change", () => timePickable.value = getTimeStringFromPicker(picker));
-    selects.minute.addEventListener("change", () => timePickable.value = getTimeStringFromPicker(picker));
+    selects
+      .hour
+      .addEventListener("change", () => timePickable.value = getTimeStringFromPicker(picker));
+    selects
+      .minute
+      .addEventListener("change", () => timePickable.value = getTimeStringFromPicker(picker));
 
     if (timePickable.value) {
       const { hour, minute, meridiem } = getTimePartsFromPickable(timePickable);
@@ -262,21 +291,17 @@
 
   function getTimePartsFromPickable(timePickable) {
     const pattern = /^(\d+):(\d+) (am|pm)$/;
-    const [hour, minute] = Array.from(timePickable.value.match(pattern)).splice(1);
+    const [hour, minute] = Array
+      .from(timePickable.value.match(pattern))
+      .splice(1);
 
-    return {
-      hour,
-      minute,
-    };
+    return { hour, minute };
   }
 
   function getSelectsFromPicker(timePicker) {
     const [hour, minute] = timePicker.querySelectorAll(".time-picker__select");
 
-    return {
-      hour,
-      minute,
-    };
+    return { hour, minute };
   }
 
   function getTimeStringFromPicker(timePicker) {
@@ -286,7 +311,9 @@
   }
 
   function numberToOption(number) {
-    const padded = number.toString().padStart(2, "0");
+    const padded = number
+      .toString()
+      .padStart(2, "0");
 
     return `<option value="${padded}">${padded}</option>`;
   }
