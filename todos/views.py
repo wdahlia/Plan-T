@@ -33,9 +33,11 @@ def today(request):
     # todo_id는 todo에 달린 user_id 가 request.user의 pk 이다
     # 아니면 todo_id는 user_todos 의 pk와 같다 라고 하면 되는데
     # 구현이 잘 안 됨
-
     todosForm = TodosForm()
-
+    print(0)
+    print(today_todos)
+    for i in today_todos:
+        print(i)
     context = {
         "time_list": time_list,
         "today_todos": today_todos,
