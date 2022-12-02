@@ -82,8 +82,6 @@
           <a class="task-btn btn-del">삭제</a>
           <!-- <p>{{ todo.when }}</p> -->
           <p class="task-cont">{{ todo.title }}</p>
-          <p>{{ todo.started_at }}</p>
-          <p>{{ todo.expired_at }}</p>
           <input type="checkbox" name="task-chb1" id="task-chb1">
           <label for="task-chb1" class="task-chb"></label>
         </li>
@@ -96,9 +94,15 @@
           <input type="checkbox" name="task-chb1" id="task-chb1">
           <label for="task-chb1" class="task-chb"></label>
         </li>
-        <li class="task">
-          <a class="task-btn btn-edit">수정</a>
-          <a class="task-btn btn-del">삭제</a>
+        <div class="task-btn-area activate">
+          <a class="task-btn btn-edit material-symbols-outlined">
+            edit
+          </a>
+          <a class="task-btn btn-del material-symbols-outlined">
+            delete_forever
+          </a>
+        </div>
+        <li class="task ef-blur">
           <p class="task-cont">task</p>
           <input type="checkbox" name="task-chb2" id="task-chb2">
           <label for="task-chb2" class="task-chb"></label>
