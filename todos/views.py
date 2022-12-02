@@ -25,14 +25,6 @@ def today(request):
             time_list.append(start)
             time_list.append(time)
 
-    # started_at__lte=today, expired_at__gte=today
-    # filter 에 추가할 조건
-    # started 보다 today가 많고, expired 보다 today가 적다는 조건
-    # todo_id=user_todos
-    # filter에 추가해야하는데 역참조 조건 달기가 까다로움
-    # todo_id는 todo에 달린 user_id 가 request.user의 pk 이다
-    # 아니면 todo_id는 user_todos 의 pk와 같다 라고 하면 되는데
-    # 구현이 잘 안 됨
     todosForm = TodosForm()
 
     context = {
@@ -185,18 +177,32 @@ def week(request, few_week):
 
 def read_all(request):
     todos = Todos.objects.filter(user_id=request.user).order_by("when")
-    # 값 보내기 위한 알고리즘
+    # 값 보내기 위한 알고리즘(past, present, future)
+    today = str(datetime.now())[:10]
     time_separation = ""
     all_days = []
+    check = 1
     for todo in todos:
+        if str(todo.when)[:10] == today and check == 1:
+            past = all_days.copy()
+            all_days.clear()
+            check += 1
+        elif str(todo.when)[:10] != today and check == 2:
+            present = all_days.copy()
+            all_days.clear()
+            check += 1
+
         if time_separation != todo.when:
             time_separation = todo.when
             all_days.append([])
-
             all_days[-1].append(todo)
         else:
             all_days[-1].append(todo)
+    future = all_days.copy()
+    #
     context = {
-        "all_days": all_days,
+        "past": past,
+        "present": present,
+        "future": future,
     }
     return render(request, "todos/working/read_all.html", context)
