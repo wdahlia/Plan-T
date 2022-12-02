@@ -164,9 +164,12 @@
 /* task timetable */
 #today .today-task-list {
 	margin-right: 2rem;
-}
-#today .today-task-list .task {
 	position: relative;
+}
+/* #today .today-task-list .task {
+} */
+#today .today-task-list .task.ef-blur {
+	filter: blur(3px);
 }
 #today .today-task-list .task,
 #week .task-list .task {
@@ -176,13 +179,21 @@
 	align-items: center;
 	margin-bottom: 0.5rem;
 }
-
-#today .today-task-list .task .task-btn {
+#today .today-task-list .task-btn-area {
 	position: absolute;
-	left: 0;
-	top: 0px;
+	left: 50%;
+	top: 0;
+	transform: translateX(-50%);
+	z-index: -1;
+	opacity: 0;
+}
+#today .today-task-list .task-btn-area.activate {
+	z-index: 1;
+	opacity: 1;
+	/* transform: translateY(-50%); */
+}
+#today .today-task-list .task-btn {
 	cursor: pointer;
-	display: block;
 	border-radius: 50%;
 	width: 45px;
 	height: 45px;
@@ -191,26 +202,13 @@
 	color: var(--main);
 	border: 2px solid var(--main);
 	transition: 0.2s ease-in-out;
-	z-index: -1;
-	opacity: 0;
-}
-#today .today-task-list .task .task-btn.activate {
-	left: -44px;
-	z-index: 1;
-	opacity: 1;
-}
-#today .today-task-list .task .btn-edit.activate {
-	top: -25px;
 }
 
-#today .today-task-list .task .btn-del.activate {
-	top: 25px;
-}
-#today .today-task-list .task .btn-edit {
-	margin-bottom: 0.3rem;
+#today .today-task-list .btn-edit {
+	margin-right: 0.3rem;
 }
 
-#today .today-task-list .task .task-btn:hover {
+#today .today-task-list .task-btn:hover {
 	background: var(--main);
 	color: var(--txt);
 	border: 2px solid rgba(0, 0, 0, 0);

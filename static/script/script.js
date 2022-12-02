@@ -133,14 +133,27 @@ try {
 
 } catch { }
 try {
-    const tasks = document.querySelectorAll('.task');
+    const tasks = document.querySelectorAll('.today-task-list .task');
+    const taskBtns = document.querySelectorAll('.task-btn-area');
+
+    console.log(tasks[0].clientHeight);
+
     const taskMenu = function (e) {
         e.preventDefault();
-        // console.log(this.childNodes[1]);
-        // console.log(this.childNodes[3]);
-        this.childNodes[1].classList.toggle('activate');
-        this.childNodes[3].classList.toggle('activate');
+        // this.childNodes[1].classList.toggle('activate');
+        // this.childNodes[3].classList.toggle('activate');
 
+        // taskBtns.forEach(btn => {
+        //     btn.classList.remove('activate');
+        // })
+        console.log((tasks[0].clientHeight) * (tasks.length));
+        // console.log(this.previousElementSibling.style.top = `${tasks[0].clientHeight} * ${tasks.length}`);
+        // console.log(e.target);
+        // console.log((e.target.clientHeight) * (tasks.length));
+        // console.log(this.previousElementSibling)
+        console.log(this);
+        let pos = (tasks[0].clientHeight) * (tasks.length) - (tasks[0].clientHeight / 2);
+        this.previousElementSibling.style.top = `${pos}px`
     }
     tasks.forEach(task => {
         task.addEventListener('click', taskMenu);
@@ -172,29 +185,12 @@ try {
     const weekdayAll = document.querySelectorAll('.weekday');
 
     for (i = 0; i < week.length; i++) {
-        // console.log(weekdayAll[i].innerText)
-        // console.log(week[i]);
-        //     weekArea.insertAdjacentHTML('afterbegin', `
-        //     <div class="box">
-        //     <h3 class="tit shd">${week[i]}</h3>
-        //     <ul class="task-list">
-        //       <li class="task">
-        //         <p class="task-cont">task</p>
-        //         <input type="checkbox" name="task-chb1" id="task-chb1">
-        //         <label for="task-chb1" class="task-chb"></label>
-        //       </li>
-        //       <li class="task deactivate">
-        //         <p class="task-cont">task</p>
-        //         <input type="checkbox" name="task-chb1" id="task-chb1">
-        //         <label for="task-chb1" class="task-chb"></label>
-        //       </li>
-        //     </ul>
-        //   </div>
-        //     `)
+        // console.log(weekdayAll[i].innerText);
+        weekdayAll[i].innerText = week[i];
         if (weekdayAll[i].innerText === weekdayNow) {
             weekdayAll[i].classList.add('activate');
             const boxWidth = document.querySelector('.box').clientWidth;
-            const scrollPos = (boxWidth * i) + boxWidth;
+            const scrollPos = (boxWidth * i) + (boxWidth / 2) + 25;
             weekArea.scrollTo({
                 top: 0,
                 left: scrollPos,
