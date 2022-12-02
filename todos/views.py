@@ -108,6 +108,7 @@ def delete(request, todos_pk):
     return redirect("todos:today")  # 추후에 비동기로 바꾸는거 권장
 
 
+
 def update(request, pk):
     if request.method == "POST":
         todo = get_object_or_404(Todos, pk=pk)
@@ -166,13 +167,13 @@ def update(request, pk):
         messages.warning(request, "잘 못 된 접근입니다.")
         return redirect("todos:today")
 
-
-def week(request):
+def week(request, few_week):
     # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
-    few_weeks = 0
+    next_ = few_week + 1
+    last_ = few_week - 1
     today = datetime.today().weekday() + 1
     now = datetime.now()
-    week = now + timedelta(weeks=few_weeks, days=-(today % 7))
+    week = now + timedelta(weeks=few_week, days=-(today % 7))
     print("today :", today)
     print("현재 : ", now)
     print("기준 날짜 : ", week)
@@ -187,6 +188,8 @@ def week(request):
     context = {
         "todos": todos,
         "time_list": time_list,
+        "next": next_,
+        "last": last_,
     }
     return render(request, "todos/working/week_todos.html", context)
 
