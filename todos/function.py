@@ -1,5 +1,5 @@
 def change_value(value):
-    if value == "":
+    if value is None:
         index = value
         return index
     else:
