@@ -65,10 +65,7 @@
 
 #today-form .today_task-img,
 #today-detail-form .today_task-img{
-  margin: 1rem 0;
-  border-radius: 20px;
-  border: 1px dashed var(--bg-dark);
-  filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.1));
+
 }
 
 /* timepicker */
@@ -109,4 +106,42 @@
   color: var(--main);
   text-align: center;
   vertical-align: center;
+}
+
+#today-form input[type="file"],
+#today-detail-form input[type="file"] {
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+
+#today-form .today-task-fileadd,
+#today-detail-form .today-task-fileadd {
+  position: relative;
+  margin: 1rem 0;
+  border: 2px dotted var(--main);
+  border-radius: 15px;
+  padding: 50px;
+  filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.1));
+}
+
+#today-form .today-task-fileadd legend,
+#today-detail-form .today-task-fileadd legend {
+  color: var(--main);
+  padding: 0 5px;
+  letter-spacing: -1px;
+  font-weight: 700;
+}
+
+#today-form .today-task-fileadd label,
+#today-detail-form .today-task-fileadd label{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.1));
 }

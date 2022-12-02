@@ -19,7 +19,7 @@
           <div class="past-timeline">
             <div class="timeline-box">
               <span class="arrow-icon">
-                <img src="../../../static/img/arrow-forward.svg" alt="">
+                <img src="../../../static/img/arrow_forward.svg" alt="">
               </span>
               <button class="time-point">
                 과거
@@ -28,7 +28,7 @@
             <div class="past-date_all">
               <div class="past-date">
                 <span class="arrow-icon">
-                  <img src="../../../static/img/arrow-forward.svg" alt="">
+                  <img src="../../../static/img/arrow_forward.svg" alt="">
                 </span>
                 <button class="datetime">
                   2022-11-01
@@ -50,7 +50,7 @@
             <div class="past-date_all">
               <div class="past-date">
                 <span class="arrow-icon">
-                  <img src="../../../static/img/arrow-forward.svg" alt="">
+                  <img src="../../../static/img/arrow_forward.svg" alt="">
                 </span>
                 <button class="datetime">
                   2022-11-02
@@ -60,7 +60,7 @@
             <div class="past-date_all"> 
               <div class="past-date">
                 <span class="arrow-icon">
-                  <img src="../../../static/img/arrow-forward.svg" alt="">
+                  <img src="../../../static/img/arrow_forward.svg" alt="">
                 </span>
                 <button class="datetime">
                   2022-11-03
@@ -70,7 +70,7 @@
             <div class="past-date_all">
               <div class="past-date">
                 <span class="arrow-icon">
-                  <img src="../../../static/img/arrow-forward.svg" alt="">
+                  <img src="../../../static/img/arrow_forward.svg" alt="">
                 </span>
                 <button class="datetime">
                   2022-11-04
@@ -81,7 +81,7 @@
           <div class="past-timeline">
             <div class="timeline-box">
               <span class="arrow-icon">
-                <img src="../../../static/img/arrow-forward.svg" alt="">
+                <img src="../../../static/img/arrow_forward.svg" alt="">
               </span>
               <button class="time-point">
                 오늘
@@ -91,7 +91,7 @@
           <div class="past-timeline">
             <div class="timeline-box">
               <span class="arrow-icon">
-                <img src="../../../static/img/arrow-forward.svg" alt="">
+                <img src="../../../static/img/arrow_forward.svg" alt="">
               </span>
               <button class="time-point">
                 내일
@@ -101,10 +101,14 @@
         </div>
         <div class="box" id="timedetail-form-area">
           <form action="" method="post" id="today-detail-form">
-            <input type="text" name="" value="task title" class="today_task-title">
+            <input type="text" name="today_task-title" value="task title" class="today_task-title">
             <div class="keyword-box"><span>keyword</span></div>
-            <textarea name="" class="today_task-textarea" cols="30" rows="10"></textarea>
-            <input type="file" name="" class="today_task-img" id="">
+            <textarea name="today_task-textarea" class="today_task-textarea" cols="30" rows="10"></textarea>
+            <fieldset class="today-task-fileadd">
+              <legend>사진/파일 첨부</legend>
+              <label for="today-task-imgfile"></label>
+              <input type="file" name="today_task-img" class="today_task-img" id="today-task-imgfile">
+            </fieldset>
           </form>
         </div>
       </div>
