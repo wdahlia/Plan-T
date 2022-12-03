@@ -206,3 +206,30 @@ def read_all(request):
         "future": future,
     }
     return render(request, "todos/working/read_all.html", context)
+
+
+def stuty_list(request):
+    today = str(datetime.now())[:10] + " 09:00:00"
+    # 로그인 유저의 today todos 찾기
+    today_todos = Todos.objects.filter(user_id=request.user, when=today).order_by(
+        "started_at"
+    )
+    # timetable 넘겨주기 위해
+    time_list = []
+    for todo in today_todos:
+        if todo.started_at is not None and todo.expired_at is not None:
+            start = change_value(todo.started_at)
+            end = change_value(todo.expired_at)
+            time = end - start
+
+            time_list.append(start)
+            time_list.append(time)
+
+    todosForm = TodosForm()
+
+    context = {
+        "time_list": time_list,
+        "today_todos": today_todos,
+        "todosForm": todosForm,
+    }
+    return render(request, "todos/test/study_list.html", context)
