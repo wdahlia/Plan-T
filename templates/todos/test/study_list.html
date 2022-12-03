@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+  <div class="container" id="today">
+
+    <div class="lnb-area">
+      <div class="lnb">
+        <input type="radio" name="tabmenu" id="tab1" class="tabs">
+        <label for="tab1" class="tab">
+          <a href="">TAG</a>
+        </label>
+        <input type="radio" name="tabmenu" id="tab2" class="tabs" checked="checked">
+        <label for="tab2" class="tab">TAG</label>
+        <input type="radio" name="tabmenu" id="tab3" class="tabs">
+        <label for="tab3" class="tab">TAG</label>
+        <span class="glider"></span>
+      </div>
+    </div>
+
+    <div class="box">
+
+      <div class="today-task-add">
+        <form action="#">
+          <input type="text" name="todayTask" id="" placeholder="스터디 검색">
+          <br>
+          <span>상세검색</span>
+          <select class="form-select" aria-label="Default select example">
+            <option selected="selected">인원수</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+          <select class="form-select" aria-label="Default select example">
+            <option selected="selected">분야</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+          <select class="form-select" aria-label="Default select example">
+            <option selected="selected">요일</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </form>
+      </div>
+    </div>
+
+    <div class="box-area">
+      <div class="box today-task-area">
+        <div style="width: 200px;height:200px;background-color:powderblue;">1</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% endblock body %}

@@ -10,4 +10,5 @@ urlpatterns = [
     path("week/<int:few_week>", views.week, name="week"),
     path("read_all", views.read_all, name="read_all"),
     path("update/<int:pk>", views.update, name="update"),
+    path("test/stuty_list", views.stuty_list, name="stuty_list"),
 ]
