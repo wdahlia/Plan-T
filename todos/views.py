@@ -199,7 +199,7 @@ def read_all(request):
         else:
             all_days[-1].append(todo)
     future = all_days.copy()
-
+    #
     context = {
         "past": past,
         "present": present,
