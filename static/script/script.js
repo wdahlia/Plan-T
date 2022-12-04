@@ -135,25 +135,35 @@ try {
 try {
     const tasks = document.querySelectorAll('.today-task-list .task');
     const taskBtns = document.querySelectorAll('.task-btn-area');
+    const taskView = document.querySelector('#task-detail');
+
 
     console.log(tasks[0].clientHeight);
 
     const taskMenu = function (e) {
         e.preventDefault();
+        taskView.classList.toggle('activate');
         // this.childNodes[1].classList.toggle('activate');
         // this.childNodes[3].classList.toggle('activate');
 
         // taskBtns.forEach(btn => {
         //     btn.classList.remove('activate');
         // })
-        console.log((tasks[0].clientHeight) * (tasks.length));
+        // console.log((tasks[0].clientHeight) * (tasks.length));
         // console.log(this.previousElementSibling.style.top = `${tasks[0].clientHeight} * ${tasks.length}`);
         // console.log(e.target);
         // console.log((e.target.clientHeight) * (tasks.length));
         // console.log(this.previousElementSibling)
-        console.log(this);
-        let pos = (tasks[0].clientHeight) * (tasks.length) - (tasks[0].clientHeight / 2);
-        this.previousElementSibling.style.top = `${pos}px`
+        console.log(this.previousElementSibling);
+        // console.log(this.parentElement);
+        const nodes = [this.parentElement.children];
+        console.log(nodes);
+        // this.previousElementSibling.classList.toggle('activate');
+
+        // this.classList.toggle('ef-blur');
+        this.classList.toggle('activate');
+        // let pos = (tasks[0].clientHeight) * (tasks.length) - (tasks[0].clientHeight / 2);
+        // this.previousElementSibling.style.top = `${pos}px`
     }
     tasks.forEach(task => {
         task.addEventListener('click', taskMenu);
@@ -190,7 +200,8 @@ try {
         if (weekdayAll[i].innerText === weekdayNow) {
             weekdayAll[i].classList.add('activate');
             const boxWidth = document.querySelector('.box').clientWidth;
-            const scrollPos = (boxWidth * i) + (boxWidth / 2) + 25;
+            const scrollPos = (boxWidth * i);
+            // const scrollPos = (boxWidth * i) + (boxWidth / 2) + 25;
             weekArea.scrollTo({
                 top: 0,
                 left: scrollPos,
