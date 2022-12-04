@@ -125,14 +125,48 @@
           </div>
         </div>
         <div class="box today-study-area">
-          <h3 class="tit">Study</h3>
-          <ul class="study-task-list">
-            <li class="task">task</li>
-          </ul>
+          <span class="open-icon material-symbols-outlined">
+            arrow_back_ios_new
+          </span>
+          <div class="study-tasklist-area">
+            <h3 class="tit">Study</h3>
+            <ul class="study-task-list">
+              <li class="task">task</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+  
+  <script>
 
+    const studyArea = document.querySelector('.today-study-area')
+    const openStudyArea = document.querySelector('.study-tasklist-area')
+    const openIcon = document.querySelector('.open-icon')
+    const taskArea = document.querySelector('.today-task-area')
+
+    studyArea.addEventListener('click', () => {
+      if (openStudyArea.style.display === "none") {
+        studyArea.style.width = "30%";
+        studyArea.style.justifyContent = "space-between";
+        openStudyArea.style.display = "block";
+        openStudyArea.style.width = "380px";
+        openStudyArea.style.alignSelf = "start";
+        openIcon.style.transform = "rotate(180deg)";
+        taskArea.style.width = "70%";
+        taskArea.style.transition = "0.8s ease";
+      } else {
+        openStudyArea.style.display = "none";
+        openIcon.style.transform = "rotate(-360deg)";
+        taskArea.style.width = "95%";
+        studyArea.style.transition = "0.8s ease";
+        studyArea.style.justifyContent = "center";
+        studyArea.style.width = "5%";
+        studyArea.style.display = "flex";
+      }
+    });
+
+  </script>
   </body>
 
 </html>

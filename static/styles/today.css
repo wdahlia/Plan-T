@@ -167,7 +167,7 @@
 	display: flex;
 	justify-content: center;
 	margin-right: 1.5rem;
-	/* width: 70%; */
+	width: 95%;
 }
 
 /* task timetable */
@@ -300,8 +300,18 @@
 }
 /* study area */
 #today .today-study-area {
-	width: 30%;
+	width: 5%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--main);
 }
+
+#today .study-tasklist-area {
+	display: none;
+	color: var(--txt);
+}
+
 #today .today-study-area .tit {
 	font-weight: 700;
 	margin-bottom: 1rem;
@@ -402,3 +412,7 @@
 		transform: scale(1, 1);
 	}
 }
+
+
+/* study toggle 접었다 펼치기 */
+
