@@ -33,8 +33,14 @@
                         <textarea name="" class="today_task-textarea" cols="30" rows="10"></textarea>
                         <div class="keyword-box"><span>keyword</span></div>
                         <fieldset class="today-task-fileadd">
-                            <legend>사진/파일 첨부</legend>
-                            <label for="today-task-imgfile"></label>
+                            <legend>Image/File</legend>
+                            <label for="today-task-imgfile">
+                                <div class="loaded-file"></div>
+                                <div class="upload-none">
+                                    <span class="attach_img-icon material-symbols-outlined">imagesmode</span>
+                                    사진/파일을 첨부하세요
+                                </div>
+                            </label>
                             <input type="file" name="" class="today_task-img" id="today-task-imgfile">
                         </fieldset>
                     </form>
@@ -42,8 +48,32 @@
             </div>
         </div>
     </section>
+    <!-- file input 표시 -->
+    <script>
+        let uploadFile = document.getElementById("today-task-imgfile");
+        let loadedFile = document.querySelector(".loaded-file")
+        const noneFile = document.querySelector(".upload-none")
+        
+        loadedFile.style.display = "none";
+
+        uploadFile.onchange = () => {
+            noneFile.style.display = "none";
+            loadedFile.style.display = "block";
+            let uploadFileName = uploadFile.files[0].name;
+            loadedFile.innerText = `${uploadFileName}`;
+        }
+       
+    </script>
     <!-- section -->
     <script>
+        const title = document.querySelector('.today_task-title')
+        title.addEventListener('click', () => {
+            title.style.color = "blue";
+            title.style.transition = "0.3s";
+            setTimeout(() => {
+                title.style.color = "var(--txt)";
+            }, 3000);
+        });
         function activate() {
             document.head.insertAdjacentHTML("beforeend", `
                 <style>
