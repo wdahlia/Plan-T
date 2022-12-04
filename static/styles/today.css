@@ -134,7 +134,7 @@
 	cursor: pointer;
 }
 
-#today .today-section {
+#today .box .today-section {
 	margin-top: 2rem;
 	display: none;
 }
@@ -151,6 +151,15 @@
 }
 #today .today-section .btn:hover {
 	background: var(--main);
+}
+
+.time-picker {
+	border: 2px solid var(--main);
+	background: var(--bg);
+	border-radius: 1rem;
+	padding: 1rem;
+	position: absolute;
+	transform: translate(100%, -50%);
 }
 
 /* task area */
@@ -178,6 +187,7 @@
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 0.5rem;
+	transition: 0.15s ease-in-out;
 }
 #today .today-task-list .task-btn-area {
 	position: absolute;
@@ -186,6 +196,7 @@
 	transform: translateX(-50%);
 	z-index: -1;
 	opacity: 0;
+	transition: 0.15s ease-in-out;
 }
 #today .today-task-list .task-btn-area.activate {
 	z-index: 1;
@@ -273,7 +284,20 @@
 #today .today-timetable .timetable-min.activate {
 	background: var(--main);
 }
-
+#today #task-detail {
+	width: 0;
+	overflow: hidden;
+	opacity: 0;
+	transition: 0.2s ease-in-out;
+}
+/* #today .today-task-view-spec {
+	
+} */
+#today #task-detail.activate {
+	width: 100%;
+	opacity: 1;
+	overflow: unset;
+}
 /* study area */
 #today .today-study-area {
 	width: 5%;
