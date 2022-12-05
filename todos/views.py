@@ -189,8 +189,8 @@ def week(request):
 def week_asyn(request, few_week):
     # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
     few_week = int(few_week)
-    next_ = few_week + 1
-    last_ = few_week - 1
+    # next_ = few_week + 1
+    # last_ = few_week - 1
     today = datetime.today().weekday() + 1
     now = datetime.now()
     week = now + timedelta(weeks=few_week, days=-(today % 7))
@@ -206,22 +206,27 @@ def week_asyn(request, few_week):
         temp_time = temp.strftime("%Y-%m-%d") + " 09:00:00"
         time_list.append(Todos.objects.filter(when=temp_time))
         res_json = serializers.serialize("json", Todos.objects.filter(when=temp_time))
+        # print(res_json)
         res.append(res_json)
+        # print(res[i])
 
     todos = TodosForm()
+
+    if request.method == "GET":
+        # print(res)
+        return JsonResponse({"resJson": res})
 
     # temp = week + timedelta(days=i)
     # temp_time = temp.strftime("%Y-%m-%d") + " 09:00:00"
     # res_json = serializers.serialize("json", Todos.objects.filter(when=temp_time))
-    print(res)
+
+    # print(res)
     context = {
         "todos": todos,
         "time_list": time_list,
-        "next": next_,
-        "last": last_,
-        # "res_json": res,
+        # "next": next_,
+        # "last": last_,
     }
-    # return JsonResponse(time_list, safe=False)
     return render(request, "todos/working/week_todos.html", context)
 
 
