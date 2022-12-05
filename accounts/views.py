@@ -20,7 +20,9 @@ def signup(request):
 
         if form.is_valid():
             user = form.save()
-            auth_login(request, user)
+            # 소셜 로그인 때문에 인증 백엔드가 중첩되어 지정을 해줘야함.
+            # link : https://ghqls0210.tistory.com/49
+            auth_login(request, user, backend="django.contrib.auth.backends.ModelBackend")
             return redirect("todos:today")
 
     else:
@@ -39,7 +41,9 @@ def login(request):
         form = AuthenticationForm(request, data=request.POST)
 
         if form.is_valid():
-            auth_login(request, form.get_user())
+            # 소셜 로그인 때문에 인증 백엔드가 중첩되어 지정을 해줘야함.
+            # link : https://ghqls0210.tistory.com/49
+            auth_login(request, form.get_user(), backend="django.contrib.auth.backends.ModelBackend")
 
             return redirect("todos:today")
 

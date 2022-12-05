@@ -2,6 +2,7 @@ from django.db import models
 from datetime import date
 from django.conf import settings
 from todos.models import Todos
+from datetime import datetime
 
 # Create your models here.
 
@@ -28,7 +29,7 @@ class Study(models.Model):
         if self.end_at is None:
             return True
         else:
-            return datetime.now() < self.end_date
+            return datetime.now() < self.end_at
 
 
 class StudyTodo(Todos):
