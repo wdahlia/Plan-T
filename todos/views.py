@@ -150,8 +150,10 @@ def update(request, pk):
 
 def week(request, few_week):
     # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
+    few_week = int(few_week)
     next_ = few_week + 1
     last_ = few_week - 1
+    print(next_)
     today = datetime.today().weekday() + 1
     now = datetime.now()
     week = now + timedelta(weeks=few_week, days=-(today % 7))

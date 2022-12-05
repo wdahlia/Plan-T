@@ -216,27 +216,51 @@ try {
 
 try {
     const weekBtn = document.querySelectorAll('.week-btn');
-    console.log(weekBtn);
+    // console.log(weekBtn);
+    let cnt = 0;
     const weekMove = function (e) {
-        axios({
-            method: 'get',
-            url: '/todos/week',
-        })
-            .then((res) => {
-                const isPrev = res.data.isPrev;
-                if (isPrev === true) {
-                    // e.target
-                    console.log();
-                } else {
+        e.preventDefault();
+        // console.log(cnt);
+        const isPrev = e.target.parentElement.dataset.isPrev;
+        let urls = '/todos/week/';
 
-                }
-            });
+        if (isPrev === 'true') {
+            cnt--;
+            // console.log(cnt);
+            cnt = String(cnt);
+            urls = `${urls}${cnt}`
+            console.log(urls);
+            console.log(cnt);
+        } else {
+            cnt++;
+            // console.log(cnt);
+            cnt = String(cnt);
+            urls = `${urls}${cnt}`
+            console.log(urls);
+            console.log(cnt);
+
+        }
+        e.target.parentElement.setAttribute('href', `${urls}`);
+        // console.log(e.target.parentElement);
+
+
+        // axios({
+        //     method: 'get',
+        //     url: `${urls}`,
+        // })
+        //     .then((res) => {
+        //         // const isPrev = e.target.parentElement.dataset.isPrev;
+        //         console.log(e.target.parentElement.dataset.isPrev);
+
+        //     });
     };
 
     weekBtn.forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            console.log(e.target);
-        })
-    })
+        btn.addEventListener('click', weekMove)
+    });
+
+} catch { }
+
+try {
 
 } catch { }
