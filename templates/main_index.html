@@ -2,57 +2,61 @@
 <!DOCTYPE html>
 <html lang="ko">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="../static/styles/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../static/styles/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../static/styles/favicon/favicon-16x16.png">
-    <link rel="manifest" href="../static/styles/favicon/site.webmanifest">
-    <meta name="msapplication-TileColor" content="#3cddaa">
-    <meta name="msapplication-TileImage" content="../static/styles/favicon/ms-icon-144x144.png">
-    <meta name="theme-color" content="#3cddaa">
-    <!-- google font icon -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
-    <link rel="stylesheet" href="{% static 'styles/init.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/accounts.css' %}">
-    <script src="{% static 'script/script.js' %}" defer="defer"></script>
-    <title>Plan-T</title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="../static/styles/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../static/styles/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../static/styles/favicon/favicon-16x16.png">
+  <link rel="manifest" href="../static/styles/favicon/site.webmanifest">
+  <meta name="msapplication-TileColor" content="#3cddaa">
+  <meta name="msapplication-TileImage" content="../static/styles/favicon/ms-icon-144x144.png">
+  <meta name="theme-color" content="#3cddaa">
+  <!-- google font icon -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="{% static 'styles/init.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/accounts.css' %}">
+  <script src="{% static 'script/script.js' %}" defer="defer"></script>
+  <title>Plan-T</title>
+</head>
 
-  <body>
-    <div id="main-login">
-      <div class="container">
-        <div class="slide">
-          <img src="https://dummyimage.com/1000x600" alt="">
+<body>
+  <div id="main-login">
+    <div class="container">
+      <div class="slide">
+        <img src="https://dummyimage.com/1000x600" alt="">
+      </div>
+      <div class="login">
+        <div class="logo">
+          <img src="../../../static/img/planT_logo.svg" alt="plan-t logo">
         </div>
-        <div class="login">
-          <div class="logo">
-            <img src="../../../static/img/planT_logo.svg" alt="plan-t logo">
+        <form action="{% url 'accounts:login' %}" id="login-form" method="POST">
+          {% csrf_token %}
+          <div class="input-area">
+            <input type="text" name="username" id="id_username" autofocus="autofocus" />
+            <label for="username">아이디</label>
           </div>
-          <form action="{% url 'accounts:login' %}" id="login-form" method="POST">
-            {% csrf_token %}
-            <div class="input-area">
-              <input type="text" name="username" id="id_username" autofocus="autofocus"/>
-              <label for="username">아이디</label>
-            </div>
-            <div class="input-area">
-              <input type="password" name="password" id="id_password"/>
-              <label for="password">비밀번호</label>
-            </div>
-            <button type="submit" class="btn">로그인</button>
-          </form>
-          <div class="link-area">
-            <a href="{% url 'accounts:signup' %}">회원가입</a>
-            <a href="">아이디/비밀번호 찾기</a>
+          <div class="input-area">
+            <input type="password" name="password" id="id_password" />
+            <label for="password">비밀번호</label>
           </div>
+          <button type="submit" class="btn">로그인</button>
+        </form>
+        <a href="{% url 'social:begin' 'google-oauth2' %}">
+          <button class='btn' style='width: 40%'>G+Login</button>
+        </a>
+        <div class="link-area">
+          <a href="{% url 'accounts:signup' %}">회원가입</a>
+          <a href="">아이디/비밀번호 찾기</a>
         </div>
       </div>
     </div>
+  </div>
 
-  </body>
+</body>
 
 </html>
