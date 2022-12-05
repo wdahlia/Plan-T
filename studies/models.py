@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+from datetime import date
 from django.conf import settings
 from todos.models import Todos
 
@@ -20,8 +20,8 @@ class Study(models.Model):
     participated = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="participate"
     )
-    start_at = models.DateField(null=True)
-    end_at = models.DateField(null=True)
+    start_at = models.DateField(default=date.today)
+    end_at = models.DateField(null=True, blank=True)
 
     @property
     def is_activate(self):
