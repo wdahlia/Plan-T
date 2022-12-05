@@ -177,7 +177,7 @@ def week(request, few_week):
         "next": next_,
         "last": last_,
     }
-    return render(request, "todos/working/week_todos.html", context)
+    return JsonResponse(context)
 
 
 def read_all(request):
