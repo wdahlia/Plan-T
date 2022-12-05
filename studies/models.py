@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 from django.conf import settings
+from todos.models import Todos
 
 # Create your models here.
 
@@ -19,16 +20,17 @@ class Study(models.Model):
     participated = models.ManyToManyField(
         settings.AUTH_USER_MODEL, symmetrical=True, related_name="participate"
     )
-    do = models.ManyToManyField("Study_Todo")
-    start_at = models.DateField()
-    end_at = models.DateField()
+    start_at = models.DateField(null=True)
+    end_at = models.DateField(null=True)
 
     @property
     def is_activate(self):
-        return datetime.now() > self.end_date
+        if self.end_at is None:
+            return True
+        else:
+            return datetime.now() < self.end_date
 
 
-class Study_Todo(models.Model):
+class Study_Todo(Todos):
     study_pk = models.ForeignKey("Study", on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
-    complete = models.BooleanField(default=False)
+    image = None
