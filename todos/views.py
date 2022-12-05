@@ -230,30 +230,39 @@ def week_asyn(request, few_week):
     return render(request, "todos/working/week_todos.html", context)
 
 
-def read_all(request):
-    todos = Todos.objects.filter(user_id=request.user).order_by("when")
-    # 값 보내기 위한 알고리즘(past, present, future)
-    today = str(datetime.now())[:10]
-    time_separation = ""
-    all_days = []
-    check = 1
-    for todo in todos:
-        if str(todo.when)[:10] == today and check == 1:
-            past = all_days.copy()
-            all_days.clear()
-            check += 1
-        elif str(todo.when)[:10] != today and check == 2:
-            present = all_days.copy()
-            all_days.clear()
-            check += 1
+from dateutil.relativedelta import relativedelta
 
-        if time_separation != todo.when:
-            time_separation = todo.when
-            all_days.append([])
-            all_days[-1].append(todo)
-        else:
-            all_days[-1].append(todo)
-    future = all_days.copy()
+
+def read_all(request):
+    # 값 보내기 위한 알고리즘(past, present, future)
+    # 현재 생각하는 문제
+    # 페이지 네이션을 쓰는지
+    # 스터디 todos는 어떻게 처리 할 것인지 or 4주씩 하는 것인지
+    # 한달 단위로 한다고 했는데 그러면 미래도 한달단위인지?
+    now = datetime.now()
+    today = str(now)[:10] + " 09:00:00"
+    # 과거
+    # months=1을 통하여 월별 관리, 모든 과거: lte
+    few_month_ago = str(now - relativedelta(months=1))[:10]
+    past = Todos.objects.filter(
+        user_id=request.user, when__range=(few_month_ago, today)
+    ).order_by("-when")
+    # 현재
+    present = Todos.objects.filter(user_id=request.user, when=today)
+    # 미래
+    tomorrow = str(now + timedelta(days=1))[:10]
+    future = Todos.objects.filter(user_id=request.user, when__gte=tomorrow).order_by(
+        "when"
+    )
+    #
+
+    # test
+    # for p in past:
+    #     print(p.when, "past")
+    # for p in present:
+    #     print(p.when, "present")
+    # for p in future:
+    #     print(p.when, "future")
     #
     context = {
         "past": past,
