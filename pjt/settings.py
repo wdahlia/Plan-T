@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os, json
 from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -57,6 +60,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "social_django",
 ]
 
 MIDDLEWARE = [
@@ -68,6 +72,11 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+AUTHENTICATION_BACKENDS = (
+    "social_core.backends.google.GoogleOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+)
 
 ROOT_URLCONF = "pjt.urls"
 
@@ -101,6 +110,12 @@ DATABASES = {
 }
 
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("key")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("secret")
+
+LOGIN_URL = "/"
+LOGIN_REDIRECT_URL = "todos:today"
+SOCIAL_AUTH_URL_NAMESPACE = "social"
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -131,7 +146,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
