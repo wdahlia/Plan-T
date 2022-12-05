@@ -15,8 +15,6 @@ import os, json
 from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
 
-load_dotenv()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -53,6 +51,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "accounts",
     "todos",
+    "studies",
     "imagekit",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -77,7 +76,6 @@ AUTHENTICATION_BACKENDS = (
     "social_core.backends.google.GoogleOAuth2",
     "django.contrib.auth.backends.ModelBackend",
 )
-
 ROOT_URLCONF = "pjt.urls"
 
 TEMPLATES = [
@@ -108,7 +106,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("key")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("secret")
@@ -146,7 +143,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
