@@ -3,4 +3,12 @@
 {% block body %}
 
 <h1>Index</h1>
+<a href="{% url 'studies:create' %}">스터디 만들기
+</a>
+<div>
+  <h3>스터디 목록</h3>
+  {% for study in all_studies %}
+  <p>{{ study.title }}</p>
+  {% endfor %}
+</div>
 {% endblock body %}
