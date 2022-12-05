@@ -96,8 +96,8 @@ def delete(request, todos_pk):
 
 
 def update(request, pk):
+    todo = get_object_or_404(Todos, pk=pk)
     if request.method == "POST":
-        todo = get_object_or_404(Todos, pk=pk)
         todoForm = TodosForm(request.POST, request.FILES, instance=todo)
         start, end, when = (
             request.POST.get("started_at"),
@@ -144,8 +144,11 @@ def update(request, pk):
             todo.save()
         return redirect("todos:today")
     else:
-        messages.warning(request, "잘 못 된 접근입니다.")
-        return redirect("todos:today")
+        todoForm = TodosForm(instance=todo)
+        context = {
+            "todoForm": todoForm,
+        }
+        return JsonResponse(context)
 
 
 def week(request, few_week):
