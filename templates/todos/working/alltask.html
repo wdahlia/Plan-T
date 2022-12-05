@@ -105,8 +105,14 @@
             <div class="keyword-box"><span>keyword</span></div>
             <textarea name="today_task-textarea" class="today_task-textarea" cols="30" rows="10"></textarea>
             <fieldset class="today-task-fileadd">
-              <legend>사진/파일 첨부</legend>
-              <label for="today-task-imgfile"></label>
+              <legend>Image/File</legend>
+              <label for="today-task-imgfile">
+                <div class="loaded-file"></div>
+                <div class="upload-none">
+                    <span class="attach_img-icon material-symbols-outlined">imagesmode</span>
+                    사진/파일을 첨부하세요
+                </div>
+              </label>
               <input type="file" name="today_task-img" class="today_task-img" id="today-task-imgfile">
             </fieldset>
           </form>
@@ -115,6 +121,21 @@
     </div>
   </section>
   
+  <script>
+    let uploadFile = document.getElementById("today-task-imgfile");
+    let loadedFile = document.querySelector(".loaded-file")
+    const noneFile = document.querySelector(".upload-none")
+    
+    loadedFile.style.display = "none";
+
+    uploadFile.onchange = () => {
+        noneFile.style.display = "none";
+        loadedFile.style.display = "block";
+        let uploadFileName = uploadFile.files[0].name;
+        loadedFile.innerText = `${uploadFileName}`;
+    }
+   
+  </script>
 
   <script>
     const timelineBtn = document.querySelectorAll('.time-point');
