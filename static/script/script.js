@@ -223,36 +223,60 @@ try {
         // console.log(cnt);
         const isPrev = e.target.parentElement.dataset.isPrev;
         let urls = '/todos/week/';
-
+        let weekCnt = e.target.parentElement.dataset.weekCnt
         if (isPrev === 'true') {
             cnt--;
             // console.log(cnt);
             cnt = String(cnt);
             urls = `${urls}${cnt}`
-            console.log(urls);
-            console.log(cnt);
+            e.target.parentElement.setAttribute('data-week-cnt', `${cnt}`)
+
+            // console.log(urls);
+            // console.log(cnt);
         } else {
             cnt++;
             // console.log(cnt);
             cnt = String(cnt);
             urls = `${urls}${cnt}`
-            console.log(urls);
-            console.log(cnt);
-
+            // console.log(urls);
+            // console.log(cnt);
+            e.target.parentElement.setAttribute('data-week-cnt', `${cnt}`)
         }
         e.target.parentElement.setAttribute('href', `${urls}`);
         // console.log(e.target.parentElement);
 
+        axios({
+            method: 'get',
+            url: `${urls}`,
+        })
+            .then((res) => {
+                // const isPrev = e.target.parentElement.dataset.isPrev;
+                // console.log(e.target.parentElement.dataset.isPrev);
+                console.log(res.data.resJson);
+                // console.log(res.data.resJson.length);
+                let data = res.data.resJson;
+                // console.log(data[1]);
+                resJsonParse = JSON.parse(data[1]);
+                // console.log(resJsonParse[0].fields.title);
+                const tasklist = document.querySelectorAll('.task');
+                const tasktest = document.querySelector('.task-cont-test');
+                console.log(tasklist[3].childNodes[1].innerText);
+                for (let i = 0; i < data.length; i++) {
+                    resJsonParse = JSON.parse(data[i]);
+                    // console.log(resJsonParse.length, i);
+                    if (resJsonParse.length != 0) {
+                        todos = resJsonParse[1].fields;
+                        console.log(todos.title);
+                        tasktest.innerText = todos.title;
 
-        // axios({
-        //     method: 'get',
-        //     url: `${urls}`,
-        // })
-        //     .then((res) => {
-        //         // const isPrev = e.target.parentElement.dataset.isPrev;
-        //         console.log(e.target.parentElement.dataset.isPrev);
-
-        //     });
+                        // for (let j = 0; j < resJsonParse.length; j++) {
+                        //     todos = resJsonParse[j].fields;
+                        //     console.log(todos.title);
+                        //     tasktest.innerText = todos.title;
+                        // }
+                    }
+                }
+            });
     };
 
     weekBtn.forEach(btn => {

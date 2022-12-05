@@ -1,58 +1,59 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block body %}
-  <div class="container" id="week">
-    <div class="lnb-area">
-      <div class="lnb">
-        <input type="radio" name="tabmenu" id="tab1" class="tabs" checked="checked">
-        <label for="tab1" class="tab">
-          <a href="{% url 'todos:week' %}">
-            WEEK
-          </a>
-        </label>
-        <input type="radio" name="tabmenu" id="tab2" class="tabs">
-        <label for="tab2" class="tab">
-          <a href="{% url 'todos:today' %}">TODAY</a>
-        </label>
-        <input type="radio" name="tabmenu" id="tab3" class="tabs">
-        <label for="tab3" class="tab">ALL</label>
-        <span class="glider"></span>
-      </div>
-      <div class="week-btn-area">
-        <a href="" class="week-btn" data-is-prev="true">
-          <span class="material-symbols-outlined  week-btn-prev">
-            arrow_back_ios
-          </span>
-          <span>prev</span>
+<div class="container" id="week">
+  <div class="lnb-area">
+    <div class="lnb">
+      <input type="radio" name="tabmenu" id="tab1" class="tabs" checked="checked">
+      <label for="tab1" class="tab">
+        <a href="{% url 'todos:week' %}">
+          WEEK
         </a>
-        <a href="" class="week-btn" data-is-prev="false">
-          <span>next</span>
-          <span class="material-symbols-outlined week-btn-next">
-            arrow_forward_ios
-          </span>
-        </a>
-      </div>
+      </label>
+      <input type="radio" name="tabmenu" id="tab2" class="tabs">
+      <label for="tab2" class="tab">
+        <a href="{% url 'todos:today' %}">TODAY</a>
+      </label>
+      <input type="radio" name="tabmenu" id="tab3" class="tabs">
+      <label for="tab3" class="tab">ALL</label>
+      <span class="glider"></span>
     </div>
-    <div class="box-area week-area">
-      {% for todo_list in time_list %}
-        <div class="box">
-          <h3 class="tit shd weekday">weekday</h3>
-          <ul class="task-list">
-            {% for todo in todo_list %}
-              <li class="task">
-                <p class="task-cont">{{todo.title}}</p>
-                <input type="checkbox" name="task-chb{{forloop.counter}}" id="task-chb{{forloop.counter}}">
-                <label for="task-chb{{forloop.counter}}" class="task-chb"></label>
-              </li>
-            {% endfor %}
-            <li class="task deactivate">
-              <p class="task-cont">task</p>
-              <!-- <input type="checkbox" name="task-chb0" id="task-chb0"> <label for="task-chb0" class="task-chb"></label> -->
-            </li>
-          </ul>
-        </div>
-      {% endfor %}
-
+    <div class="week-btn-area">
+      <a href="" class="week-btn" data-is-prev="true" data-week-cnt="-1">
+        <span class="material-symbols-outlined  week-btn-prev">
+          arrow_back_ios
+        </span>
+        <span>prev</span>
+      </a>
+      <a href="" class="week-btn" data-is-prev="false" data-week-cnt="1">
+        <span>next</span>
+        <span class="material-symbols-outlined week-btn-next">
+          arrow_forward_ios
+        </span>
+      </a>
     </div>
   </div>
+  <div class="box-area week-area">
+    <p class="task-cont-test">00</p>
+
+    {% for todo_list in time_list %}
+    <div class="box">
+      <h3 class="tit shd weekday">weekday</h3>
+      <ul class="task-list">
+        {% for todo in todo_list %}
+        <li class="task">
+          <p class="task-cont">{{todo.title}}</p>
+          <input type="checkbox" name="task-chb{{forloop.counter}}" id="task-chb{{forloop.counter}}">
+          <label for="task-chb{{forloop.counter}}" class="task-chb"></label>
+        </li>
+        {% endfor %}
+        <li class="task deactivate">
+          <p class="task-cont">task</p>
+          <!-- <input type="checkbox" name="task-chb0" id="task-chb0"> <label for="task-chb0" class="task-chb"></label> -->
+        </li>
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock body %}
