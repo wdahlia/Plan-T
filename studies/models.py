@@ -18,7 +18,7 @@ class Study(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     max_people = models.IntegerField()
     participated = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, symmetrical=True, related_name="participate"
+        settings.AUTH_USER_MODEL, related_name="participate"
     )
     start_at = models.DateField(null=True)
     end_at = models.DateField(null=True)
@@ -31,6 +31,6 @@ class Study(models.Model):
             return datetime.now() < self.end_date
 
 
-class Study_Todo(Todos):
+class StudyTodo(Todos):
     study_pk = models.ForeignKey("Study", on_delete=models.CASCADE)
     image = None
