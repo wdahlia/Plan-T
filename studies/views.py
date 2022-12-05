@@ -22,15 +22,19 @@ def create(request):
     context = {"studyform": studyform}
     return render(request, "studies/test/create.html", context)
 
+
 def create_todos(request, study_pk):
-    study = Study.objects.get(pk=study_pk)
     if request.method == "POST":
+        study = Study.objects.get(pk=study_pk)
         when = request.POST.get("when")
         todoForm = StudyTodoForm(request.POST)
+
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
-            users = study.participated
             todo.when = when
+
+            # 스터디원 모두를 위해 생성
+            users = study.participated
             for user in users:
                 todo.user_id = user
                 todo.save()
