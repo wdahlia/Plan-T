@@ -3,9 +3,10 @@ from django.contrib.auth import get_user_model as User
 from .forms import TodosForm
 from .models import Todos
 from datetime import datetime, timedelta
-from django.http import JsonResponse
 from django.contrib import messages
 from .function import change_value
+from django.http import JsonResponse
+from django.core import serializers
 
 # Create your views here.
 def today(request):
@@ -17,7 +18,12 @@ def today(request):
     # timetable 넘겨주기 위해
     time_list = []
     for todo in today_todos:
-        if todo.started_at is not None and todo.expired_at is not None:
+        if (
+            todo.started_at is not None  # 나중에 지워야됨
+            and todo.expired_at is not None  # 나중에 지워야됨
+            and todo.started_at != ""
+            and todo.expired_at != ""
+        ):
             start = change_value(todo.started_at)
             end = change_value(todo.expired_at)
             time = end - start
@@ -52,22 +58,23 @@ def create(request):
         # 시간 입력이 잘못되었을때
         exist = set()
         for todo in today_todos:
-            if todo.started_at is not None:
+            # if todo.started_at != "" and todo.expired_at != "":
+            if todo.started_at is not None and todo.started_at != "":
                 st = change_value(todo.started_at)
                 ed = change_value(todo.expired_at)
                 for t in range(st, ed + 1):
                     exist.add(t)
-        if start is not None and end is not None:
+        if start != "" and end != "":
             timetable = set(range(change_value(start), change_value(end) + 1))
             if (start < end) and timetable.isdisjoint(exist):
                 pass
             else:
                 messages.warning(request, "시간이 잘못되었습니다.")
                 return redirect("todos:today")
-        elif start is not None and end is None:
+        elif start != "" and end == "":
             messages.error(request, "끝나는 시간을 입력해주세요.")
             return redirect("todos:today")
-        elif start is None and end is not None:
+        elif start == "" and end != "":
             messages.error(request, "시작 시간을 입력해주세요.")
             return redirect("todos:today")
         #
@@ -151,12 +158,11 @@ def update(request, pk):
         return JsonResponse(context)
 
 
-def week(request, few_week):
+def week(request):
     # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
-    few_week = int(few_week)
-    next_ = few_week + 1
-    last_ = few_week - 1
-    print(next_)
+    few_week = 0  # int(few_week)
+    next_ = +1
+    last_ = -1
     today = datetime.today().weekday() + 1
     now = datetime.now()
     week = now + timedelta(weeks=few_week, days=-(today % 7))
@@ -177,7 +183,46 @@ def week(request, few_week):
         "next": next_,
         "last": last_,
     }
-    return JsonResponse(context)
+    return render(request, "todos/working/week_todos.html", context)
+
+
+def week_asyn(request, few_week):
+    # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
+    few_week = int(few_week)
+    next_ = few_week + 1
+    last_ = few_week - 1
+    today = datetime.today().weekday() + 1
+    now = datetime.now()
+    week = now + timedelta(weeks=few_week, days=-(today % 7))
+    print("today :", today)
+    print("현재 : ", now)
+    print("기준 날짜 : ", week)
+
+    time_list = []
+    res = []
+    for i in range(7):
+        temp = week + timedelta(days=i)
+        # RuntimeWarning: 이 나온다.
+        temp_time = temp.strftime("%Y-%m-%d") + " 09:00:00"
+        time_list.append(Todos.objects.filter(when=temp_time))
+        res_json = serializers.serialize("json", Todos.objects.filter(when=temp_time))
+        res.append(res_json)
+
+    todos = TodosForm()
+
+    # temp = week + timedelta(days=i)
+    # temp_time = temp.strftime("%Y-%m-%d") + " 09:00:00"
+    # res_json = serializers.serialize("json", Todos.objects.filter(when=temp_time))
+    print(res)
+    context = {
+        "todos": todos,
+        "time_list": time_list,
+        "next": next_,
+        "last": last_,
+        # "res_json": res,
+    }
+    # return JsonResponse(time_list, safe=False)
+    return render(request, "todos/working/week_todos.html", context)
 
 
 def read_all(request):
