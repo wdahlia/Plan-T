@@ -33,6 +33,15 @@ def today(request):
 
     todosForm = TodosForm()
 
+    if request.method == "POST":
+        res_json = serializers.serialize(
+            "json",
+            Todos.objects.filter(user_id=request.user, when=today).order_by(
+                "started_at"
+            ),
+        )
+        return JsonResponse({"resJson": res_json})
+
     context = {
         "time_list": time_list,
         "today_todos": today_todos,

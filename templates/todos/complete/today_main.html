@@ -9,7 +9,7 @@
     <div class="lnb">
       <input type="radio" name="tabmenu" id="tab1" class="tabs">
       <label for="tab1" class="tab">
-        <a href="{% url 'todos:week' 0 %}">WEEK</a>
+        <a href="{% url 'todos:week' %}">WEEK</a>
       </label>
       <input type="radio" name="tabmenu" id="tab2" class="tabs" checked="checked">
       <label for="tab2" class="tab">TODAY</label>
@@ -33,12 +33,10 @@
       </div>
     </div>
     <div class="today-task-add">
-      <form action="#">
-        <input type="text" name="todayTask" id="" placeholder="할일 추가하기">
-        <span class="material-symbols-outlined btn-plus">
-          add_circle
-        </span>
-      </form>
+      <button class="icon-btn add-btn">
+        <div class="add-icon"></div>
+        <div class="btn-txt">할 일 추가하기</div>
+      </button>
     </div>
 
     <section class="today-section">
@@ -47,7 +45,7 @@
         <form action="{% url 'todos:create' %}" method="post" id="today-form" enctype="multipart/form-data">
           {% csrf_token %}
           <input type="date" name="when" id="id_when">
-          <input type="text" name="title" value="task title" class="today_task-title">
+          <input type="text" name="title" placeholder="할일 추가하기" class="today_task-title">
           <div class="timepicker-area">
             <div class="starttime-select">
               <label for="starttime-pick">시작 시간</label>
@@ -60,21 +58,22 @@
               <input type="text" id="endtime-pick" value="" name="expired_at" class="time-pickable" readonly="readonly">
             </div>
           </div>
-          <textarea name="content" class="today_task-textarea" id="id_content" cols="30" rows="10"></textarea>
+          <textarea name="content" class="today_task-textarea" id="id_content" cols="30" rows="10"
+            placeholder="할 일 상세"></textarea>
           <fieldset class="today-task-fileadd">
             <legend>Image/File</legend>
             <label for="today-task-imgfile">
-                <div class="loaded-file"></div>
-                <div class="upload-none">
-                    <span class="attach_img-icon material-symbols-outlined">imagesmode</span>
-                    사진/파일을 첨부하세요
-                </div>
+              <div class="loaded-file"></div>
+              <div class="upload-none">
+                <span class="attach_img-icon material-symbols-outlined">imagesmode</span>
+                사진/파일을 첨부하세요
+              </div>
             </label>
             <input type="file" name="file" class="today_task-img" id="today-task-imgfile">
           </fieldset>
           <div class="btn-area">
             <div class="keyword-box">
-              <span>keyword</span>
+              <input type="text" name="keyword" id="" placeholder="#keyword">
             </div>
             <button type="submit" class="btn">할일 추가</button>
           </div>
@@ -88,12 +87,10 @@
     <div class="box today-task-area">
       <ul class="today-task-list">
         {% for todo in today_todos %}
-        <li class="task">
-          <!-- <a class="task-btn btn-edit">수정</a>
-          <a class="task-btn btn-del">삭제</a> -->
+        <li class="task" data-todo-pk="{{todo.pk}}">
           <p class="task-cont">{{ todo.title }}</p>
-          <input type="checkbox" name="task-chb1" id="task-chb1">
-          <label for="task-chb1" class="task-chb"></label>
+          <input type="checkbox" name="task-chb{{forloop.counter}}" id="task-chb{{forloop.counter}}">
+          <label for="task-chb{{forloop.counter}}" class="task-chb"></label>
         </li>
         {% endfor %}
 
@@ -109,17 +106,18 @@
             edit
           </a>
           <a class="task-btn btn-del material-symbols-outlined">
-            delete_forever
+            delete
           </a>
         </div>
         <li class="task">
-          <p class="task-cont">task</p>
+          <p class="task-cont">dummy task</p>
           <input type="checkbox" name="task-chb2" id="task-chb2">
           <label for="task-chb2" class="task-chb"></label>
         </li>
       </ul>
 
       <div class="today-timetable">
+        <p>{{time_list}}</p>
         <div class="timetable-col">
           <div class="timetable-hour">
             <p class="timetable-min"></p>
@@ -153,9 +151,9 @@
       <div class="today-task-view-spec">
         <form action="" method="post" id="today-detail-form" enctype="multipart/form-data">
           {% csrf_token %}
-          <input type="date" name="when" id="id_when">
-          <input type="text" name="title" value="task title" class="today_task-title">
-          <div class="timepicker-area">
+          <input type="date" name="when">
+          <input type="text" name="title" class="today_task-title" id="detail-title">
+          <!-- <div class="timepicker-area">
             <div class="starttime-select">
               <label for="starttime-pick">시작 시간</label>
               <input type="text" id="starttime-pick" value="" name="start" class="time-pickable" readonly="readonly">
@@ -165,24 +163,27 @@
               <label for="endtime-pick">종료 시간</label>
               <input type="text" id="endtime-pick" value="" name="end" class="time-pickable" readonly="readonly">
             </div>
-          </div>
-          <textarea name="content" class="today_task-textarea" id="id_content" cols="30" rows="10"></textarea>
-          <fieldset class="today-task-fileadd">
+          </div> -->
+          <textarea name="content" class="today_task-textarea" id="detail-cont" cols="30" rows="10"></textarea>
+          <!-- <fieldset class="today-task-fileadd">
             <legend>Image/File</legend>
             <label for="today-task-imgfile">
-                <div class="loaded-file"></div>
-                <div class="upload-none">
-                    <span class="attach_img-icon material-symbols-outlined">imagesmode</span>
-                    사진/파일을 첨부하세요
-                </div>
+              <div class="loaded-file"></div>
+              <div class="upload-none">
+                <span class="attach_img-icon material-symbols-outlined">imagesmode</span>
+                사진/파일을 첨부하세요
+              </div>
             </label>
             <input type="file" name="todoimg" class="today_task-img" id="today-task-imgfile">
-          </fieldset>
+          </fieldset> -->
+          <div class="keyword-box">
+            <span>keyword</span>
+          </div>
           <div class="btn-area">
-            <div class="keyword-box">
-              <span>keyword</span>
-            </div>
-            <button type="submit" class="btn">수정</button>
+            <button type="submit" class="btn">할일 수정하기</button>
+            <a href="" class="btn-del material-symbols-outlined" id="detail-btn-del">
+              delete_forever
+            </a>
           </div>
         </form>
       </div>
@@ -201,12 +202,6 @@
       </div>
     </div>
 
-    <!-- <div class="box today-study-area">
-      <h3 class="tit">Study</h3>
-      <ul class="study-task-list">
-        <li class="task">task</li>
-      </ul>
-    </div> -->
   </div>
 
 </div>
@@ -261,9 +256,12 @@
 
   function buildPicker(timePickable) {
 
-    const todayFormArea = document.querySelector('.today-task-add-spec');
+    // const todayFormArea = document.querySelector('.today-task-add-spec');
+    const timePickerArea = document.querySelector('.timepicker-area');
 
     const picker = document.createElement("div");
+    timePickerArea.appendChild(picker);
+
     const hourOptions = [
       6,
       7,
@@ -307,18 +305,18 @@
           </select>
       `;
 
-    // todayFormArea.insertAdjacentHTML("afterbegin", `
-    //   <div class="time-picker">
-    //     <select class="time-picker__select">
+    // console.log(timePickerArea);
+    // timePickerArea.insertAdjacentHTML("beforeend", `
+    //       <div class="time-picker">
+    //         <select class="time-picker__select">
     //           ${hourOptions.join("")}
     //       </select>
     //       :
     //       <select class="time-picker__select">
     //           ${minuteOptions.join("")}
     //       </select>
-    //   </div>
-    //   `);
-
+    //       </div>
+    // `)
 
     const selects = getSelectsFromPicker(picker);
 
@@ -372,28 +370,27 @@
   }
 
   activate();
-</script>
 
 
-<!-- file input 표시 -->
-<script>
+
+  // <!-- file input 표시 -->
+
   let uploadFile = document.getElementById("today-task-imgfile");
   let loadedFile = document.querySelector(".loaded-file")
   const noneFile = document.querySelector(".upload-none")
-  
+
   loadedFile.style.display = "none";
 
   uploadFile.onchange = () => {
-      noneFile.style.display = "none";
-      loadedFile.style.display = "block";
-      let uploadFileName = uploadFile.files[0].name;
-      loadedFile.innerText = `${uploadFileName}`;
+    noneFile.style.display = "none";
+    loadedFile.style.display = "block";
+    let uploadFileName = uploadFile.files[0].name;
+    loadedFile.innerText = `${uploadFileName}`;
   }
- 
-</script>
 
-<!-- study todo div -->
-<script>
+
+  // <!-- study todo div -->
+
 
   const studyArea = document.querySelector('.today-study-area')
   const openStudyArea = document.querySelector('.study-tasklist-area')
