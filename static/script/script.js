@@ -49,11 +49,6 @@ try {
 } catch { }
 
 try {
-    // const toggleBtn = document.querySelector('.btn-plus');
-    // const todaySection = document.querySelector('.today-section');
-    // toggleBtn.addEventListener('click', function () {
-    //     todaySection.classList.toggle('show');
-    // });
 
     let slideUp = (target, duration = 500) => {
         target.style.transitionProperty = "height, margin, padding";
@@ -128,42 +123,65 @@ try {
             .querySelector(cl)
             .addEventListener("click", () => sl(target, speedAnimation));
 
-    slideBtnClick(".btn-plus", slideToggle);
+    slideBtnClick(".add-btn", slideToggle);
 
 
 } catch { }
+
+
 try {
     const tasks = document.querySelectorAll('.today-task-list .task');
-    const taskBtns = document.querySelectorAll('.task-btn-area');
     const taskView = document.querySelector('#task-detail');
-
-
-    console.log(tasks[0].clientHeight);
+    const taskDetailForm = document.querySelector('#today-detail-form');
+    const detailTit = document.querySelector('#detail-title');
+    const detailCont = document.querySelector('#detail-cont');
+    const detailBtnDel = document.querySelector('#detail-btn-del');
 
     const taskMenu = function (e) {
+        // console.log(this.dataset.todoPk);
         e.preventDefault();
         taskView.classList.toggle('activate');
-        // this.childNodes[1].classList.toggle('activate');
-        // this.childNodes[3].classList.toggle('activate');
 
-        // taskBtns.forEach(btn => {
-        //     btn.classList.remove('activate');
-        // })
-        // console.log((tasks[0].clientHeight) * (tasks.length));
-        // console.log(this.previousElementSibling.style.top = `${tasks[0].clientHeight} * ${tasks.length}`);
-        // console.log(e.target);
-        // console.log((e.target.clientHeight) * (tasks.length));
-        // console.log(this.previousElementSibling)
-        console.log(this.previousElementSibling);
-        // console.log(this.parentElement);
-        const nodes = [this.parentElement.children];
-        console.log(nodes);
-        // this.previousElementSibling.classList.toggle('activate');
-
-        // this.classList.toggle('ef-blur');
         this.classList.toggle('activate');
-        // let pos = (tasks[0].clientHeight) * (tasks.length) - (tasks[0].clientHeight / 2);
-        // this.previousElementSibling.style.top = `${pos}px`
+
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        let delUrl = '/todos/delete/';
+        let updateUrl = '/todos/update/';
+
+        axios({
+            method: 'POST',
+            url: '/todos/today/',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'multipart/form-data'
+            },
+        })
+            .then((res) => {
+                const data = res.data.resJson;
+                jsonParse = JSON.parse(data);
+
+                const nodes = [...this.parentElement.children];
+                const idx = nodes.indexOf(this);
+
+                // todo 수정 업데이트 버튼 actions 속성 부여
+                updateUrl = updateUrl + '1';
+                taskDetailForm.setAttribute('action', `${updateUrl}`);
+                console.log(updateUrl);
+
+                // todo 삭제 버튼 href 속성 부여
+                delUrl = delUrl + '1';
+                console.log(delUrl);
+                detailBtnDel.setAttribute('href', `${delUrl}`);
+
+                detailTit.value = jsonParse[idx].fields.title;
+                detailCont.value = jsonParse[idx].fields.content;
+
+                // const todoPK = jsonParse[idx].fields.pk;
+                // delUrl = delUrl + `${todoPK}`;
+                ;
+            })
+
+
     }
     tasks.forEach(task => {
         task.addEventListener('click', taskMenu);
@@ -173,14 +191,13 @@ try {
 
 try {
     const todayDate = document.querySelector('#id_when');
-    const currentDate = new Date().toISOString();
+    const currentDate = new Date().toLocaleString();
     const todayMonth = document.querySelector('.today-date-month');
     const todayDay = document.querySelector('.today-date-day');
 
     todayDate.value = currentDate.substring(0, 10);
-    todayMonth.innerText = currentDate.substring(5, 7);
-    todayDay.innerText = currentDate.substring(8, 10);
-
+    todayMonth.innerText = currentDate.substring(6, 8);
+    todayDay.innerText = currentDate.substring(9, 11);
 
 } catch { }
 
@@ -188,15 +205,12 @@ try {
 try {
     // 요일 activate
     const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',]
-    // weekday.classList.add('activate')
-    // weekday.innerText = week[new Date().getDay()]
     const weekdayNow = week[new Date().getDay()];
 
     const weekArea = document.querySelector('.week-area');
     const weekdayAll = document.querySelectorAll('.weekday');
 
     for (i = 0; i < week.length; i++) {
-        // console.log(weekdayAll[i].innerText);
         weekdayAll[i].innerText = week[i];
         if (weekdayAll[i].innerText === weekdayNow) {
             weekdayAll[i].classList.add('activate');
@@ -219,7 +233,6 @@ try {
         e.preventDefault();
         const isPrev = e.target.parentElement.dataset.isPrev;
         let urls = '/todos/week/';
-        // let weekCnt = e.target.parentElement.dataset.weekCnt
         if (isPrev === 'true') {
             cnt--;
             cnt = String(cnt);
@@ -234,8 +247,6 @@ try {
         e.target.parentElement.setAttribute('href', `${urls}`);
 
         for (let i = 0; i < 7; i++) {
-            console.log(weekdayNow);
-            console.log(cnt);
             if (cnt != 0) {
                 weekdayAll[i].classList.remove('activate');
                 weekArea.scrollTo({
