@@ -12,4 +12,5 @@ urlpatterns = [
     path("read_all", views.read_all, name="read_all"),
     path("update/<int:pk>", views.update, name="update"),
     path("test/stuty_list", views.stuty_list, name="stuty_list"),
+    path("is_completed/", views.is_completed, name="is_completed"),
 ]
