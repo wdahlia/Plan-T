@@ -20,7 +20,7 @@ class Study(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     max_people = models.IntegerField()
     participated = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, symmetrical=False, related_name="participate"
+        settings.AUTH_USER_MODEL, related_name="participate"
     )
     start_at = models.DateField(auto_now_add=True)
     end_at = models.DateField(default=(now + relativedelta(months=6)))
