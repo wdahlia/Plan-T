@@ -1,0 +1,209 @@
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700;900&display=swap");
+@import url(./fontall.css);
+@import url(./main.css);
+
+#study-index-area .st {
+	margin: 2rem auto;
+	background: var(--deact);
+	border-radius: 20px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	text-align: center;
+	padding: 0.4rem 0.6rem;
+	width: 950px;
+	position: relative;
+	z-index: 2;
+	overflow: hidden;
+  color: var(--txtgr);
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.1);
+  letter-spacing: -1px;
+}
+
+#study-index-area .st input[type="radio"]{
+	display: none;
+  font-weight: 500;
+}
+
+#study-index-area .st input[type="radio"]:checked + label{
+	font-weight: 700;
+  color: var(--bg-dark);
+}
+
+#study-index-area .st input[id="tab0"]:checked ~ .glider{
+	transform: translateX(-510%);
+}
+
+#study-index-area .st input[id="tab1"]:checked ~ .glider{
+	transform: translateX(-370%);
+}
+
+#study-index-area .st input[id="tab2"]:checked ~ .glider{
+	transform: translateX(-228%);
+}
+
+#study-index-area .st input[id="tab3"]:checked ~ .glider{
+	transform: translateX(-80.5%);
+}
+
+#study-index-area .st input[id="tab4"]:checked ~ .glider{
+	transform: translateX(70.5%);
+}
+
+#study-index-area .st input[id="tab5"]:checked ~ .glider{
+	transform: translateX(212%);
+}
+
+#study-index-area .st input[id="tab6"]:checked ~ .glider{
+	transform: translateX(368.5%);
+}
+
+#study-index-area .st .tab {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	padding: 0.2rem 0.5rem;
+	margin-right: 1.5rem;
+}
+
+#study-index-area .st .glider{
+	position: absolute;
+	left: 50%;
+	display: flex;
+	height: 33.9px;
+	width: 90px;
+  vertical-align: center;
+	border-radius: 60px;
+	background: var(--main);
+	transition: 0.25s ease-out;
+	z-index: -1;
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+#study-index-area .study-search{
+  margin: 0 2rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#study-index-area .search-box {
+  position: relative;
+  --size-button: 40px;
+}
+
+#study-index-area .create-box{
+  background-color: var(--main);
+  padding: .65rem;
+  border-radius: 10px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+#study-index-area .create-box .study-add-icon{
+  vertical-align: middle;
+}
+
+#study-index-area .create-box .study-add-text{
+  vertical-align: middle;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+}
+
+#study-index-area .search-box input[type="text"] {
+  padding-left: var(--size-button);
+  height: var(--size-button);
+  font-size: 15px;
+  /* border: 1px solid var(--bg); */
+  color: var(--txt);
+  outline: none;
+  width: var(--size-button);
+  transition: all ease 0.3s;
+  background-color: var(--bg);
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+#study-index-area .search-box input[type="text"]:focus,
+#study-index-area .search-box input[type="text"]:not(:invalid) {
+  width: 500px;
+  cursor: text;
+  background-color: var(--bg);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+#study-index-area .search-box input[type="text"]:focus + .icon,
+#study-index-area .search-box input[type="text"]:not(:invalid) + .icon {
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.container .icon {
+  position: absolute;
+  width: var(--size-button);
+  height: var(--size-button);
+  top: 0;
+  left: 0;
+  padding: 10px;
+  pointer-events: none;
+  color: var(--main);
+}
+
+.container .icon svg {
+  font-weight: 700;
+}
+
+
+#study-index-area .study-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#study-index-area .study-room {
+  position: relative;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 300px;
+  height: 300px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  background-color: var(--bg);
+}
+
+#study-index-area .study-room.deactivate {
+  
+}
+
+#study-index-area .study-title .people-num{
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: 700;
+  padding: 0.8rem 1rem;
+  background-color: var(--main);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 8px 0;
+  color: var(--bg);
+}
+
+#study-index-area .study-room .study-date {
+  padding: 0.8rem 2rem;
+  background-color: var(--bg);
+  border: 2px solid var(--txt);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 18px;
+  text-align: center;
+}
+
+#study-index-area .study-room .join-btn {
+  padding: 0.8rem 2rem;
+  align-self: center;
+  background-color: var(--main);
+  border-radius: 10px;
+  font-weight: 700;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}

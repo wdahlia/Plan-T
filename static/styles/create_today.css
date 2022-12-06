@@ -2,10 +2,12 @@
 @import url(./fontall.css);
 @import url(./main.css);
 
+
 /* todayList Form */
 #today-form, #today-detail-form{
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 #today-form .today_task-title,
@@ -67,7 +69,6 @@
 /* timepicker */
 
 #today-form .timepicker-area{
-  display: flex;
   justify-content: space-evenly;
   align-items: center;
   margin: 2rem 0;
@@ -88,7 +89,6 @@
 
 #today-form #starttime-pick,
 #today-form #endtime-pick{
-  width: 400px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
   padding: .65rem;
   border-radius: 20px;
@@ -168,3 +168,5 @@
   font-weight: 700;
   justify-self: end;
 }
+
+

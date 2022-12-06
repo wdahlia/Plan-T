@@ -15,7 +15,7 @@
   <section class="task-timeline">
     <div class="container">
       <div class="box-area" id="timeline-box-area">
-        <div class="box" id="time-box">
+        <div class="box time-box-area" id="time-box">
           <div class="past-timeline">
             <div class="timeline-box">
               <span class="arrow-icon">
@@ -35,12 +35,12 @@
                 </button>
               </div>
               <ul class="past-task_list">
-                <li class="past-task">
+                <li class="task-li-content">
                   <span>task</span>
                   <input type="checkbox" name="" id="past-check">
                     <label for="past-check"></label>
                 </li>
-                <li class="past-task">
+                <li class="task-li-content">
                   <span>task</span>
                   <input type="checkbox" name="" id="past-check">
                     <label for="past-check"></label>
@@ -77,6 +77,16 @@
                 </button>
               </div>
             </div>
+            <div class="past-date_all">
+              <div class="past-date">
+                <span class="arrow-icon">
+                  <img src="../../../static/img/arrow_forward.svg" alt="">
+                </span>
+                <button class="datetime">
+                  2022-11-05
+                </button>
+              </div>
+            </div>
           </div>
           <div class="past-timeline">
             <div class="timeline-box">
@@ -99,7 +109,7 @@
             </div>
           </div>
         </div>
-        <div class="box" id="timedetail-form-area">
+        <div class="box timedetail-form" id="timedetail-form-area">
           <form action="" method="post" id="today-detail-form">
             <input type="text" name="today_task-title" value="task title" class="today_task-title">
             <div class="keyword-box"><span>keyword</span></div>
@@ -120,6 +130,28 @@
       </div>
     </div>
   </section>
+
+  <!-- 눌렀을때 나타나는 폼 -->
+  <script>
+    let taskContents = document.querySelectorAll(".task-li-content")
+    const timeDetailForm = document.querySelector(".timedetail-form")
+    const timeBoxArea = document.querySelector(".time-box-area")
+
+    const taskTimelineToggle = function(e) {
+      e.preventDefault();
+      console.log(e)
+      timeDetailForm.classList.toggle('activate');
+      timeBoxArea.classList.toggle('activate');
+      
+    }
+
+    taskContents.forEach(tasklist => {
+      tasklist.addEventListener('click', taskTimelineToggle);
+    });
+      
+    
+
+  </script>
   
   <script>
     let uploadFile = document.getElementById("today-task-imgfile");
@@ -157,7 +189,7 @@
     timeBtn.forEach(e => {
       e.addEventListener('click', function(e){
         const parentElem = e.target.parentElement.parentElement
-        const timeList = parentElem.querySelectorAll('.past-task');
+        const timeList = parentElem.querySelectorAll('.task-li-content');
         for (let j=0; j < timeList.length; j++) {
           if (timeList[j].style.display === "none") {
             timeList[j].style.display = "flex";
