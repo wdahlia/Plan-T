@@ -3,8 +3,8 @@
 {% block body %}
 
 
-<div class="container" id="today">
 
+<div class="container" id="today">
   <div class="lnb-area">
     <div class="lnb">
       <input type="radio" name="tabmenu" id="tab1" class="tabs">
@@ -16,21 +16,31 @@
       <input type="radio" name="tabmenu" id="tab3" class="tabs">
       <label for="tab3" class="tab">ALL</label>
       <span class="glider"></span>
+      </div>
     </div>
-  </div>
 
-  <div class="box">
-    <div class="today-info">
-      <div class="today-date">
-        <p class="today-date-month">
-          M
-        </p>
-        <p class="today-date-day">D</p>
+    <div class="box">
+      <div class="today-info">
+        <div class="today-date">
+          <p class="today-date-month">
+            M
+          </p>
+          <p class="today-date-day">D</p>
+        </div>
+        <div class="today-progress">
+          <canvas id="today-progress-crc" width="100" height="100"></canvas>
+          <div id="progress-per">0%</div>
+        </div>
       </div>
-      <div class="today-progress">
-        <canvas id="today-progress-crc" width="100" height="100"></canvas>
-        <div id="progress-per">0%</div>
+      <div class="today-task-add">
+        <form action="#">
+          <input type="text" name="todayTask" id="" placeholder="할일 추가하기">
+          <span class="material-symbols-outlined btn-plus">
+            add_circle
+          </span>
+        </form>
       </div>
+
     </div>
     <div class="today-task-add">
       <button class="icon-btn add-btn">
@@ -126,26 +136,27 @@
             <p class="timetable-min"></p>
             <p class="timetable-min"></p>
             <p class="timetable-min "></p>
-          </div>
-          <div class="timetable-hour">
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min activate"></p>
-            <p class="timetable-min activate"></p>
-          </div>
-          <div class="timetable-hour">
-            <p class="timetable-min activate"></p>
-            <p class="timetable-min activate"></p>
-            <p class="timetable-min activate"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
+          </div> 
+            <div class="timetable-hour">
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min activate"></p>
+              <p class="timetable-min activate"></p>
+            </div>
+            <div class="timetable-hour">
+              <p class="timetable-min activate"></p>
+              <p class="timetable-min activate"></p>
+              <p class="timetable-min activate"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
 
     <div class="box today-section" id="task-detail">
       <div class="today-task-view-spec">
@@ -186,25 +197,26 @@
             </a>
           </div>
         </form>
+        </div>
       </div>
-    </div>
 
-    <!-- today-study-area -->
-    <div class="box today-study-area">
-      <span class="open-icon material-symbols-outlined">
-        arrow_back_ios_new
-      </span>
-      <div class="study-tasklist-area">
-        <h3 class="tit">Study</h3>
-        <ul class="study-task-list">
-          <li class="task">task</li>
-        </ul>
+      <!-- today-study-area -->
+      <div class="box today-study-area">
+        <span class="open-icon material-symbols-outlined">
+          arrow_back_ios_new
+        </span>
+        <div class="study-tasklist-area">
+          <h3 class="tit">Study</h3>
+          <ul class="study-task-list">
+            <li class="task">task</li>
+          </ul>
+        </div>
       </div>
+
+      <!-- <div class="box today-study-area"> <h3 class="tit">Study</h3> <ul class="study-task-list"> <li class="task">task</li> </ul> </div> -->
     </div>
 
   </div>
-
-</div>
 </div>
 
 <script>
@@ -215,12 +227,12 @@
       .forEach(timePickable => {
         let activePicker = null;
         timePickable.addEventListener("focus", () => {
-          if (activePicker)
+          if (activePicker) 
             return;
-
+          
           activePicker = show(timePickable);
 
-          const onClickAway = ({ target }) => {
+          const onClickAway = ({target}) => {
             if (target === activePicker || target === timePickable || activePicker.contains(target)) {
               return;
             }
@@ -239,7 +251,7 @@
 
   function show(timePickable) {
     const picker = buildPicker(timePickable);
-    const { bottom: top, left } = timePickable.getBoundingClientRect();
+    const {bottom: top, left} = timePickable.getBoundingClientRect();
     document
       .body
       .appendChild(picker);
@@ -318,6 +330,7 @@
     //       </div>
     // `)
 
+
     const selects = getSelectsFromPicker(picker);
 
     selects
@@ -328,7 +341,7 @@
       .addEventListener("change", () => timePickable.value = getTimeStringFromPicker(picker));
 
     if (timePickable.value) {
-      const { hour, minute, meridiem } = getTimePartsFromPickable(timePickable);
+      const {hour, minute, meridiem} = getTimePartsFromPickable(timePickable);
 
       selects.hour.value = hour;
       selects.minute.value = minute;
@@ -337,22 +350,19 @@
     return picker;
   }
 
-
   function getTimePartsFromPickable(timePickable) {
     const pattern = /^(\d+):(\d+) (am|pm)$/;
     const [hour, minute] = Array
       .from(timePickable.value.match(pattern))
       .splice(1);
 
-    return { hour, minute };
+    return {hour, minute};
   }
-
 
   function getSelectsFromPicker(timePicker) {
     const [hour, minute] = timePicker.querySelectorAll(".time-picker__select");
 
-
-    return { hour, minute };
+    return {hour, minute};
   }
 
   function getTimeStringFromPicker(timePicker) {
@@ -373,6 +383,7 @@
 
 
 
+
   // <!-- file input 표시 -->
 
   let uploadFile = document.getElementById("today-task-imgfile");
@@ -384,12 +395,14 @@
   uploadFile.onchange = () => {
     noneFile.style.display = "none";
     loadedFile.style.display = "block";
+
     let uploadFileName = uploadFile.files[0].name;
     loadedFile.innerText = `${uploadFileName}`;
   }
 
 
   // <!-- study todo div -->
+
 
 
   const studyArea = document.querySelector('.today-study-area')
@@ -417,7 +430,6 @@
       studyArea.style.display = "flex";
     }
   });
-
 </script>
 
 {% endblock body %}

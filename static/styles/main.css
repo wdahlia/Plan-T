@@ -4,11 +4,13 @@
 :root {
 	--main: #3cddaa;
 	--main-hl: #78f0ca;
+	--main-dark: #40cda0;
 	--sub: #3cddaa36;
 	--txt: #232931;
 	--txtgr: #9e9e9e;
 	--bg: #f9f9f9;
 	--gr: #eeeeee;
+	--gr-dark: #677a71;
 	--deact: #ebebeb;
 	--bg-dark: #393e46;
 	--wrn: #ff8b8b;

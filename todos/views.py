@@ -7,6 +7,7 @@ from django.contrib import messages
 from .function import change_value
 from django.http import JsonResponse
 from django.core import serializers
+import json
 
 # Create your views here.
 def today(request):
@@ -28,9 +29,10 @@ def today(request):
             end = change_value(todo.expired_at)
             time = end - start
 
-            time_list.append(start)
-            time_list.append(time)
-
+            time_list.append([])
+            time_list[-1].append(start)
+            time_list[-1].append(time)
+    print(time_list)
     todosForm = TodosForm()
 
     if request.method == "POST":
@@ -52,10 +54,11 @@ def today(request):
 
 def create(request):
     if request.method == "POST":
-        start, end, when = (
+        start, end, when, tag = (
             request.POST.get("started_at"),
             request.POST.get("expired_at"),
             request.POST.get("when"),
+            request.POST.get("tag"),
         )
         todoForm = TodosForm(request.POST, request.FILES)
 
@@ -97,6 +100,8 @@ def create(request):
                 start,
                 end,
             )
+            if tag is not None:
+                todo.tags.add(tag)
             todo.save()
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:
@@ -115,10 +120,11 @@ def update(request, pk):
     todo = get_object_or_404(Todos, pk=pk)
     if request.method == "POST":
         todoForm = TodosForm(request.POST, request.FILES, instance=todo)
-        start, end, when = (
+        start, end, when, tag = (
             request.POST.get("started_at"),
             request.POST.get("expired_at"),
             request.POST.get("when"),
+            request.POST.get("tag"),
         )
 
         user = request.user
@@ -157,6 +163,7 @@ def update(request, pk):
                 start,
                 end,
             )
+            todo.tags.add(tag)
             todo.save()
         return redirect("todos:today")
     else:
@@ -306,3 +313,28 @@ def stuty_list(request):
         "todosForm": todosForm,
     }
     return render(request, "todos/test/study_list.html", context)
+
+
+# checkbox 비동기
+def is_completed(request):
+    if request.method == "POST":
+        # JSON 데이터 받음
+        data = json.loads(request.body)
+
+        # 변경된 값이랑 어떤 todo 인지 특정할 수 있는 id 값 
+        is_completed = data.get("is_completed")
+        todoId = data.get("todoId")
+
+        # 해당 id 값으로 todo 객체를 가져옴
+        obj = Todos.objects.get(id=todoId)
+
+        # 받아온 값으로 변경
+        obj.is_completed = is_completed
+        obj.save()
+
+        # 변경된 값으로 응답
+        context = {
+            "is_completed": is_completed
+        }
+
+        return JsonResponse(context)
