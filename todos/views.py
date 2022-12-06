@@ -11,7 +11,7 @@ import json
 
 # Create your views here.
 def today(request):
-    today = str(datetime.now())[:10] + " 09:00:00"
+    today = str(datetime.now())[:10]
     # 로그인 유저의 today todos 찾기
     today_todos = Todos.objects.filter(user_id=request.user, when=today).order_by(
         "started_at"
@@ -54,10 +54,9 @@ def today(request):
 
 def create(request):
     if request.method == "POST":
-        start, end, when, tag = (
+        start, end, tag = (
             request.POST.get("started_at"),
             request.POST.get("expired_at"),
-            request.POST.get("when"),
             request.POST.get("tag"),
         )
         todoForm = TodosForm(request.POST, request.FILES)
@@ -70,33 +69,30 @@ def create(request):
         # 시간 입력이 잘못되었을때
         exist = set()
         for todo in today_todos:
-            # if todo.started_at != "" and todo.expired_at != "":
-            if todo.started_at is not None and todo.started_at != "":
+            if todo.started_at != "":
                 st = change_value(todo.started_at)
                 ed = change_value(todo.expired_at)
                 for t in range(st, ed + 1):
                     exist.add(t)
-        if start != "" and end != "":
+        if (start != "") and (end != ""):
             timetable = set(range(change_value(start), change_value(end) + 1))
-            if (start < end) and timetable.isdisjoint(exist):
+            if (start <= end) and (timetable.isdisjoint(exist)):
                 pass
             else:
                 messages.warning(request, "시간이 잘못되었습니다.")
                 return redirect("todos:today")
-        elif start != "" and end == "":
+        elif (start != "") and (end == ""):
             messages.error(request, "끝나는 시간을 입력해주세요.")
             return redirect("todos:today")
-        elif start == "" and end != "":
+        elif (start == "") and (end != ""):
             messages.error(request, "시작 시간을 입력해주세요.")
             return redirect("todos:today")
-        #
 
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
-            when += " 09:00:00"  # 시간 저장할때 9시간을 더해줘야 한국시간으로 잘 저장이 된다.
             todo.user_id, todo.when, todo.started_at, todo.expired_at = (
                 user,
-                when,
+                today,
                 start,
                 end,
             )
@@ -128,7 +124,7 @@ def update(request, pk):
         )
 
         user = request.user
-        today = str(datetime.now())[:10] + " 09:00:00"
+        today = str(datetime.now())[:10]
         today_todos = Todos.objects.filter(user_id=request.user, when=today)
 
         # 시간 입력이 잘못되었을때
@@ -156,7 +152,6 @@ def update(request, pk):
 
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
-            when += " 09:00:00"  # 시간 저장할때 9시간을 더해줘야 한국시간으로 잘 저장이 된다.
             todo.user_id, todo.when, todo.started_at, todo.expired_at = (
                 user,
                 when,
@@ -190,7 +185,7 @@ def week(request):
     for i in range(7):
         temp = week + timedelta(days=i)
         # RuntimeWarning: 이 나온다.
-        temp_time = temp.strftime("%Y-%m-%d") + " 09:00:00"
+        temp_time = temp.strftime("%Y-%m-%d")
         time_list.append(Todos.objects.filter(when=temp_time))
     todos = TodosForm()
     context = {
@@ -256,7 +251,7 @@ def read_all(request):
     # 스터디 todos는 어떻게 처리 할 것인지 or 4주씩 하는 것인지
     # 한달 단위로 한다고 했는데 그러면 미래도 한달단위인지?
     now = datetime.now()
-    today = str(now)[:10] + " 09:00:00"
+    today = str(now)[:10]
     # 과거
     # months=1을 통하여 월별 관리, 모든 과거: lte
     few_month_ago = str(now - relativedelta(months=1))[:10]
@@ -289,7 +284,7 @@ def read_all(request):
 
 
 def stuty_list(request):
-    today = str(datetime.now())[:10] + " 09:00:00"
+    today = str(datetime.now())[:10]
     # 로그인 유저의 today todos 찾기
     today_todos = Todos.objects.filter(user_id=request.user, when=today).order_by(
         "started_at"

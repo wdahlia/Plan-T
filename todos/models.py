@@ -16,7 +16,7 @@ class Todos(models.Model):
         format="JPEG",
         options={"quality": 80},
     )
-    when = models.DateTimeField()
+    when = models.DateField()
     started_at = models.CharField(max_length=5, null=True)
     expired_at = models.CharField(max_length=5, null=True)
     is_completed = models.BooleanField(default=False)
