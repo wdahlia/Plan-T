@@ -28,9 +28,10 @@ def today(request):
             end = change_value(todo.expired_at)
             time = end - start
 
-            time_list.append(start)
-            time_list.append(time)
-
+            time_list.append([])
+            time_list[-1].append(start)
+            time_list[-1].append(time)
+    print(time_list)
     todosForm = TodosForm()
 
     context = {
@@ -89,7 +90,8 @@ def create(request):
                 start,
                 end,
             )
-            todo.tags.add(tag)
+            if tag is not None:
+                todo.tags.add(tag)
             todo.save()
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:
