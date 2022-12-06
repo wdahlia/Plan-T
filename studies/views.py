@@ -7,8 +7,19 @@ from django.contrib import messages
 
 # Create your views here.
 def index(request):
-    all_studies = Study.objects.all()
-    context = {"all_studies": all_studies}
+    category = request.GET.get("category")
+    if category is None:
+        category_studies = Study.objects.all()
+    elif category == 1:
+        category_studies = Study.objects.filter(category=1)
+    elif category == 2:
+        category_studies = Study.objects.filter(category=2)
+    # print(category)
+    # print(type(category))
+    # for i in category_studies:
+    #     print(i.category)
+    #     print(type(i.category))
+    context = {"category_studies": category_studies}
     return render(request, "studies/test/index.html", context)
 
 
