@@ -1,10 +1,11 @@
 from django.db import models
-from datetime import date
+from datetime import date, datetime
 from django.conf import settings
 from todos.models import Todos
-from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 # Create your models here.
+now = datetime.now()
 
 
 class Study(models.Model):
@@ -19,17 +20,17 @@ class Study(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     max_people = models.IntegerField()
     participated = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name="participate"
+        settings.AUTH_USER_MODEL, symmetrical=False, related_name="participate"
     )
-    start_at = models.DateField(default=date.today)
-    end_at = models.DateField(null=True, blank=True)
+    start_at = models.DateField(auto_now_add=True)
+    end_at = models.DateField(default=(now + relativedelta(months=6)))
 
     @property
     def is_activate(self):
         if self.end_at is None:
             return True
         else:
-            return datetime.now() < self.end_at
+            return date.today() < self.end_date
 
 
 class StudyTodo(Todos):
