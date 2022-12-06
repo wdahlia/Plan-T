@@ -7,6 +7,7 @@ from django.contrib import messages
 from .function import change_value
 from django.http import JsonResponse
 from django.core import serializers
+import json
 
 # Create your views here.
 def today(request):
@@ -297,3 +298,28 @@ def stuty_list(request):
         "todosForm": todosForm,
     }
     return render(request, "todos/test/study_list.html", context)
+
+
+# checkbox 비동기
+def is_completed(request):
+    if request.method == "POST":
+        # JSON 데이터 받음
+        data = json.loads(request.body)
+
+        # 변경된 값이랑 어떤 todo 인지 특정할 수 있는 id 값 
+        is_completed = data.get("is_completed")
+        todoId = data.get("todoId")
+
+        # 해당 id 값으로 todo 객체를 가져옴
+        obj = Todos.objects.get(id=todoId)
+
+        # 받아온 값으로 변경
+        obj.is_completed = is_completed
+        obj.save()
+
+        # 변경된 값으로 응답
+        context = {
+            "is_completed": is_completed
+        }
+
+        return JsonResponse(context)

@@ -309,6 +309,45 @@ try {
 
 } catch { }
 
+// Todo is_completed 비동기
 try {
+    // Axios POST method csrf token setting
+    // link : https://velog.io/@corner3499/Django-9-CSRF-Token-%EC%B2%98%EB%A6%AC-Todo%EC%9D%98-%EB%A7%88%EC%A7%80%EB%A7%89
+    axios.defaults.xsrfCookieName = 'csrftoken';
+    axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+    let inputTags = [];
+    // task 클래스를 가진 녀석들을 다 찾아냄
+    document.querySelectorAll(".task").forEach( 
+        function (v, i, o) {
+            // deactivate 클래스가 없는 녀석들이 곧 입력 데이터들이다.
+            if (!v.className.endsWith("deactivate"))
+                // 자식들 중 input 태그를 지정함
+                inputTags.push(o[i].children[1]);
+        }
+    );
+    inputTags.forEach(function (v, i, o) {            
+        v.addEventListener("click", () => {
+            // 현재 체크 값 및 todo id 값 추출 
+            is_completed = (v.checked) ? true : false;
+            todoId = v.id.split("task-chb")[1];
+            
+            // axios post arguments 설정
+            url = "/todos/is_completed/";
+            data = {
+                is_completed,
+                todoId,
+            };
+
+            // axios 비동기 통신
+            axios.post(
+                url,
+                data
+            ).then((res) => {
+                // 결과값이 잘 나오는지 출력
+                console.log(res.data.is_completed);
+            });
+        });
+    });
 
 } catch { }
