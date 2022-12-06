@@ -28,13 +28,10 @@ def create(request):
 def create_todos(request, study_pk):
     if request.method == "POST":
         study = Study.objects.get(pk=study_pk)
-        when = request.POST.get("when")
         todoForm = StudyTodoForm(request.POST)
 
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
-            todo.when = when
-
             # 스터디원 모두를 위해 생성
             users = study.participated
             for user in users:
@@ -49,10 +46,7 @@ def detail(request, study_pk):
     check = False
     if study in user.join_study.all():
         check = True
-    context = {
-        "study": study,
-        "check": check,
-    }
+    context = {"study": study, "check": check, "study_todo_form": StudyTodoForm()}
     return render(request, "studies/test/detail.html", context)
 
 

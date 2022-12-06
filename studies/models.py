@@ -35,4 +35,10 @@ class Study(models.Model):
 
 class StudyTodo(Todos):
     study_pk = models.ForeignKey("Study", on_delete=models.CASCADE)
+    start = models.DateField()
+    end = models.DateField()
+    when = None
     image = None
+    tags = None
+    started_at = None
+    expired_at = None
