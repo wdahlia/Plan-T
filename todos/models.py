@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
+from taggit.managers import TaggableManager
 
 # Create your models here.
 class Todos(models.Model):
@@ -19,3 +20,8 @@ class Todos(models.Model):
     started_at = models.CharField(max_length=5, null=True)
     expired_at = models.CharField(max_length=5, null=True)
     is_completed = models.BooleanField(default=False)
+    tags = TaggableManager(
+        verbose_name=("tags"),
+        help_text=("쉼표로 태그를 구분합니다"),
+        blank=True,
+    )

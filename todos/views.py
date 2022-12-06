@@ -43,10 +43,11 @@ def today(request):
 
 def create(request):
     if request.method == "POST":
-        start, end, when = (
+        start, end, when, tag = (
             request.POST.get("started_at"),
             request.POST.get("expired_at"),
             request.POST.get("when"),
+            request.POST.get("tag"),
         )
         todoForm = TodosForm(request.POST, request.FILES)
 
@@ -88,6 +89,7 @@ def create(request):
                 start,
                 end,
             )
+            todo.tags.add(tag)
             todo.save()
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:
@@ -106,10 +108,11 @@ def update(request, pk):
     todo = get_object_or_404(Todos, pk=pk)
     if request.method == "POST":
         todoForm = TodosForm(request.POST, request.FILES, instance=todo)
-        start, end, when = (
+        start, end, when, tag = (
             request.POST.get("started_at"),
             request.POST.get("expired_at"),
             request.POST.get("when"),
+            request.POST.get("tag"),
         )
 
         user = request.user
@@ -148,6 +151,7 @@ def update(request, pk):
                 start,
                 end,
             )
+            todo.tags.add(tag)
             todo.save()
         return redirect("todos:today")
     else:
