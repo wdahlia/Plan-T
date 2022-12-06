@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os, json
 from django.core.exceptions import ImproperlyConfigured
-from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -106,9 +105,11 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+GOOGLEID = get_secret("GOOGLEID")
+GOOGLESECREATKEY = get_secret("GOOGLESECREATKEY")
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("key")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("secret")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = GOOGLEID
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = GOOGLESECREATKEY
 
 LOGIN_URL = "/"
 LOGIN_REDIRECT_URL = "todos:today"
