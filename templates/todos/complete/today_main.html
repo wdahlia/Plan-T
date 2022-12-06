@@ -2,166 +2,199 @@
 {% load static %}
 {% block body %}
 
-<div class="container" id="today">
+  <div class="container" id="today">
 
-  <div class="lnb-area">
-    <div class="lnb">
-      <input type="radio" name="tabmenu" id="tab1" class="tabs">
-      <label for="tab1" class="tab">
-        <a href="{% url 'todos:week' %}">WEEK</a>
-      </label>
-      <input type="radio" name="tabmenu" id="tab2" class="tabs" checked="checked">
-      <label for="tab2" class="tab">TODAY</label>
-      <input type="radio" name="tabmenu" id="tab3" class="tabs">
-      <label for="tab3" class="tab">ALL</label>
-      <span class="glider"></span>
-    </div>
-  </div>
-
-  <div class="box">
-    <div class="today-info">
-      <div class="today-date">
-        <p class="today-date-month">
-          M
-        </p>
-        <p class="today-date-day">D</p>
-      </div>
-      <div class="today-progress">
-        <canvas id="today-progress-crc" width="100" height="100"></canvas>
-        <div id="progress-per">0%</div>
+    <div class="lnb-area">
+      <div class="lnb">
+        <input type="radio" name="tabmenu" id="tab1" class="tabs">
+        <label for="tab1" class="tab">
+          <a href="{% url 'todos:week' %}">WEEK</a>
+        </label>
+        <input type="radio" name="tabmenu" id="tab2" class="tabs" checked="checked">
+        <label for="tab2" class="tab">TODAY</label>
+        <input type="radio" name="tabmenu" id="tab3" class="tabs">
+        <label for="tab3" class="tab">ALL</label>
+        <span class="glider"></span>
       </div>
     </div>
-    <div class="today-task-add">
-      <form action="#">
-        <input type="text" name="todayTask" id="" placeholder="할일 추가하기">
-        <span class="material-symbols-outlined btn-plus">
-          add_circle
+
+    <div class="box">
+      <div class="today-info">
+        <div class="today-date">
+          <p class="today-date-month">
+            M
+          </p>
+          <p class="today-date-day">D</p>
+        </div>
+        <div class="today-progress">
+          <canvas id="today-progress-crc" width="100" height="100"></canvas>
+          <div id="progress-per">0%</div>
+        </div>
+      </div>
+      <div class="today-task-add">
+        <form action="#">
+          <input type="text" name="todayTask" id="" placeholder="할일 추가하기">
+          <span class="material-symbols-outlined btn-plus">
+            add_circle
+          </span>
+        </form>
+      </div>
+
+      <section class="today-section">
+        <div class="today-task-add-spec">
+          <!-- today todo Form -->
+          <form action="{% url 'todos:create' %}" method="post" id="today-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="date" name="when" id="id_when">
+            <input type="text" name="title" value="task title" class="today_task-title">
+            <div class="timepicker-area">
+              <div class="starttime-select">
+                <label for="starttime-pick">시작 시간</label>
+                <input type="text" id="starttime-pick" value="" name="started_at" class="time-pickable" readonly="readonly">
+              </div>
+              <span class="time-tilder">~</span>
+              <div class="endtime-select">
+                <label for="endtime-pick">종료 시간</label>
+                <input type="text" id="endtime-pick" value="" name="expired_at" class="time-pickable" readonly="readonly">
+              </div>
+            </div>
+            <textarea name="content" class="today_task-textarea" id="id_content" cols="30" rows="10"></textarea>
+            <fieldset class="today-task-fileadd">
+              <legend>Image/File</legend>
+              <label for="today-task-imgfile">
+                <div class="loaded-file"></div>
+                <div class="upload-none">
+                  <span class="attach_img-icon material-symbols-outlined">imagesmode</span>
+                  사진/파일을 첨부하세요
+                </div>
+              </label>
+              <input type="file" name="file" class="today_task-img" id="today-task-imgfile">
+            </fieldset>
+            <div class="btn-area">
+              <div class="keyword-box">
+                <span>keyword</span>
+              </div>
+              <button type="submit" class="btn">할일 추가</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+
+    <div class="box-area">
+      <div class="box today-task-area">
+        <ul class="today-task-list">
+          {% for todo in today_todos %}
+            <li class="task">
+              <!-- <a class="task-btn btn-edit">수정</a> <a class="task-btn btn-del">삭제</a> -->
+              <p class="task-cont">{{ todo.title }}</p>
+              <input type="checkbox" name="task-chb1" id="task-chb1">
+              <label for="task-chb1" class="task-chb"></label>
+            </li>
+          {% endfor %}
+
+          <!-- <li class="task activate"> <a class="task-btn btn-edit">수정</a> <a class="task-btn btn-del">삭제</a> <p class="task-cont">task</p> <input type="checkbox" name="task-chb1" id="task-chb1"> <label for="task-chb1" class="task-chb"></label> </li> -->
+          <div class="task-btn-area">
+            <a class="task-btn btn-edit material-symbols-outlined">
+              edit
+            </a>
+            <a class="task-btn btn-del material-symbols-outlined">
+              delete_forever
+            </a>
+          </div>
+          <li class="task">
+            <p class="task-cont">task</p>
+            <input type="checkbox" name="task-chb2" id="task-chb2">
+            <label for="task-chb2" class="task-chb"></label>
+          </li>
+        </ul>
+
+        <div class="today-timetable">
+          <div class="timetable-col">
+            <div class="timetable-hour">
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min "></p>
+            </div>
+            <div class="timetable-hour">
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min activate"></p>
+              <p class="timetable-min activate"></p>
+            </div>
+            <div class="timetable-hour">
+              <p class="timetable-min activate"></p>
+              <p class="timetable-min activate"></p>
+              <p class="timetable-min activate"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+              <p class="timetable-min"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box today-section" id="task-detail">
+        <div class="today-task-view-spec">
+          <form action="" method="post" id="today-detail-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="date" name="when" id="id_when">
+            <input type="text" name="title" value="task title" class="today_task-title">
+            <div class="timepicker-area">
+              <div class="starttime-select">
+                <label for="starttime-pick">시작 시간</label>
+                <input type="text" id="starttime-pick" value="" name="start" class="time-pickable" readonly="readonly">
+              </div>
+              <span class="time-tilder">~</span>
+              <div class="endtime-select">
+                <label for="endtime-pick">종료 시간</label>
+                <input type="text" id="endtime-pick" value="" name="end" class="time-pickable" readonly="readonly">
+              </div>
+            </div>
+            <textarea name="content" class="today_task-textarea" id="id_content" cols="30" rows="10"></textarea>
+            <fieldset class="today-task-fileadd">
+              <legend>Image/File</legend>
+              <label for="today-task-imgfile">
+                <div class="loaded-file"></div>
+                <div class="upload-none">
+                  <span class="attach_img-icon material-symbols-outlined">imagesmode</span>
+                  사진/파일을 첨부하세요
+                </div>
+              </label>
+              <input type="file" name="todoimg" class="today_task-img" id="today-task-imgfile">
+            </fieldset>
+            <div class="btn-area">
+              <div class="keyword-box">
+                <span>keyword</span>
+              </div>
+              <button type="submit" class="btn">수정</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- today-study-area -->
+      <div class="box today-study-area">
+        <span class="open-icon material-symbols-outlined">
+          arrow_back_ios_new
         </span>
-      </form>
-    </div>
-
-    <section class="today-section">
-      <div class="today-task-add-spec">
-        <!-- today todo Form -->
-        <form action="{% url 'todos:create' %}" method="post" id="today-form">
-          {% csrf_token %}
-          <input type="date" name="when" id="id_when">
-          <input type="text" name="title" value="task title" class="today_task-title">
-          <div class="timepicker-area">
-            <div class="starttime-select">
-              <label for="starttime-pick">시작 시간</label>
-              <input type="text" id="starttime-pick" value="" name="started_at" class="time-pickable"
-                readonly="readonly">
-            </div>
-            <span class="time-tilder">~</span>
-            <div class="endtime-select">
-              <label for="endtime-pick">종료 시간</label>
-              <input type="text" id="endtime-pick" value="" name="expired_at" class="time-pickable" readonly="readonly">
-            </div>
-          </div>
-          <textarea name="content" class="today_task-textarea" id="id_content" cols="30" rows="10"></textarea>
-          <input type="file" name="image" class="today_task-img" id="id_image">
-          <div class="btn-area">
-            <div class="keyword-box">
-              <span>keyword</span>
-            </div>
-            <button type="submit" class="btn">할일 추가</button>
-          </div>
-        </form>
-      </div>
-    </section>
-  </div>
-
-  <div class="box-area">
-    <div class="box today-task-area">
-      <ul class="today-task-list">
-        {% for todo in today_todos %}
-        <li class="task">
-          <!-- <a class="task-btn btn-edit">수정</a> <a class="task-btn btn-del">삭제</a> -->
-          <p class="task-cont">{{ todo.title }}</p>
-          <input type="checkbox" name="task-chb1" id="task-chb1">
-          <label for="task-chb1" class="task-chb"></label>
-        </li>
-        {% endfor %}
-
-        <!-- <li class="task activate"> <a class="task-btn btn-edit">수정</a> <a class="task-btn btn-del">삭제</a> <p class="task-cont">task</p> <input type="checkbox" name="task-chb1" id="task-chb1"> <label for="task-chb1" class="task-chb"></label> </li> -->
-        <div class="task-btn-area">
-          <a class="task-btn btn-edit material-symbols-outlined">
-            edit
-          </a>
-          <a class="task-btn btn-del material-symbols-outlined">
-            delete_forever
-          </a>
-        </div>
-        <li class="task">
-          <p class="task-cont">task</p>
-          <input type="checkbox" name="task-chb2" id="task-chb2">
-          <label for="task-chb2" class="task-chb"></label>
-        </li>
-      </ul>
-
-      <div class="today-timetable">
-        <div class="timetable-col">
-          <div class="timetable-hour">
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min "></p>
-          </div>
-          <div class="timetable-hour">
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min activate"></p>
-            <p class="timetable-min activate"></p>
-          </div>
-          <div class="timetable-hour">
-            <p class="timetable-min activate"></p>
-            <p class="timetable-min activate"></p>
-            <p class="timetable-min activate"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-          </div>
+        <div class="study-tasklist-area">
+          <h3 class="tit">Study</h3>
+          <ul class="study-task-list">
+            <li class="task">task</li>
+          </ul>
         </div>
       </div>
-    </div>
-    <div class="box today-section" id="task-detail">
-      <div class="today-task-view-spec">
-        <form action="" method="post" id="today-detail-form">
-          {% csrf_token %}
-          <input type="date" name="when" id="id_when">
-          <input type="text" name="title" value="task title" class="today_task-title">
-          <div class="timepicker-area">
-            <div class="starttime-select">
-              <label for="starttime-pick">시작 시간</label>
-              <input type="text" id="starttime-pick" value="" name="start" class="time-pickable" readonly="readonly">
-            </div>
-            <span class="time-tilder">~</span>
-            <div class="endtime-select">
-              <label for="endtime-pick">종료 시간</label>
-              <input type="text" id="endtime-pick" value="" name="end" class="time-pickable" readonly="readonly">
-            </div>
-          </div>
-          <textarea name="content" class="today_task-textarea" id="id_content" cols="30" rows="10"></textarea>
-          <input type="file" name="image" class="today_task-img" id="id_image">
-          <div class="btn-area">
-            <div class="keyword-box">
-              <label for="keyword">키워드</label>
-              <input type="text" id="keyword" value="" name="tag" class="text">
-            </div>
-            <button type="submit" class="btn">수정</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    <!-- <div class="box today-study-area"> <h3 class="tit">Study</h3> <ul class="study-task-list"> <li class="task">task</li> </ul> </div> -->
-  </div>
 
-</div>
+      <!-- <div class="box today-study-area"> <h3 class="tit">Study</h3> <ul class="study-task-list"> <li class="task">task</li> </ul> </div> -->
+    </div>
+
+  </div>
 </div>
 
 <script>
@@ -172,12 +205,12 @@
       .forEach(timePickable => {
         let activePicker = null;
         timePickable.addEventListener("focus", () => {
-          if (activePicker)
+          if (activePicker) 
             return;
-
+          
           activePicker = show(timePickable);
 
-          const onClickAway = ({ target }) => {
+          const onClickAway = ({target}) => {
             if (target === activePicker || target === timePickable || activePicker.contains(target)) {
               return;
             }
@@ -196,8 +229,7 @@
 
   function show(timePickable) {
     const picker = buildPicker(timePickable);
-    const { bottom: top, left } = timePickable.getBoundingClientRect();
-    console.log({ bottom: top, left });
+    const {bottom: top, left} = timePickable.getBoundingClientRect();
     document
       .body
       .appendChild(picker);
@@ -214,7 +246,6 @@
 
   function buildPicker(timePickable) {
 
-    console.log(timePickable);
     const todayFormArea = document.querySelector('.today-task-add-spec');
 
     const picker = document.createElement("div");
@@ -283,12 +314,11 @@
       .addEventListener("change", () => timePickable.value = getTimeStringFromPicker(picker));
 
     if (timePickable.value) {
-      const { hour, minute, meridiem } = getTimePartsFromPickable(timePickable);
+      const {hour, minute, meridiem} = getTimePartsFromPickable(timePickable);
 
       selects.hour.value = hour;
       selects.minute.value = minute;
     }
-    console.log(picker);
 
     return picker;
   }
@@ -299,13 +329,13 @@
       .from(timePickable.value.match(pattern))
       .splice(1);
 
-    return { hour, minute };
+    return {hour, minute};
   }
 
   function getSelectsFromPicker(timePicker) {
     const [hour, minute] = timePicker.querySelectorAll(".time-picker__select");
 
-    return { hour, minute };
+    return {hour, minute};
   }
 
   function getTimeStringFromPicker(timePicker) {
@@ -324,4 +354,52 @@
 
   activate();
 </script>
+
+<!-- file input 표시 -->
+<script>
+  let uploadFile = document.getElementById("today-task-imgfile");
+  let loadedFile = document.querySelector(".loaded-file")
+  const noneFile = document.querySelector(".upload-none")
+
+  loadedFile.style.display = "none";
+
+  uploadFile.onchange = () => {
+    noneFile.style.display = "none";
+    loadedFile.style.display = "block";
+    let uploadFileName = uploadFile
+      .files[0]
+      .name;
+    loadedFile.innerText = `${uploadFileName}`;
+  }
+</script>
+
+<!-- study todo div -->
+<script>
+  const studyArea = document.querySelector('.today-study-area')
+  const openStudyArea = document.querySelector('.study-tasklist-area')
+  const openIcon = document.querySelector('.open-icon')
+  const taskArea = document.querySelector('.today-task-area')
+
+  studyArea.addEventListener('click', () => {
+    if (openStudyArea.style.display === "none") {
+      studyArea.style.width = "30%";
+      studyArea.style.justifyContent = "space-between";
+      openStudyArea.style.display = "block";
+      openStudyArea.style.width = "380px";
+      openStudyArea.style.alignSelf = "start";
+      openIcon.style.transform = "rotate(180deg)";
+      taskArea.style.width = "70%";
+      taskArea.style.transition = "0.8s ease";
+    } else {
+      openStudyArea.style.display = "none";
+      openIcon.style.transform = "rotate(-360deg)";
+      taskArea.style.width = "95%";
+      studyArea.style.transition = "0.8s ease";
+      studyArea.style.justifyContent = "center";
+      studyArea.style.width = "5%";
+      studyArea.style.display = "flex";
+    }
+  });
+</script>
+
 {% endblock body %}
