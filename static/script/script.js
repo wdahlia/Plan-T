@@ -184,13 +184,14 @@ try {
 
 } catch { }
 
+
 try {
+    // 요일 activate
     const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',]
     // weekday.classList.add('activate')
     // weekday.innerText = week[new Date().getDay()]
     const weekdayNow = week[new Date().getDay()];
 
-    // console.log(weekdayNow);
     const weekArea = document.querySelector('.week-area');
     const weekdayAll = document.querySelectorAll('.weekday');
 
@@ -201,80 +202,103 @@ try {
             weekdayAll[i].classList.add('activate');
             const boxWidth = document.querySelector('.box').clientWidth;
             const scrollPos = (boxWidth * i);
-            // const scrollPos = (boxWidth * i) + (boxWidth / 2) + 25;
             weekArea.scrollTo({
                 top: 0,
                 left: scrollPos,
                 behavior: 'smooth'
             });
-
         }
     }
 
 
-} catch { }
-
-try {
+    // 이전, 다음주 변경 비동기
     const weekBtn = document.querySelectorAll('.week-btn');
-    // console.log(weekBtn);
+
     let cnt = 0;
     const weekMove = function (e) {
         e.preventDefault();
-        // console.log(cnt);
         const isPrev = e.target.parentElement.dataset.isPrev;
         let urls = '/todos/week/';
-        let weekCnt = e.target.parentElement.dataset.weekCnt
+        // let weekCnt = e.target.parentElement.dataset.weekCnt
         if (isPrev === 'true') {
             cnt--;
-            // console.log(cnt);
             cnt = String(cnt);
             urls = `${urls}${cnt}`
             e.target.parentElement.setAttribute('data-week-cnt', `${cnt}`)
-
-            // console.log(urls);
-            // console.log(cnt);
         } else {
             cnt++;
-            // console.log(cnt);
             cnt = String(cnt);
             urls = `${urls}${cnt}`
-            // console.log(urls);
-            // console.log(cnt);
             e.target.parentElement.setAttribute('data-week-cnt', `${cnt}`)
         }
         e.target.parentElement.setAttribute('href', `${urls}`);
-        // console.log(e.target.parentElement);
+
+        for (let i = 0; i < 7; i++) {
+            console.log(weekdayNow);
+            console.log(cnt);
+            if (cnt != 0) {
+                weekdayAll[i].classList.remove('activate');
+                weekArea.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                });
+            } else if (weekdayAll[i].innerText === weekdayNow && cnt == 0) {
+                weekdayAll[i].classList.add('activate');
+                const boxWidth = document.querySelector('.box').clientWidth;
+                const scrollPos = (boxWidth * i);
+                weekArea.scrollTo({
+                    top: 0,
+                    left: scrollPos,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+
 
         axios({
             method: 'get',
             url: `${urls}`,
         })
             .then((res) => {
-                // const isPrev = e.target.parentElement.dataset.isPrev;
-                // console.log(e.target.parentElement.dataset.isPrev);
-                console.log(res.data.resJson);
-                // console.log(res.data.resJson.length);
-                let data = res.data.resJson;
-                // console.log(data[1]);
-                resJsonParse = JSON.parse(data[1]);
-                // console.log(resJsonParse[0].fields.title);
-                const tasklist = document.querySelectorAll('.task');
-                const tasktest = document.querySelector('.task-cont-test');
-                console.log(tasklist[3].childNodes[1].innerText);
-                for (let i = 0; i < data.length; i++) {
-                    resJsonParse = JSON.parse(data[i]);
-                    // console.log(resJsonParse.length, i);
-                    if (resJsonParse.length != 0) {
-                        todos = resJsonParse[1].fields;
-                        console.log(todos.title);
-                        tasktest.innerText = todos.title;
 
-                        // for (let j = 0; j < resJsonParse.length; j++) {
-                        //     todos = resJsonParse[j].fields;
-                        //     console.log(todos.title);
-                        //     tasktest.innerText = todos.title;
-                        // }
+                let data = res.data.resJson;
+                jsonParse = JSON.parse(data[1]);
+
+                const tasklist = document.querySelectorAll('.task-list');
+                const tasktest = document.querySelector('.task-cont-test');
+
+                for (let i = 0; i < 7; i++) {
+
+                    while (tasklist[i].hasChildNodes()) {
+                        tasklist[i].removeChild(
+                            tasklist[i].firstChild
+                        )
                     }
+                }
+
+                for (let i = 0; i < data.length; i++) {
+                    jsonParse = JSON.parse(data[i]);
+
+                    if (jsonParse.length != 0) {
+
+                        for (let j = 0; j < jsonParse.length; j++) {
+
+                            tasklist[i].insertAdjacentHTML("beforeend", `
+                            <li class="task">
+                                <p class="task-cont">${jsonParse[j].fields.title}</p>
+                            </li>
+                            `)
+
+                        }
+                    }
+
+                    tasklist[i].insertAdjacentHTML("beforeend", `
+                            <li class="task deactivate">
+                                <p class="task-cont">add task</p>
+                            </li>
+                            `)
                 }
             });
     };
