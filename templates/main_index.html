@@ -46,10 +46,11 @@
           </div>
           <button type="submit" class="btn">로그인</button>
         </form>
-        <a href="{% url 'social:begin' 'google-oauth2' %}">
-          <button class='btn' style='width: 40%'>G+Login</button>
-        </a>
+
         <div class="link-area">
+          <a href="{% url 'social:begin' 'google-oauth2' %}">
+            <button class='btn' style='width: 40%'>G+Login</button>
+          </a>
           <a href="{% url 'accounts:signup' %}">회원가입</a>
           <a href="">아이디/비밀번호 찾기</a>
         </div>
