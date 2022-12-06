@@ -34,21 +34,21 @@
     </div>
   </div>
   <div class="box-area week-area">
-    <p class="task-cont-test">00</p>
 
+    <!-- <p class="task-cont-test">00</p> -->
     {% for todo_list in time_list %}
     <div class="box">
-      <h3 class="tit shd weekday">weekday</h3>
+      <h3 class="tit shd weekday">weekday </h3>
       <ul class="task-list">
         {% for todo in todo_list %}
         <li class="task">
           <p class="task-cont">{{todo.title}}</p>
-          <input type="checkbox" name="task-chb{{forloop.counter}}" id="task-chb{{forloop.counter}}">
-          <label for="task-chb{{forloop.counter}}" class="task-chb"></label>
+          <!-- <input type="checkbox" name="task-chb{{forloop.counter}}" id="task-chb{{forloop.counter}}">
+          <label for="task-chb{{forloop.counter}}" class="task-chb"></label> -->
         </li>
         {% endfor %}
         <li class="task deactivate">
-          <p class="task-cont">task</p>
+          <p class="task-cont">add task</p>
           <!-- <input type="checkbox" name="task-chb0" id="task-chb0"> <label for="task-chb0" class="task-chb"></label> -->
         </li>
       </ul>
