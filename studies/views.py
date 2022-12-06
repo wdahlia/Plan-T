@@ -3,6 +3,7 @@ from .models import Study
 from .forms import StudyForm, StudyTodoForm
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -47,6 +48,7 @@ def detail(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
     user = request.user
     check = False
+    print(len(study.participated.all()))
     if study in user.join_study.all():
         check = True
     context = {
@@ -76,14 +78,19 @@ def join(request, study_pk):
 def accept(request, user_pk, study_pk):
     user = get_object_or_404(get_user_model(), pk=user_pk)
     study = get_object_or_404(Study, pk=study_pk)
+
     # 강퇴
     if user.join_study.filter(pk=study_pk).exists():
         user.join_study.remove(study)
         is_accepted = False
     # 수락 or 초대
     else:
-        user.join_study.add(study)
-        is_accepted = True
+        if study.max_people >= len(study.participated.all()):
+            user.join_study.add(study)
+            is_accepted = True
+        else:
+            messages.error(request, "최대 인원을 초과하였습니다.")
+            return redirect("studies:detail", study_pk)
     context = {
         "is_accepted": is_accepted,
         "studyCount": user.join_study.count(),
