@@ -24,7 +24,7 @@
                                 <label for="starttime-pick">시작 시간</label>
                                 <input type="text" id="starttime-pick" value="" name="start" class="time-pickable" readonly>
                             </div>
-                            <span class="time-tilder">~</span>
+                            <div class="time-tilder">~</div>
                             <div class="endtime-select">
                                 <label for="endtime-pick">종료 시간</label>
                                 <input type="text" id="endtime-pick" value="" name="end" class="time-pickable" readonly>
@@ -41,7 +41,7 @@
                                     사진/파일을 첨부하세요
                                 </div>
                             </label>
-                            <input type="file" name="" class="today_task-img" id="today-task-imgfile">
+                            <input type="file" name="todoimg" class="today_task-img" id="today-task-imgfile">
                         </fieldset>
                     </form>
                 </div>
@@ -66,14 +66,14 @@
     </script>
     <!-- section -->
     <script>
-        const title = document.querySelector('.today_task-title')
-        title.addEventListener('click', () => {
-            title.style.color = "blue";
-            title.style.transition = "0.3s";
-            setTimeout(() => {
-                title.style.color = "var(--txt)";
-            }, 3000);
-        });
+        // const title = document.querySelector('.today_task-title')
+        // title.addEventListener('click', () => {
+        //     title.style.color = "blue";
+        //     title.style.transition = "0.3s";
+        //     setTimeout(() => {
+        //         title.style.color = "var(--txt)";
+        //     }, 3000);
+        // });
         function activate() {
             document.head.insertAdjacentHTML("beforeend", `
                 <style>
@@ -239,16 +239,27 @@
 
             return `<li><button type="button" onclick="changeTime(this)">${padded}</button></li>`;
         }
+        
+        const hourPicker = document.querySelector(".hour-picker__button")
+        const startPicker = document.getElementById("starttime-pick")
+        const endPicker = document.getElementById("endtime-pick")
+        const minutePicker = document.querySelector(".minute-picker__button")
+        
+        startPicker.addEventListener('click', changeTime());
+        endPicker.addEventListener('click', changeTime()); 
 
         function changeTime(e) {
+            console.log(e)
             if (e.parentNode.parentNode.classList == "hour-picker__select") {
-                const hourPicker = document.querySelector(".hour-picker__button")
                 hourPicker.innerText = e.innerText
-                const startPicker = document.querySelector("#starttime-pick")
-                startPicker.value = e.innerText
             } else {
-                const minutePicker = document.querySelector(".minute-picker__button")
                 minutePicker.innerText = e.innerText
+            }
+
+            if (startPicker) {
+                startPicker.value = hourPicker.innerText + ":" + minutePicker.innerText
+            } else {
+                endPicker.value = hourPicker.innerText + ":" + minutePicker.innerText
             }
         }
 
