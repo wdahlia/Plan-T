@@ -221,7 +221,7 @@ def week_asyn(request, few_week):
     for i in range(7):
         temp = week + timedelta(days=i)
         # RuntimeWarning: 이 나온다.
-        temp_time = temp.strftime("%Y-%m-%d") + " 09:00:00"
+        temp_time = temp.strftime("%Y-%m-%d")
         time_list.append(Todos.objects.filter(when=temp_time))
         res_json = serializers.serialize("json", Todos.objects.filter(when=temp_time))
         # print(res_json)
