@@ -17,7 +17,7 @@ class Study(models.Model):
     participated = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="participate"
     )
-    start_at = models.DateField(auto_now_add=True)
+    start_at = models.DateField(default=str(now)[:10])  # 경고창이 떠서 now의 형식을 바꿈
     end_at = models.DateField(default=(now + relativedelta(months=6)))
 
     @property

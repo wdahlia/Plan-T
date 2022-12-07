@@ -16,10 +16,6 @@ def index(request):
     else:
         category_studies = Study.objects.filter(category=category)
 
-    print(category)
-    print("--------------------")
-    for c in category_studies:
-        print(c.participated.all())
     context = {"category_studies": category_studies}
 
     return render(request, "studies/working/study_index.html", context)
@@ -29,21 +25,18 @@ def index(request):
 def create(request):
     if request.method == "POST":
         studyform = StudyForm(request.POST)
-        # start, end = (
-        #     request.POST.get("start_at"),
-        #     request.POST.get("end_at"),
-        # )
-        # print(start, end)
-        # print(start)
-        # print(end)
         if studyform.is_valid():
             form = studyform.save(commit=False)
-            # if start is not None:
-            #     form.start_at = (
-            #         start  # auto로 시간 저장하는 시점이 저장되는 순간인듯. 동근이가 해결한 방법으로 다시 해야 할뜻
-            #     )
-            # if end is not None:
-            #     form.end_at = end
+            # 시간저장(선택)
+            start, end = (
+                request.POST.get("start_at"),
+                request.POST.get("end_at"),
+            )
+            if start != "":
+                form.start_at = start
+            if end != "":
+                form.end_at = end
+            #
             form.owner = request.user
             form.save()
 
@@ -127,17 +120,3 @@ def accept(request, user_pk, study_pk):
         "studyCount": user.join_study.count(),
     }
     return redirect("studies:detail", study_pk)
-
-
-# # 검증하는 시스템 대략적으로 만들어 봄
-# def test(request, user_pk, study_pk):
-#     user = get_object_or_404(get_user_model(), pk=user_pk)
-#     study = get_object_or_404(Study, pk=study_pk)
-#     # 이 부분 되는지 테스트 필요
-#     # 만약 study에서 user를 가입 허용목록에 있으면
-#     if user in study.participated:
-#         pass  # 환영합니다.
-#     else:
-#         return ()  # 들어가지 못하게
-#     context = {}
-#     return JsonResponse(context)
