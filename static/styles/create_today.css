@@ -4,12 +4,16 @@
 
 /* todayList Form */
 
-#today-form,
-#today-detail-form,
-#create-study-form {
-	display: flex;
-	flex-direction: column;
-	position: relative;
+
+#today-form, 
+#today-detail-form, 
+#create-study-form, 
+#study-detail-area, 
+#update-study-form {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
 }
 
 #today-form .today_task-title,

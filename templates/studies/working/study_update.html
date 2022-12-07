@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>study update</title>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="../../../static/styles/init.css">
+  <link rel="stylesheet" href="../../../static/styles/study.css">
+</head>
+<body>
+
+  <div class="container" id="update-study-area">
+    <div class="box">
+      <form action="" method="post" id="update-study-form">
+        <!-- 스터디 title -->
+        <label for="update-study-name"># 스터디 이름</label>
+        <input type="text" name="" value="" placeholder="" class="update-study-title" id="update-study-name"> 
+      
+        <!-- 스터디 category -->
+        <fieldset class="study-update-categories">
+          <legend># 카테고리</legend>
+          <div class="categories-area">
+            <input type="radio" name="ct" id="ct0">
+            <label for="ct0">생활</label>
+            <input type="radio" name="ct" id="ct1">
+            <label for="ct1">IT/개발</label>
+            <input type="radio" name="ct" id="ct2">
+            <label for="ct2">외국어</label>
+            <input type="radio" name="ct" id="ct3">
+            <label for="ct3">인문</label>
+            <input type="radio" name="ct" id="ct4">
+            <label for="ct4">수능</label>
+            <input type="radio" name="ct" id="ct5">
+            <label for="ct5">취업</label>
+            <input type="radio" name="ct" id="ct6">
+            <label for="ct6">면접</label>
+            <input type="radio" name="ct" id="ct7">
+            <label for="ct7">기타</label>
+          </div>
+        </fieldset>
+
+        <!-- 스터디 인원 -->
+        <label for="update-members-num"># 스터디 인원</label>
+        <input type="number" name="" value="2" min="2" max="" id="update-members-num">
+
+        <!-- 스터디 소개 -->
+        <label for="update-info-text"># 스터디 소개</label>
+        <textarea name="" id="update-info-text" cols="30" rows="10"></textarea>
+
+        <!-- 시작일, 종료일-->
+        <div class="study-update-datepicker">
+          <fieldset class="study-start-picker">
+            <legend># 시작일</legend>
+            <input type="date" name="" id="study-start-date">
+          </fieldset>
+          <fieldset class="study-end-picker">
+            <legend># 종료일</legend>
+            <input type="date" name="" id="study-end-date">
+          </fieldset>
+        </div>
+
+        <!-- 수정, 취소 버튼 -->
+        <div class="edit-btn-area">
+          <input type="submit" value="수정" class="study-edit-btn">
+          <a href="./study_info.html" class="edit-cancel-btn">취소</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+</body>
+</html>

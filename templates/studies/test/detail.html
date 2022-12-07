@@ -6,20 +6,29 @@
 
 <div>
   <h3>스터디 디테일</h3>
-  <a href="{% url 'studies:join' study.pk %}">가입</a>
-  <div>----------</div>
-  <h3>가입 신청한 유저</h3>
-  {% for user in study.participated.all %}
-  <p>{{user.pk}}</p>
-  <a href="{% url 'studies:accept' study.pk user.pk%}">받아주기</a>
-  {% endfor %}
-  <div>----------</div>
-  <h3>{{check}}</h3>
-  <form action="{% url 'studies:create_todos' study.pk %}" method="post">
-    <p>스터디 투두 만들기</p>
-    {% csrf_token %}
-    {{ study_todo_form }}
-    <button type="submit">만들기</button>
-  </form>
+  {% comment %} 방장이 아닌 사람만 가입 버튼이 보인다. {% endcomment %}
+  {% if request.user != study.owner %}
+    <a href="{% url 'studies:join' study.pk %}">가입</a>
+  {% endif %}
+  {% comment %} 방장만 가입 신청란, 투두 생성이 보여야 한다. {% endcomment %}
+  {% if request.user == study.owner %}
+    <div>----------</div>
+    <h3>가입 신청한 유저</h3>
+    {% for applicant in study.participated.all %}
+      {% comment %} 방장은 제외시켜야 한다. {% endcomment %}
+      {% if applicant != study.owner %}
+        <p>신청한 유저의 pk : {{applicant.pk}}</p>
+        <a href="{% url 'studies:accept' study.pk applicant.pk%}">받아주기</a>
+      {% endif %}
+    {% endfor %}
+    <div>----------</div>
+    <h3>{{check}}</h3>
+    <form action="{% url 'studies:create_todos' study.pk %}" method="post">
+      <p>스터디 투두 만들기</p>
+      {% csrf_token %}
+      {{ study_todo_form }}
+      <button type="submit">만들기</button>
+    </form>
+  {% endif %}
 </div>
 {% endblock body %}

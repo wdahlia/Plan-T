@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model as User
 from .forms import TodosForm
-from .models import Todos
+from .models import Todos, Tag
 from datetime import datetime, timedelta
 from django.contrib import messages
 from .function import change_value
@@ -32,7 +32,7 @@ def today(request):
             time_list.append([])
             time_list[-1].append(start)
             time_list[-1].append(time)
-    print(time_list)
+
     todosForm = TodosForm()
 
     if request.method == "POST":
@@ -54,10 +54,10 @@ def today(request):
 
 def create(request):
     if request.method == "POST":
-        start, end, tag = (
+        start, end, tags = (
             request.POST.get("started_at"),
             request.POST.get("expired_at"),
-            request.POST.get("tag"),
+            request.POST.get("tags"),
         )
         todoForm = TodosForm(request.POST, request.FILES)
 
@@ -96,9 +96,12 @@ def create(request):
                 start,
                 end,
             )
-            if tag is not None:
-                todo.tags.add(tag)
-            todo.save()
+            td = todo.save()
+            if tags != "":
+                taglist = list(tags.replace(" ", "").split(","))
+                for t in taglist:
+                    Tag.objects.create(todo=td.pk, content=t)
+
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:
         messages.warning(request, "잘 못 된 접근입니다.")
@@ -116,11 +119,11 @@ def update(request, pk):
     todo = get_object_or_404(Todos, pk=pk)
     if request.method == "POST":
         todoForm = TodosForm(request.POST, request.FILES, instance=todo)
-        start, end, when, tag = (
+        start, end, when, tags = (
             request.POST.get("started_at"),
             request.POST.get("expired_at"),
             request.POST.get("when"),
-            request.POST.get("tag"),
+            request.POST.get("tags"),
         )
 
         user = request.user
@@ -159,7 +162,11 @@ def update(request, pk):
                 end,
             )
             todo.tags.add(tag)
-            todo.save()
+            td = todo.save()
+            if tags != "":
+                taglist = list(tags.replace(" ", "").split(","))
+                for t in taglist:
+                    Tag.objects.create(todo=td.pk, content=t)
         return redirect("todos:today")
     else:
         todoForm = TodosForm(instance=todo)
@@ -316,7 +323,7 @@ def is_completed(request):
         # JSON 데이터 받음
         data = json.loads(request.body)
 
-        # 변경된 값이랑 어떤 todo 인지 특정할 수 있는 id 값 
+        # 변경된 값이랑 어떤 todo 인지 특정할 수 있는 id 값
         is_completed = data.get("is_completed")
         todoId = data.get("todoId")
 
@@ -328,8 +335,6 @@ def is_completed(request):
         obj.save()
 
         # 변경된 값으로 응답
-        context = {
-            "is_completed": is_completed
-        }
+        context = {"is_completed": is_completed}
 
         return JsonResponse(context)
