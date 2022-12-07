@@ -4,7 +4,11 @@
 
 /* todayList Form */
 
-#today-form, #today-detail-form, #create-study-form {
+#today-form, 
+#today-detail-form, 
+#create-study-form, 
+#study-detail-area, 
+#update-study-area {
   display: flex;
   flex-direction: column;
   position: relative;

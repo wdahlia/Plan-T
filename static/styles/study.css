@@ -1,0 +1,291 @@
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700;900&display=swap");
+@import url(./fontall.css);
+@import url(./main.css);
+@import url(./create_today.css);
+
+#create-study-form,
+#study-detail-area,
+#update-study-area { 
+  margin: 2rem;
+}
+
+/* study, detail studyname input */
+#create-study-form input[id="create-study-name"],
+#study-detail-area input[id="study-detail-name"],
+#study-update-form input[id="update-study-name"] {
+    width: 100%;
+    border-radius: 15px;
+    padding: 15px;
+    background-color: var(--bg);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+    font-size: medium;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+}
+
+
+#create-study-form .study-create-categories,
+#study-detail-area .study-detail-categories,
+#study-update-form .study-update-categories {
+  margin-bottom: 2.5rem;
+  border-radius: 10px;
+}
+
+/* create study label */
+#create-study-form label[for="create-study-name"],
+#create-study-form .study-create-categories legend,
+.study-datepicker .study-start-picker legend,
+.study-datepicker .study-end-picker legend,
+#create-study-form label[for="study-members-num"],
+#create-study-form label[for="study-info-text"]{
+  font-size: 18px;
+  letter-spacing: -1px;
+  color: var(--main);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* study detail label */
+#study-detail-area label[for="study-detail-name"],
+#study-detail-area .study-detail-categories legend,
+.study-detail-datepicker .study-start-picker legend,
+.study-detail-datepicker .study-end-picker legend,
+#study-detail-area label[for="study-members-num"],
+#study-detail-area label[for="study-info-text"]{
+  font-size: 18px;
+  letter-spacing: -1px;
+  color: var(--main);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* update study label */
+#update-study-form label[for="update-study-name"],
+#update-study-form .study-update-categories legend,
+.study-datepicker .study-start-picker legend,
+.study-datepicker .study-end-picker legend,
+#update-study-form label[for="update-members-num"],
+#update-study-form label[for="update-info-text"]{
+  font-size: 18px;
+  letter-spacing: -1px;
+  color: var(--main);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+
+#study-detail-area .categories-area,
+#create-study-form .categories-area {
+  font-family: "NanumSquareNeo";
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#study-detail-area .study-detail-categories input[type="radio"],
+#create-study-form .study-create-categories input[type="radio"] {
+  display: none;
+}
+
+#study-detail-area .study-detail-categories input[type="radio"]:checked + label,
+#create-study-form .study-create-categories input[type="radio"]:checked + label {
+  background-color: var(--main);
+  color: var(--txt);
+
+}
+
+#study-detail-area .study-detail-categories label,
+#create-study-form .study-create-categories label {
+  padding: 0.7rem 1rem;
+  border-radius: 20px;
+  text-align: center;
+  color: var(--txtgr);
+  vertical-align: middle;
+  font-weight: 700;
+  letter-spacing: -.8px;
+}
+
+#study-detail-area .study-detail-categories label:hover,
+#create-study-form .study-create-categories label:hover {
+  background-color: var(--deact);
+  color: var(--txt);
+}
+
+/* study 인원 */
+
+#study-detail-area .members-area {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#study-detail-area .study-membernum {
+  width: 200px;
+  background-color: var(--deact);
+  padding: 0.8rem 1rem;
+  border-radius: 20px;
+  text-align: center;
+}
+
+#study-detail-area .members-area span {
+  font-weight: 700;
+  font-size: 23px;
+  color: var(--gr-dark);
+}
+
+#study-detail-area .total span {
+  align-self: end;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+#study-detail-area .study-totalnum,
+#create-study-form input[type="number"] {
+  width: 200px;
+  background-color: var(--sub);
+  padding: 0.8rem 1rem;
+  border-radius: 20px;
+  text-align: center;
+}
+
+/* study textarea */
+
+#create-study-form label[for="study-info-text"],
+#study-detail-area label[for="study-info-text"] {
+  margin-top: 2.5rem;
+}
+
+#create-study-form textarea[id="study-info-text"],
+#study-detail-area textarea[id="study-info-text"] {
+  background-color: var(--bg);
+  border: none;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  outline: none;
+  resize: none;
+  padding: 15px;
+  margin-bottom: 2.5rem;
+}
+
+/* date 생성 */
+#create-study-form .study-datepicker,
+#study-detail-area .study-detail-datepicker {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#create-study-form input[id="study-start-date"],
+#create-study-form input[id="study-end-date"],
+#study-detail-area input[id="study-start-date"],
+#study-detail-area input[id="study-end-date"] {
+  font-family: "NanumSquareNeo";
+  padding: 0.9rem;
+  border: 2px solid var(--main);
+  border-radius: 20px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+
+.study-datepicker .study-start-picker,
+.study-datepicker .study-end-picker,
+.study-detail-datepicker .study-start-picker,
+.study-detail-datepicker .study-end-picker{
+  margin: 0 50px;
+  border-radius: 15px;
+}
+
+
+
+/* 스터디 생성, 취소 버튼 */
+
+#create-study-form .study-btn-area {
+  margin-top: 7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#create-study-form .study-btn-area .study-create-btn,
+#create-study-form .study-btn-area .study-cancel-btn {
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  margin: 0 1rem;
+  letter-spacing: -1px;
+  font-weight: 700;
+}
+
+#create-study-form .study-btn-area .study-create-btn {
+  background-color: var(--main);
+}
+
+#create-study-form .study-btn-area .study-create-btn:hover {
+  background-color: var(--main-hl);
+}
+
+#create-study-form .study-btn-area .study-cancel-btn {
+  background-color: var(--gr);  
+}
+
+#create-study-form .study-btn-area .study-cancel-btn:hover {
+  background-color: var(--txtgr);  
+}
+
+
+/* study detail 승인, 거절 Area */
+#study-detail-area .approve-members {
+  align-self: center;
+  width: 300px;
+}
+
+#study-detail-area .approve-members li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.5rem 0;
+  background-color: var(--bg);
+  /* border-radius: 8px; */
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+}
+
+#study-detail-area .approve-user-info {
+  position: relative;
+}
+
+#study-detail-area .approve-user-info img {
+  border-radius: 50px;
+}
+
+#study-detail-area .approve-user-info h6 {
+  position: absolute;
+  top: 12px;
+  left: 50px;
+  letter-spacing: -1px;
+  width: 130px;
+  font-size: 14px;
+}
+
+#study-detail-area .approve-members .detail-btn-group {
+  display: flex;
+  align-items: center;
+}
+
+#study-detail-area .detail-btn-group .approval-btn,
+#study-detail-area .detail-btn-group .reject-btn {
+  padding: 0.5rem 0.8rem;
+  border-radius: 10px;
+  /* box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); */
+  margin: 0 0.2rem;
+  letter-spacing: -1px;
+  font-size: 13px;
+}
+
+#study-detail-area .detail-btn-group .approval-btn {
+  background-color: var(--sub);
+}
+
+#study-detail-area .detail-btn-group .reject-btn {
+  background-color: var(--gr-wrn);
+}
