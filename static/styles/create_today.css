@@ -3,21 +3,21 @@
 @import url(./main.css);
 
 /* todayList Form */
-#today-form,
-#today-detail-form {
-	display: flex;
-	flex-direction: column;
-	position: relative;
+
+#today-form, #today-detail-form, #create-study-form {
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 #today-form .today_task-title,
 #today-detail-form .today_task-title {
-	height: 49px;
-	background: var(--bg);
-	border: 2px solid var(--main);
-	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
-	border-radius: 20px;
-	padding: 1rem;
+  height: 49px;
+  background: var(--bg);
+  border: 2px solid var(--main);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 1rem;
 }
 
 #today-form .keyword-box {
