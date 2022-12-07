@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -76,7 +75,9 @@
                     {{study.title}}
                   </div>
                   <div class="people-num">
-                    <span class="participant-num">{{study.participated.all|length}}명</span>
+                    <span class="participant-num">
+                      1명
+                    </span>
                     /
                     <span class="all-num">{{study.max_people}}명</span>
                   </div>
@@ -90,18 +91,18 @@
                 <fieldset class="study-date">
                   <legend>스터디 기간</legend>
                   <div>
-                    {{study.start_at}}
+                    {{study.start_at|date:"Y-m-d"}}
                     ~
-                    {{study.end_at}}
+                    {{study.end_at|date:"Y-m-d"}}
                   </div>
                 </fieldset>
               </div>
               <!-- 디테일 페이지가 아직 안 만들어진거 같아서 처리 안함.-->
               <div class="study-footer">
                 {% if request.user in study.participated.all%}
-                  <a href="{% url 'studies:info' study.pk %}" class="join-btn">진입하기</a>
+                  <a href="{% url 'studies:detail' study.pk %}" class="join-btn">진입하기</a>
                 {% else %}
-                  <a href="{% url 'studies:detail' study.pk %}" class="join-btn">가입하기</a>
+                  <a href="{% url 'studies:info' study.pk %}" class="join-btn">가입하기</a>
                 {% endif %}
               </div>
             </div>

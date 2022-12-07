@@ -82,6 +82,36 @@ def detail(request, study_pk):
     return render(request, "studies/test/detail.html", context)
 
 
+# study.participated.all
+def info(request, study_pk):
+    study = get_object_or_404(Study, pk=study_pk)
+
+    # 가입된 멤버 수
+    member_number = 0
+    # 가입 신청 멤버
+    application_member = []
+    for user in study.participated.all():
+        for study in user.join_study.all():
+            if study.pk == study_pk:
+                member_number += 1
+                break
+        else:
+            application_member.append(user)
+
+    start = str(study.start_at)
+    end = str(study.end_at)
+    context = {
+        "study": study,
+        "study_todo_form": StudyTodoForm(),
+        "start": start,
+        "end": end,
+        "member_number": member_number,
+        "application_member": application_member,
+    }
+
+    return render(request, "studies/working/study_info.html", context)
+
+
 def join(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
     # 탈퇴
@@ -96,7 +126,7 @@ def join(request, study_pk):
         "is_participated": is_participated,
         "studyCount": study.participated.count(),
     }
-    return redirect("studies:detail", study_pk)
+    return redirect("studies:info", study_pk)
 
 
 def accept(request, user_pk, study_pk):
@@ -115,8 +145,18 @@ def accept(request, user_pk, study_pk):
         else:
             messages.error(request, "최대 인원을 초과하였습니다.")
             return redirect("studies:detail", study_pk)
+    # Study 클래스에 member_number추가하면 활성화
+    # # 가입된 멤버 수
+    # member_number = 0
+    # for user in study.participated.all():
+    #     for study in user.join_study.all():
+    #         if study.pk == study_pk:
+    #             member_number += 1
+    #             break
+    # study.member_number = member_number
+    # study.save()
     context = {
         "is_accepted": is_accepted,
         "studyCount": user.join_study.count(),
     }
-    return redirect("studies:detail", study_pk)
+    return redirect("studies:info", study_pk)  # 나중에 detail로
