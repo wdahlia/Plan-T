@@ -9,12 +9,7 @@ now = datetime.now()
 
 
 class Study(models.Model):
-    category_choice = (
-        (1, "발표"),
-        (2, "생활"),
-        (3, "어학"),
-    )
-    category = models.IntegerField(choices=category_choice)
+    category = models.CharField(max_length=10)
     title = models.CharField(max_length=50)
     desc = models.TextField()
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
