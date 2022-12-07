@@ -17,7 +17,9 @@
   <h3>{{check}}</h3>
   <form action="{% url 'studies:create_todos' study.pk %}" method="post">
     <p>스터디 투두 만들기</p>
+    {% csrf_token %}
     {{ study_todo_form }}
+    <button type="submit">만들기</button>
   </form>
 </div>
 {% endblock body %}
