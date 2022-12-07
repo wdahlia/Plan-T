@@ -181,28 +181,31 @@
           </div>
           <div class="btn-area">
             <button type="submit" class="btn">할일 수정하기</button>
-            <a href="" class="btn-del material-symbols-outlined" id="detail-btn-del">
-              delete_forever
-            </a>
-          </div>
+        </form>
+        <form action="" method="post" id="detail-del-form">
+          {% csrf_token %}
+          <button type="submit" class="btn-del material-symbols-outlined" id="detail-btn-del">
+            delete_forever
+          </button>
         </form>
       </div>
     </div>
-
-    <!-- today-study-area -->
-    <div class="box today-study-area">
-      <span class="open-icon material-symbols-outlined">
-        arrow_back_ios_new
-      </span>
-      <div class="study-tasklist-area">
-        <h3 class="tit">Study</h3>
-        <ul class="study-task-list">
-          <li class="task">task</li>
-        </ul>
-      </div>
-    </div>
-
   </div>
+
+  <!-- today-study-area -->
+  <div class="box today-study-area">
+    <span class="open-icon material-symbols-outlined">
+      arrow_back_ios_new
+    </span>
+    <div class="study-tasklist-area">
+      <h3 class="tit">Study</h3>
+      <ul class="study-task-list">
+        <li class="task">task</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
 
 </div>
 </div>

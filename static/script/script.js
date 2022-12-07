@@ -136,6 +136,7 @@ try {
     const detailTit = document.querySelector('#detail-title');
     const detailCont = document.querySelector('#detail-cont');
     const detailBtnDel = document.querySelector('#detail-btn-del');
+    const detailDelForm = document.querySelector('#detail-del-form');
 
     const taskMenu = function (e) {
         // console.log(this.dataset.todoPk);
@@ -164,20 +165,18 @@ try {
                 const idx = nodes.indexOf(this);
 
                 // todo 수정 업데이트 버튼 actions 속성 부여
-                updateUrl = updateUrl + '1';
+                const todoPK = jsonParse[idx].pk;
+                updateUrl = updateUrl + `${todoPK}`;
+                // updateUrl = this.dataset.taskUrl;
                 taskDetailForm.setAttribute('action', `${updateUrl}`);
-                console.log(updateUrl);
 
                 // todo 삭제 버튼 href 속성 부여
-                delUrl = delUrl + '1';
-                console.log(delUrl);
-                detailBtnDel.setAttribute('href', `${delUrl}`);
+                delUrl = delUrl + `${todoPK}`;
+                detailDelForm.setAttribute('action', `${delUrl}`);
 
                 detailTit.value = jsonParse[idx].fields.title;
                 detailCont.value = jsonParse[idx].fields.content;
 
-                // const todoPK = jsonParse[idx].fields.pk;
-                // delUrl = delUrl + `${todoPK}`;
                 ;
             })
 
@@ -330,7 +329,7 @@ try {
     // 실제 데이터가 들어있는 input tags 들을 담을 변수
     let inputTags = [];
     // task 클래스를 가진 녀석들을 다 찾아냄
-    document.querySelectorAll(".task").forEach( 
+    document.querySelectorAll(".task").forEach(
         function (v, i, o) {
             // deactivate 클래스가 없는 녀석들이 곧 입력 데이터들이다.
             if (!v.className.endsWith("deactivate"))
@@ -338,12 +337,12 @@ try {
                 inputTags.push(o[i].children[1]);
         }
     );
-    inputTags.forEach(function (v, i, o) {            
+    inputTags.forEach(function (v, i, o) {
         v.addEventListener("click", () => {
             // 현재 체크 값 및 todo id 값 추출 
             is_completed = (v.checked) ? true : false;
             todoId = v.id.split("task-chb")[1];
-            
+
             // axios post arguments 설정
             url = "/todos/is_completed/";
             data = {
