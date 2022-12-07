@@ -331,13 +331,18 @@ try {
     // task 클래스를 가진 녀석들을 다 찾아냄
     document.querySelectorAll(".task").forEach(
         function (v, i, o) {
-            // deactivate 클래스가 없는 녀석들이 곧 입력 데이터들이다.
-            if (!v.className.endsWith("deactivate"))
-                // 자식들 중 input 태그를 지정함
-                inputTags.push(o[i].children[1]);
+            // 자식들 중 input 태그를 지정함
+            inputTags.push(o[i].children[1]);
         }
     );
-    inputTags.forEach(function (v, i, o) {
+
+    inputTags.forEach(function (v, i, o) {  
+        // 렌더링 되고나서 초기 상태에 따른 활성화 클래스 추가 
+        if (v.checked)
+            v.parentElement.classList.add("deactivate");
+        else
+            v.parentElement.classList.remove("deactivate");
+                
         v.addEventListener("click", () => {
             // 현재 체크 값 및 todo id 값 추출 
             is_completed = (v.checked) ? true : false;
@@ -356,7 +361,13 @@ try {
                 data
             ).then((res) => {
                 // 결과값이 잘 나오는지 출력
-                console.log(res.data.is_completed);
+                // console.log(res.data.is_completed);
+
+                // 결과값에 따른 활성화 클래스 추가 
+                if (res.data.is_completed)
+                    v.parentElement.classList.add("deactivate");
+                else
+                    v.parentElement.classList.remove("deactivate");
             });
         });
     });
