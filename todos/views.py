@@ -100,7 +100,7 @@ def create(request):
             if tags != "":
                 taglist = list(tags.replace(" ", "").split(","))
                 for t in taglist:
-                    Tag.objects.create(todo=td.pk, content=t)
+                    Tag.objects.create(todo=todo, content=t)
 
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:
@@ -161,12 +161,11 @@ def update(request, pk):
                 start,
                 end,
             )
-            todo.tags.add(tag)
-            td = todo.save()
+            todo.save()
             if tags != "":
                 taglist = list(tags.replace(" ", "").split(","))
                 for t in taglist:
-                    Tag.objects.create(todo=td.pk, content=t)
+                    Tag.objects.create(todo=todo, content=t)
         return redirect("todos:today")
     else:
         todoForm = TodosForm(instance=todo)
