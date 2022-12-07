@@ -13,10 +13,8 @@ def index(request):
     # 입력 받은 카테고리 값에 따라서 조건을 건다.
     if category is None:
         category_studies = Study.objects.all()
-    elif category == 1:
-        category_studies = Study.objects.filter(category=1)
-    elif category == 2:
-        category_studies = Study.objects.filter(category=2)
+    else:
+        category_studies = Study.objects.filter(category=category)
     # print(category)
     # print(type(category))
     # for i in category_studies:
@@ -57,8 +55,7 @@ def create_todos(request, study_pk):
         # 날짜도 통신으로 받아온다.
         study = Study.objects.get(pk=study_pk)
         todoForm = StudyTodoForm(request.POST)
-
-        if todoForm.is_valid():
+        if todoForm.is_valid() and study.owner == request.user:
             todo = todoForm.save(commit=False)
             # 스터디원 모두를 위해 생성
             users = study.participated
