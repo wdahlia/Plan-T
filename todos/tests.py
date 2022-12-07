@@ -5,15 +5,8 @@ from django.test import TestCase
 
 # print(c.isdisjoint(a))
 
-# true = c와 a 가 겹치는 게 없다
-from datetime import datetime, timedelta
-
-few_week = 0  # int(few_week)
-next_ = +1
-last_ = -1
-today = datetime.today().weekday() + 1
-now = datetime.now()
-week = now + timedelta(weeks=few_week, days=-(today % 7))
-print("today :", today)
-print("현재 : ", now)
-print("기준 날짜 : ", week)
+tag = "오늘, 아그냥, 호호 호호, 아이아 이"
+if tag != "":
+    tags = list(tag.replace(" ", "").split(","))
+    for t in tags:
+        print(t)
