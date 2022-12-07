@@ -6,8 +6,11 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages
 
 # Create your views here.
+# 스터디 목록
 def index(request):
     category = request.GET.get("category")
+
+    # 입력 받은 카테고리 값에 따라서 조건을 건다.
     if category is None:
         category_studies = Study.objects.all()
     elif category == 1:
@@ -19,26 +22,39 @@ def index(request):
     # for i in category_studies:
     #     print(i.category)
     #     print(type(i.category))
-    context = {"category_studies": category_studies}
+    context = {
+        "category_studies": category_studies
+    }
+
     return render(request, "studies/test/index.html", context)
 
 
+# 스터디 생성
 def create(request):
     if request.method == "POST":
         studyform = StudyForm(request.POST)
+
         if studyform.is_valid():
             form = studyform.save(commit=False)
             form.owner = request.user
             form.save()
+
             return redirect("studies:index")
     else:
         studyform = StudyForm()
-    context = {"studyform": studyform}
+
+    context = {
+        "studyform": studyform
+    }
+
     return render(request, "studies/test/create.html", context)
 
 
+# Study todo 생성
 def create_todos(request, study_pk):
     if request.method == "POST":
+        # URL 로 받은 pk 를 가지고 특정 study 를 가져옴
+        # 날짜도 통신으로 받아온다.
         study = Study.objects.get(pk=study_pk)
         when = request.POST.get("when")
         todoForm = StudyTodoForm(request.POST)
@@ -52,6 +68,7 @@ def create_todos(request, study_pk):
             for user in users:
                 todo.user_id = user
                 todo.save()
+                
         return redirect("studies:index")  # redirect 위치 임시
 
 

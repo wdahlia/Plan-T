@@ -14,6 +14,7 @@ def test(request):
     return render(request, "test/main.html")
 
 
+# 회원가입
 def signup(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
@@ -36,6 +37,7 @@ def signup(request):
     return render(request, "accounts/complete/accounts_form.html", context)
 
 
+# 로그인
 def login(request):
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
@@ -58,7 +60,7 @@ def login(request):
     return render(request, "test/form.html", context)
 
 
-# 데코레이터 추가 필요
+# 로그아웃, 데코레이터 추가 필요
 def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
@@ -67,7 +69,7 @@ def logout(request):
     return redirect("accounts:test")
 
 
-# 데코레이터 추가 필요
+# 회원탈퇴, 데코레이터 추가 필요
 def delete(request):
     if request.user.is_authenticated:
         request.user.delete()
@@ -76,7 +78,7 @@ def delete(request):
     return redirect("accounts:test")
 
 
-# 데코레이터 추가 필요
+# 회원정보 수정, 데코레이터 추가 필요
 def update(request):
     if request.method == "POST":
         form = CustomUserChangeForm(request.user, request.POST)
@@ -102,6 +104,6 @@ def update(request):
     return render(request, "test/form.html", context)
 
 
-# 데코레이터 추가 필요
+# 프로필, 데코레이터 추가 필요
 def profile(request):
     return render(request, "test/profile.html")
