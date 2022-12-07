@@ -29,19 +29,21 @@ def index(request):
 def create(request):
     if request.method == "POST":
         studyform = StudyForm(request.POST)
-        start, end = (
-            request.POST.get("start_at"),
-            request.POST.get("end_at"),
-        )
-
+        # start, end = (
+        #     request.POST.get("start_at"),
+        #     request.POST.get("end_at"),
+        # )
+        # print(start, end)
+        # print(start)
+        # print(end)
         if studyform.is_valid():
             form = studyform.save(commit=False)
-            if start is not None:
-                form.start_at = (
-                    start  # auto로 시간 저장하는 시점이 저장되는 순간인듯. 동근이가 해결한 방법으로 다시 해야 할뜻
-                )
-            if end is not None:
-                form.end_at = end
+            # if start is not None:
+            #     form.start_at = (
+            #         start  # auto로 시간 저장하는 시점이 저장되는 순간인듯. 동근이가 해결한 방법으로 다시 해야 할뜻
+            #     )
+            # if end is not None:
+            #     form.end_at = end
             form.owner = request.user
             form.save()
 
@@ -82,12 +84,8 @@ def detail(request, study_pk):
     if study in user.join_study.all():
         check = True
 
-    context = {
-        "study": study, 
-        "check": check, 
-        "study_todo_form": StudyTodoForm()
-    }
-    
+    context = {"study": study, "check": check, "study_todo_form": StudyTodoForm()}
+
     return render(request, "studies/test/detail.html", context)
 
 
