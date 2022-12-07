@@ -1,22 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>study create</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
-    <link rel="stylesheet" href="../../../static/styles/init.css">
-    <link rel="stylesheet" href="../../../static/styles/study.css">
-  </head>
-
-  <body>
 
     <div class="container" id="create-study-area">
       <div class="box">
         <form action="" method="post" id="create-study-form">
           {% csrf_token %}
+          <a href="./study_update.html" class="update-direct-icon">
+            <span class="material-symbols-outlined">edit_note</span>
+          </a>
+          
           <!-- 스터디 title -->
           <label for="create-study-name"># 스터디 이름</label>
           <input type="text" name="title" value="" placeholder="" class="create-study-title" id="create-study-name">
@@ -43,12 +36,15 @@
               <label for="ct7">기타</label>
             </div>
           </fieldset>
+          
           <!-- 스터디 인원 -->
           <label for="study-members-num"># 스터디 인원</label>
           <input type="number" name="max_people" value="2" min="2" max="" id="study-members-num">
+          
           <!-- 스터디 소개 -->
           <label for="study-info-text"># 스터디 소개</label>
           <textarea name="desc" id="study-info-text" cols="30" rows="10"></textarea>
+          
           <!-- 시작일, 종료일-->
           <div class="study-datepicker">
             <fieldset class="study-start-picker">
@@ -62,7 +58,6 @@
           </div>
 
           <!-- 생성, 취소 버튼 -->
-
           <div class="study-btn-area">
             <input type="submit" value="생성" class="study-create-btn">
             <a href="./study_index.html" class="study-cancel-btn">취소</a>

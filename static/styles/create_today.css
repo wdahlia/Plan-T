@@ -8,7 +8,7 @@
 #today-detail-form, 
 #create-study-form, 
 #study-detail-area, 
-#update-study-area {
+#update-study-form {
   display: flex;
   flex-direction: column;
   position: relative;

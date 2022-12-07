@@ -3,16 +3,18 @@
 @import url(./main.css);
 @import url(./create_today.css);
 
-#create-study-form,
+#create-study-form {
+  margin: 0rem 2rem 2rem;
+}
 #study-detail-area,
-#update-study-area { 
+#update-study-form { 
   margin: 2rem;
 }
 
 /* study, detail studyname input */
 #create-study-form input[id="create-study-name"],
 #study-detail-area input[id="study-detail-name"],
-#study-update-form input[id="update-study-name"] {
+#update-study-form input[id="update-study-name"] {
     width: 100%;
     border-radius: 15px;
     padding: 15px;
@@ -26,7 +28,7 @@
 
 #create-study-form .study-create-categories,
 #study-detail-area .study-detail-categories,
-#study-update-form .study-update-categories {
+#update-study-form .study-update-categories {
   margin-bottom: 2.5rem;
   border-radius: 10px;
 }
@@ -62,8 +64,8 @@
 /* update study label */
 #update-study-form label[for="update-study-name"],
 #update-study-form .study-update-categories legend,
-.study-datepicker .study-start-picker legend,
-.study-datepicker .study-end-picker legend,
+.study-update-datepicker .study-start-picker legend,
+.study-update-datepicker .study-end-picker legend,
 #update-study-form label[for="update-members-num"],
 #update-study-form label[for="update-info-text"]{
   font-size: 18px;
@@ -75,7 +77,8 @@
 
 
 #study-detail-area .categories-area,
-#create-study-form .categories-area {
+#create-study-form .categories-area,
+#update-study-form .categories-area {
   font-family: "NanumSquareNeo";
   display: flex;
   flex-wrap: wrap;
@@ -83,19 +86,22 @@
 }
 
 #study-detail-area .study-detail-categories input[type="radio"],
-#create-study-form .study-create-categories input[type="radio"] {
+#create-study-form .study-create-categories input[type="radio"],
+#update-study-form .study-update-categories input[type="radio"] {
   display: none;
 }
 
 #study-detail-area .study-detail-categories input[type="radio"]:checked + label,
-#create-study-form .study-create-categories input[type="radio"]:checked + label {
+#create-study-form .study-create-categories input[type="radio"]:checked + label,
+#update-study-form .study-update-categories input[type="radio"]:checked + label {
   background-color: var(--main);
   color: var(--txt);
 
 }
 
 #study-detail-area .study-detail-categories label,
-#create-study-form .study-create-categories label {
+#create-study-form .study-create-categories label,
+#update-study-form .study-update-categories label {
   padding: 0.7rem 1rem;
   border-radius: 20px;
   text-align: center;
@@ -106,7 +112,8 @@
 }
 
 #study-detail-area .study-detail-categories label:hover,
-#create-study-form .study-create-categories label:hover {
+#create-study-form .study-create-categories label:hover,
+#update-study-form .study-create-categories label:hover {
   background-color: var(--deact);
   color: var(--txt);
 }
@@ -140,7 +147,8 @@
 }
 
 #study-detail-area .study-totalnum,
-#create-study-form input[type="number"] {
+#create-study-form input[type="number"],
+#update-study-form input[type="number"] {
   width: 200px;
   background-color: var(--sub);
   padding: 0.8rem 1rem;
@@ -151,12 +159,14 @@
 /* study textarea */
 
 #create-study-form label[for="study-info-text"],
-#study-detail-area label[for="study-info-text"] {
+#study-detail-area label[for="study-info-text"],
+#update-study-form label[for="update-info-text"] {
   margin-top: 2.5rem;
 }
 
 #create-study-form textarea[id="study-info-text"],
-#study-detail-area textarea[id="study-info-text"] {
+#study-detail-area textarea[id="study-info-text"],
+#update-study-form textarea[id="update-info-text"] {
   background-color: var(--bg);
   border: none;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
@@ -169,7 +179,8 @@
 
 /* date 생성 */
 #create-study-form .study-datepicker,
-#study-detail-area .study-detail-datepicker {
+#study-detail-area .study-detail-datepicker,
+#update-study-form .study-update-datepicker {
   display: flex;
   justify-content: space-evenly;
 }
@@ -177,7 +188,9 @@
 #create-study-form input[id="study-start-date"],
 #create-study-form input[id="study-end-date"],
 #study-detail-area input[id="study-start-date"],
-#study-detail-area input[id="study-end-date"] {
+#study-detail-area input[id="study-end-date"],
+#update-study-form input[id="study-start-date"],
+#update-study-form input[id="study-end-date"] {
   font-family: "NanumSquareNeo";
   padding: 0.9rem;
   border: 2px solid var(--main);
@@ -190,7 +203,9 @@
 .study-datepicker .study-start-picker,
 .study-datepicker .study-end-picker,
 .study-detail-datepicker .study-start-picker,
-.study-detail-datepicker .study-end-picker{
+.study-detail-datepicker .study-end-picker,
+.study-update-datepicker .study-start-picker,
+.study-update-datepicker .study-end-picker {
   margin: 0 50px;
   border-radius: 15px;
 }
@@ -199,7 +214,8 @@
 
 /* 스터디 생성, 취소 버튼 */
 
-#create-study-form .study-btn-area {
+#create-study-form .study-btn-area,
+#update-study-form .edit-btn-area {
   margin-top: 7rem;
   display: flex;
   justify-content: center;
@@ -207,7 +223,9 @@
 }
 
 #create-study-form .study-btn-area .study-create-btn,
-#create-study-form .study-btn-area .study-cancel-btn {
+#create-study-form .study-btn-area .study-cancel-btn,
+#update-study-form .edit-btn-area .study-edit-btn,
+#update-study-form .edit-btn-area .edit-cancel-btn {
   padding: 0.8rem 1.5rem;
   border-radius: 10px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
@@ -216,19 +234,23 @@
   font-weight: 700;
 }
 
-#create-study-form .study-btn-area .study-create-btn {
+#create-study-form .study-btn-area .study-create-btn,
+#update-study-form .edit-btn-area .study-edit-btn {
   background-color: var(--main);
 }
 
-#create-study-form .study-btn-area .study-create-btn:hover {
+#create-study-form .study-btn-area .study-create-btn:hover,
+#update-study-form .edit-btn-area .study-edit-btn:hover {
   background-color: var(--main-hl);
 }
 
-#create-study-form .study-btn-area .study-cancel-btn {
+#create-study-form .study-btn-area .study-cancel-btn,
+#update-study-form .edit-btn-area .edit-cancel-btn {
   background-color: var(--gr);  
 }
 
-#create-study-form .study-btn-area .study-cancel-btn:hover {
+#create-study-form .study-btn-area .study-cancel-btn:hover,
+#update-study-form .edit-btn-area .edit-cancel-btn:hover {
   background-color: var(--txtgr);  
 }
 
@@ -288,4 +310,26 @@
 
 #study-detail-area .detail-btn-group .reject-btn {
   background-color: var(--gr-wrn);
+}
+
+/* 수정 아이콘 */
+
+#create-study-form .update-direct-icon {
+  text-align: end;
+  position: relative;
+  margin-right: 2rem;
+  margin-bottom: 2rem;
+}
+
+#create-study-form .update-direct-icon span {
+  border-radius: 30px;
+  vertical-align: middle;
+  padding: 4px;
+  position: absolute;
+  font-weight: 700;
+}
+
+#create-study-form .update-direct-icon span:hover {
+  color: var(--bg);
+  background-color: var(--main);
 }
