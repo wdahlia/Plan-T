@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700;900&display=swap");
+@import url(./fontall.css);
+@import url(./main.css);
+@import url(./create_today.css);
+
+#create-study-form { 
+  margin: 2rem;
+}
+
+#create-study-form input[id="create-study-name"]{
+    width: 100%;
+    border-radius: 15px;
+    padding: 15px;
+    background-color: var(--bg);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+    font-size: medium;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+}
+
+
+#create-study-form .study-create-categories {
+  margin-bottom: 2.5rem;
+  border-radius: 10px;
+}
+
+
+#create-study-form label[for="create-study-name"],
+#create-study-form .study-create-categories legend,
+.study-datepicker .study-start-picker legend,
+.study-datepicker .study-end-picker legend,
+#create-study-form label[for="study-members-num"],
+#create-study-form label[for="study-info-text"] {
+  font-size: 18px;
+  letter-spacing: -1px;
+  color: var(--main);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+
+#create-study-form .categories-area {
+  font-family: "NanumSquareNeo";
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#create-study-form .study-create-categories input[type="radio"] {
+  display: none;
+}
+
+#create-study-form .study-create-categories input[type="radio"]:checked + label {
+  background-color: var(--main);
+  color: var(--txt);
+
+}
+
+#create-study-form .study-create-categories label {
+  padding: 0.7rem 1rem;
+  border-radius: 20px;
+  text-align: center;
+  color: var(--txtgr);
+  vertical-align: middle;
+  font-weight: 700;
+  letter-spacing: -.8px;
+}
+
+#create-study-form .study-create-categories label:hover {
+  background-color: var(--deact);
+  color: var(--txt);
+}
+
+/* study 인원 */
+
+#create-study-form input[type="number"] {
+  width: 200px;
+  background-color: var(--sub);
+  padding: 0.7rem 1rem;
+  border-radius: 20px;
+  margin-bottom: 2.5rem;
+}
+
+/* study textarea */
+
+#create-study-form textarea[id="study-info-text"] {
+  background-color: var(--bg);
+  border: none;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  outline: none;
+  resize: none;
+  padding: 15px;
+  margin-bottom: 2.5rem;
+}
+
+/* date 생성 */
+#create-study-form .study-datepicker {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#create-study-form input[id="study-start-date"],
+#create-study-form input[id="study-end-date"] {
+  font-family: "NanumSquareNeo";
+  padding: 0.9rem;
+  border: 2px solid var(--main);
+  border-radius: 20px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+
+.study-datepicker .study-start-picker,
+.study-datepicker .study-end-picker{
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.study-datepicker .study-start-picker legend,
+.study-datepicker .study-end-picker legend {
+  padding: 0 5px;
+  margin-bottom: 0;
+}

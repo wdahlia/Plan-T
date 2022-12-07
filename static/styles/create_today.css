@@ -4,14 +4,13 @@
 
 
 /* todayList Form */
-#today-form, #today-detail-form{
+#today-form, #today-detail-form, #create-study-form {
   display: flex;
   flex-direction: column;
   position: relative;
 }
 
-#today-form .today_task-title,
-#today-detail-form .today_task-title{
+#today-detail-form .today_task-title {
   height: 49px;
   background: var(--bg);
   border: 2px solid var(--main);

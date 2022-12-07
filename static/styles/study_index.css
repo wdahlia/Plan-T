@@ -22,7 +22,6 @@
 
 #study-index-area .st input[type="radio"]{
 	display: none;
-  font-weight: 500;
 }
 
 #study-index-area .st input[type="radio"]:checked + label{
@@ -31,31 +30,39 @@
 }
 
 #study-index-area .st input[id="tab0"]:checked ~ .glider{
-	transform: translateX(-510%);
+	transform: translateX(-513%);
 }
 
 #study-index-area .st input[id="tab1"]:checked ~ .glider{
-	transform: translateX(-370%);
+	transform: translateX(-402%);
 }
 
 #study-index-area .st input[id="tab2"]:checked ~ .glider{
-	transform: translateX(-228%);
+	transform: translateX(-283%);
 }
 
 #study-index-area .st input[id="tab3"]:checked ~ .glider{
-	transform: translateX(-80.5%);
+	transform: translateX(-154.5%);
 }
 
 #study-index-area .st input[id="tab4"]:checked ~ .glider{
-	transform: translateX(70.5%);
+	transform: translateX(-33.5%);
 }
 
 #study-index-area .st input[id="tab5"]:checked ~ .glider{
-	transform: translateX(212%);
+	transform: translateX(76%);
 }
 
 #study-index-area .st input[id="tab6"]:checked ~ .glider{
-	transform: translateX(368.5%);
+	transform: translateX(186.5%);
+}
+
+#study-index-area .st input[id="tab7"]:checked ~ .glider{
+	transform: translateX(299.5%);
+}
+
+#study-index-area .st input[id="tab8"]:checked ~ .glider{
+	transform: translateX(412.5%);
 }
 
 #study-index-area .st .tab {
@@ -64,7 +71,7 @@
 	justify-content: center;
 	cursor: pointer;
 	padding: 0.2rem 0.5rem;
-	margin-right: 1.5rem;
+	margin-right: 0rem;
 }
 
 #study-index-area .st .glider{
@@ -174,9 +181,6 @@
   background-color: var(--bg);
 }
 
-#study-index-area .study-room.deactivate {
-  
-}
 
 #study-index-area .study-header .study-category{
   position: absolute;
