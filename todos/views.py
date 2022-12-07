@@ -54,6 +54,7 @@ def today(request):
         "time_list": time_list,
         "today_todos": today_todos,
         "todosForm": todosForm,
+        "achievement_rate": achievement_rate,
     }
     return render(request, "todos/complete/today_main.html", context)
 
