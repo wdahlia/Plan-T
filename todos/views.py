@@ -8,6 +8,7 @@ from .function import change_value
 from django.http import JsonResponse
 from django.core import serializers
 import json
+import math
 
 # Create your views here.
 def today(request):
@@ -16,9 +17,13 @@ def today(request):
     today_todos = Todos.objects.filter(user_id=request.user, when=today).order_by(
         "started_at"
     )
-    # timetable 넘겨주기 위해
+
+    # timetable 넘겨주기 위해 & 달성율 체크
+    achievement_cnt = 0
     time_list = []
     for todo in today_todos:
+        if todo.is_completed == True:
+            achievement_cnt += 1
         if (
             todo.started_at is not None  # 나중에 지워야됨
             and todo.expired_at is not None  # 나중에 지워야됨
@@ -32,6 +37,7 @@ def today(request):
             time_list.append([])
             time_list[-1].append(start)
             time_list[-1].append(time)
+    achievement_rate = round(100 * (achievement_cnt / len(today_todos)))
 
     todosForm = TodosForm()
 
