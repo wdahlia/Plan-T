@@ -7,6 +7,8 @@ from django.contrib.auth import (
     update_session_auth_hash,
 )
 from django.views.decorators.http import require_POST
+from todos.models import Todos, Tag
+from accounts.models import User
 
 # Create your views here.
 # 임시 함수
@@ -23,7 +25,9 @@ def signup(request):
             user = form.save()
             # 소셜 로그인 때문에 인증 백엔드가 중첩되어 지정을 해줘야함.
             # link : https://ghqls0210.tistory.com/49
-            auth_login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+            auth_login(
+                request, user, backend="django.contrib.auth.backends.ModelBackend"
+            )
             return redirect("todos:today")
 
     else:
@@ -45,7 +49,11 @@ def login(request):
         if form.is_valid():
             # 소셜 로그인 때문에 인증 백엔드가 중첩되어 지정을 해줘야함.
             # link : https://ghqls0210.tistory.com/49
-            auth_login(request, form.get_user(), backend="django.contrib.auth.backends.ModelBackend")
+            auth_login(
+                request,
+                form.get_user(),
+                backend="django.contrib.auth.backends.ModelBackend",
+            )
 
             return redirect("todos:today")
 
@@ -104,6 +112,24 @@ def update(request):
     return render(request, "test/form.html", context)
 
 
+import operator
+
 # 프로필, 데코레이터 추가 필요
 def profile(request):
-    return render(request, "test/profile.html")
+    you = request.user
+    user = User.objects.filter(pk=you.pk)
+    # 지금껏 user 가 쓴 tag 를 몇번 썼는지, 그리고 몇번 썼는지에 따라 크기가 달라지게
+    todo = Todos.objects.filter(user_id=request.user)
+    tags = Tag.objects.filter(todo__in=todo)
+
+    tag_count = {}
+    for t in tags:
+        if t.content in tag_count:
+            tag_count[t.content] += 1
+        else:
+            tag_count[t.content] = 1
+        tag_count.add(t.content)
+    toptag = sorted(tag_count.items(), key=operator.itemgetter(1), reverse=True)[:10]
+
+    context = {"user": user, "todos": todo, "toptag": toptag}
+    return render(request, "accounts/working/mypage.html", context)
