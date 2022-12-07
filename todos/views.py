@@ -32,7 +32,7 @@ def today(request):
             time_list.append([])
             time_list[-1].append(start)
             time_list[-1].append(time)
-    print(time_list)
+
     todosForm = TodosForm()
 
     if request.method == "POST":
@@ -316,7 +316,7 @@ def is_completed(request):
         # JSON 데이터 받음
         data = json.loads(request.body)
 
-        # 변경된 값이랑 어떤 todo 인지 특정할 수 있는 id 값 
+        # 변경된 값이랑 어떤 todo 인지 특정할 수 있는 id 값
         is_completed = data.get("is_completed")
         todoId = data.get("todoId")
 
@@ -328,8 +328,6 @@ def is_completed(request):
         obj.save()
 
         # 변경된 값으로 응답
-        context = {
-            "is_completed": is_completed
-        }
+        context = {"is_completed": is_completed}
 
         return JsonResponse(context)
