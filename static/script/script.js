@@ -327,6 +327,7 @@ try {
     axios.defaults.xsrfCookieName = 'csrftoken';
     axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
+    // 실제 데이터가 들어있는 input tags 들을 담을 변수
     let inputTags = [];
     // task 클래스를 가진 녀석들을 다 찾아냄
     document.querySelectorAll(".task").forEach( 
