@@ -273,12 +273,46 @@
 }
 
 /* task timetable */
+#today .today-timetable {
+	display: flex;
+}
+#today .today-timetable .timetable-hour {
+	font-family: "NanumSquareNeo", sans-serif;
+	font-size: 1.5em;
+	color: var(--txtgr);
+}
+#today .today-timetable .timetable-hour p {
+	margin: 0.45rem 0 0;
+	line-height: 35px;
+	padding: 0.14rem 0;
+}
+#today .today-timetable .timetable-box {
+	display: flex;
+	flex-wrap: wrap;
+	width: 290px;
+	align-content: flex-start;
+}
+#today .today-timetable .timetable-min {
+	width: 35px;
+	height: 35px;
+	background: var(--gr);
+	margin: 0.4rem;
+}
+#today .today-timetable .timetable-min.activate {
+	background: var(--main);
+}
+#today .time-test {
+	display: none;
+	z-index: -9999;
+}
+
+/* today task list */
+
 #today .today-task-list {
 	margin-right: 2rem;
 	position: relative;
 }
-/* #today .today-task-list .task {
-} */
+
 #today .today-task-list .task.ef-blur {
 	filter: blur(3px);
 }
@@ -372,23 +406,6 @@
 	opacity: 1;
 	transform: rotate(45deg) scale(1);
 }
-/* #today .today-timetable .timetable-hour:first-child {
-  margin-top: 0.3rem;
-} */
-#today .today-timetable .timetable-hour {
-	display: flex;
-	align-items: center;
-	padding: 0.43rem 0;
-}
-#today .today-timetable .timetable-min {
-	width: 35px;
-	height: 35px;
-	background: var(--gr);
-	margin-right: 0.3rem;
-}
-#today .today-timetable .timetable-min.activate {
-	background: var(--main);
-}
 
 /* today task detail form */
 
@@ -437,7 +454,10 @@
 	margin-left: 1rem;
 	cursor: pointer;
 }
-
+#today .today-study-area.hide {
+	width: 0;
+	opacity: 0;
+}
 #today .study-tasklist-area {
 	display: none;
 	color: var(--txt);

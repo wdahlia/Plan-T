@@ -130,20 +130,35 @@ try {
 
 
 try {
+    // 할일 기능 관련 DOM 객체 지정
     const tasks = document.querySelectorAll('.today-task-list .task');
     const taskView = document.querySelector('#task-detail');
     const taskDetailForm = document.querySelector('#today-detail-form');
     const detailTit = document.querySelector('#detail-title');
     const detailCont = document.querySelector('#detail-cont');
+    const detailST = document.querySelector('#starttime-pick-edit');
+    const detailET = document.querySelector('#endtime-pick-edit');
     const detailBtnDel = document.querySelector('#detail-btn-del');
     const detailDelForm = document.querySelector('#detail-del-form');
+    const todayStudyArea = document.querySelector('.today-study-area');
 
+    // 할일 클릭 시 옆에 상세 토글 나오는 기능, json 데이터 비동기, 할일 active 토글 기능
     const taskMenu = function (e) {
-        // console.log(this.dataset.todoPk);
         e.preventDefault();
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks[i].classList.contains('activate')) {
+                tasks[i].classList.remove('activate');
+            }
+        }
+        todayStudyArea.classList.toggle('hide');
         taskView.classList.toggle('activate');
-
-        this.classList.toggle('activate');
+        // this.classList.toggle('activate');
+        if (taskView.classList.contains('activate')) {
+            this.classList.add('activate');
+        } else {
+            this.classList.remove('activate');
+        }
+        // this.classList.toggle('activate');
 
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
         let delUrl = '/todos/delete/';
@@ -174,9 +189,11 @@ try {
                 delUrl = delUrl + `${todoPK}`;
                 detailDelForm.setAttribute('action', `${delUrl}`);
 
+                // 받아온 todo 데이터  input에 대입
                 detailTit.value = jsonParse[idx].fields.title;
                 detailCont.value = jsonParse[idx].fields.content;
-
+                detailST.value = jsonParse[idx].fields.started_at;
+                detailET.value = jsonParse[idx].fields.expired_at;
                 ;
             })
 
@@ -184,7 +201,63 @@ try {
     }
     tasks.forEach(task => {
         task.addEventListener('click', taskMenu);
-    })
+    });
+
+} catch { }
+
+try {
+    // 타임테이블 생성
+    const timetableAreaL = document.querySelector('.timetable-left');
+    const timetableAreaR = document.querySelector('.timetable-right');
+    const timetableHourL = document.querySelector('.hour-left');
+    const timetableHourR = document.querySelector('.hour-right');
+    let num = 54
+
+    while (timetableAreaL.children.length < 54) {
+        const timeMinBox = document.createElement('p');
+        timeMinBox.classList.add('timetable-min');
+        timetableAreaL.appendChild(timeMinBox);
+    }
+    while (timetableAreaR.children.length < 54) {
+        const timeMinBox = document.createElement('p');
+        timeMinBox.classList.add('timetable-min');
+        timetableAreaR.appendChild(timeMinBox);
+    }
+    for (let i = 0; i < 9; i++) {
+        const hourTimeL = document.createElement('p');
+        hourTimeL.innerText = i + 6;
+        timetableHourL.appendChild(hourTimeL);
+
+        const hourTimeR = document.createElement('p');
+        hourTimeR.innerText = i + 15;
+        timetableHourR.appendChild(hourTimeR);
+    }
+
+    // 장고 템플릿으로 time_list 값 넣어둔 DOM 가져오기
+    const testBox = document.querySelectorAll('.testbox');
+
+    for (let i = 0; i < testBox.length; i++) {
+        // dataset으로 time_list 값 가져옴
+        let lng = testBox[i].dataset.timeArray.length - 1;
+        let arr = testBox[i].dataset.timeArray.substring(1, lng);
+
+        // str 을 num 으로 변경 > for 문 활용하기 위해서 변경함
+        arr = arr.split(', ')
+        let startAt = Number(arr[0]);
+        let minCnt = Number(arr[1]);
+
+        if (startAt > 54) {
+            startAt -= 54;
+            for (let j = startAt; j < startAt + minCnt; j++) {
+                timetableAreaR.children[j].classList.add('activate');
+            }
+        } else {
+            for (let j = startAt; j < startAt + minCnt; j++) {
+                timetableAreaL.children[j].classList.add('activate');
+            }
+        }
+    }
+
 
 } catch { }
 

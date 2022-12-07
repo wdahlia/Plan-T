@@ -4,20 +4,22 @@
 
 /* todayList Form */
 
-#today-form, #today-detail-form, #create-study-form {
-  display: flex;
-  flex-direction: column;
-  position: relative;
+#today-form,
+#today-detail-form,
+#create-study-form {
+	display: flex;
+	flex-direction: column;
+	position: relative;
 }
 
 #today-form .today_task-title,
 #today-detail-form .today_task-title {
-  height: 49px;
-  background: var(--bg);
-  border: 2px solid var(--main);
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-  padding: 1rem;
+	height: 49px;
+	background: var(--bg);
+	border: 2px solid var(--main);
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+	border-radius: 20px;
+	padding: 1rem;
 }
 
 #today-form .keyword-box {
@@ -72,10 +74,18 @@
 
 /* timepicker */
 
-#today-form .timepicker-area {
+#today-form .timepicker-area,
+#today-detail-form .timepicker-area {
+	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
 	margin: 2rem 0;
+}
+#today-form .time-picker,
+#today-detail-form .time-picker {
+	/* position: absolute; */
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 #today-form .timepicker-area .starttime-select,
@@ -84,7 +94,8 @@
 	flex-direction: column;
 }
 
-#today-form label {
+#today-form label,
+#today-detail-form label {
 	text-indent: 20px;
 	font-size: 0.8rem;
 	font-weight: 600;
@@ -92,7 +103,9 @@
 }
 
 #today-form #starttime-pick,
-#today-form #endtime-pick {
+#today-form #endtime-pick,
+#today-detail-form #starttime-pick-edit,
+#today-detail-form #endtime-pick-edit {
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
 	padding: 0.65rem;
 	border-radius: 20px;
@@ -100,12 +113,13 @@
 	margin-top: 0.2rem;
 }
 
-#today-form .time-tilder {
+#today-form .time-tilder,
+#today-detail-form .time-tilder {
 	font-size: 30px;
 	width: 50px;
 	color: var(--main);
 	text-align: center;
-	vertical-align: center;
+	vertical-align: bottom;
 }
 
 #today-form input[type="file"],
