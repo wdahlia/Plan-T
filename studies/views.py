@@ -37,6 +37,9 @@ def create(request):
             form.owner = request.user
             form.save()
 
+            form.participated.add(request.user)
+            request.user.join_study.add(form)
+
             return redirect("studies:index")
     else:
         studyform = StudyForm()
@@ -71,9 +74,16 @@ def detail(request, study_pk):
     user = request.user
     check = False
     print(len(study.participated.all()))
+
     if study in user.join_study.all():
         check = True
-    context = {"study": study, "check": check, "study_todo_form": StudyTodoForm()}
+
+    context = {
+        "study": study, 
+        "check": check, 
+        "study_todo_form": StudyTodoForm()
+    }
+    
     return render(request, "studies/test/detail.html", context)
 
 
