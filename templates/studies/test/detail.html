@@ -2,19 +2,22 @@
 {% load static %}
 {% block body %}
 
-  <h1>Index</h1>
+<h1>Index</h1>
 
-  <div>
-    <h3>스터디 디테일</h3>
-    <a href="{% url 'studies:join' study.pk %}">가입</a>
-    <div>----------</div>
-    <h3>가입 신청한 유저</h3>
-    {% for user in study.participated.all %}
-      <p>{{user.pk}}</p>
-      <a href="{% url 'studies:accept' study.pk user.pk%}">받아주기</a>
-    {% endfor %}
-    <div>----------</div>
-    <h3>{{check}}</h3>
-
-  </div>
+<div>
+  <h3>스터디 디테일</h3>
+  <a href="{% url 'studies:join' study.pk %}">가입</a>
+  <div>----------</div>
+  <h3>가입 신청한 유저</h3>
+  {% for user in study.participated.all %}
+  <p>{{user.pk}}</p>
+  <a href="{% url 'studies:accept' study.pk user.pk%}">받아주기</a>
+  {% endfor %}
+  <div>----------</div>
+  <h3>{{check}}</h3>
+  <form action="{% url 'studies:create_todos' study.pk %}" method="post">
+    <p>스터디 투두 만들기</p>
+    {{ study_todo_form }}
+  </form>
+</div>
 {% endblock body %}
