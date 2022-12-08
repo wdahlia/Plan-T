@@ -4,7 +4,7 @@ from .forms import TodosForm
 from .models import Todos, Tag
 from datetime import datetime, timedelta
 from django.contrib import messages
-from .function import change_value
+from ..function import change_value
 from django.http import JsonResponse
 from django.core import serializers
 import json

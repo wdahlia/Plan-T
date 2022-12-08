@@ -40,12 +40,14 @@
 }
 
 /* timeline area */
-.task-timeline .past-timeline{
+/* .task-timeline .past-timeline,
+.task-timeline .today-timeline,
+.task-timeline .tomorrow-timline{
   overflow-y: scroll;
   margin-top: 1rem;
   z-index: 2;
   overflow: hidden;
-}
+} */
 
 .task-timeline .past-timeline:first-child{
   margin-top: 0;
@@ -55,7 +57,8 @@
   display: flex;
 }
 
-.task-timeline .timeline-box .time-point{
+.task-timeline .timeline-box .time-point,
+.task-timeline .timeline-box .times{
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
   background-color: var(--bg);
   border-radius: 20px;
@@ -78,7 +81,10 @@
 .past-timeline .past-date_all{
   margin-top: 1rem;
   display: none;
-  transition: 0.3s ease; 
+}
+
+.past-timeline .past-date_all.activate{
+  display: block;
 }
 
 .past-date:hover > .arrow-icon{
@@ -114,11 +120,11 @@
 }
 
 
-.past-date_all .past-task_list{
+.past-date_all .task_listup{
   margin-left: 7rem;
 }
 
-.past-date_all .past-task_list .task-li-content {
+.task_listup .task-li-content{
   background-color: var(--sub);
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
@@ -129,6 +135,16 @@
   padding: 1rem 2rem;
   align-items: center;
   justify-content: space-between;
+}
+
+.task_listup .task-li-content.activate{
+  display: flex;
+}
+
+.today-timeline .task_listup .task-li-content.activate,
+.tommorrow-timeline .task_listup .task-li-content.activate{
+  display: flex;
+  margin-left: 4rem;
 }
 
 input[id="past-check"]{
