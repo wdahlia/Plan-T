@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% block body %}
 
-{% for todo in todos %}
+{% for tag in same_tags %}
 <div>
-  <div>{{ todo.title }}</div>
-  <div>{{ todo.content }}</div>
-  <div>{{ todo.when }}</div>
-  <div>{{ todo.is_completed }}</div>
+  <div>{{ tag.todo.title }}</div>
+  <div>{{ tag.todo.content }}</div>
+  <div>{{ tag.todo.when }}</div>
+  <div>{{ tag.todo.is_completed }}</div>
 </div>
-{% endfor %}
 <hr>
+{% endfor %}
 {% for tag in tags %}
 <div>{{ tag.content }}</div>
 {% endfor %}

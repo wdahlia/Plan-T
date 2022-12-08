@@ -108,11 +108,11 @@ def create(request):
             todo.save()
             if tags != "":
                 if "," in tags:
-                    taglist = list(tags.replace(" ", "").split(","))
+                    taglist = set(tags.replace(" ", "").split(","))
+                    for t in taglist:
+                        Tag.objects.create(todo=todo, content=t)
                 else:
-                    taglist = list(tags.replace(" ", ""))
-                for t in taglist:
-                    Tag.objects.create(todo=todo, content=t)
+                    Tag.objects.create(todo=todo, content=tags)
 
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:
@@ -179,17 +179,20 @@ def update(request, pk):
             todo.save()
             if tags != "":
                 if "," in tags:
-                    taglist = list(tags.replace(" ", "").split(","))
+                    taglist = set(tags.replace(" ", "").split(","))
+                    for t in taglist:
+                        Tag.objects.create(todo=todo, content=t)
                 else:
-                    taglist = list(tags.replace(" ", ""))
-                for t in taglist:
-                    Tag.objects.create(todo=todo, content=t)
+                    Tag.objects.create(todo=todo, content=tags)
+        return redirect("todos:today")
+
         context = {
             "todoTitle": todo.title,
             "todoCont": todo.content,
         }
         return JsonResponse(context)
         # return redirect("todos:today")
+
     else:
         todoForm = TodosForm(instance=todo)
         context = {
