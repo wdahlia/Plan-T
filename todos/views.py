@@ -21,6 +21,8 @@ def today(request):
     # timetable 넘겨주기 위해 & 달성율 체크
     achievement_cnt = 0
     time_list = []
+    tag_list = []
+
     for todo in today_todos:
         if todo.is_completed == True:
             achievement_cnt += 1
@@ -37,6 +39,9 @@ def today(request):
             time_list.append([])
             time_list[-1].append(start)
             time_list[-1].append(time)
+
+        # tag_list.append(Tag.objects.get(todo=todo.pk))
+
     if len(today_todos) != 0:
         achievement_rate = round(100 * (achievement_cnt / len(today_todos)))
     else:
@@ -50,10 +55,12 @@ def today(request):
                 "started_at"
             ),
         )
-        return JsonResponse({"resJson": res_json})
+        res_json2 = serializers.serialize("json", tag_list)
+        return JsonResponse({"resJson": res_json, "resJson2": res_json2})
 
     context = {
         "time_list": time_list,
+        "tag_list": tag_list,
         "today_todos": today_todos,
         "todosForm": todosForm,
         "achievement_rate": achievement_rate,
@@ -121,10 +128,24 @@ def create(request):
 
 
 def delete(request, todos_pk):
+    today = str(datetime.now())[:10]
+
     if request.method == "POST":
         todo = Todos.objects.get(pk=todos_pk)
         todo.delete()
-    return redirect("todos:today")  # 추후에 비동기로 바꾸는거 권장
+        res_json = serializers.serialize(
+            "json",
+            Todos.objects.filter(user_id=request.user, when=today).order_by(
+                "started_at"
+            ),
+        )
+        return JsonResponse({"resJson": res_json})
+    res_json = serializers.serialize(
+        "json",
+        Todos.objects.filter(user_id=request.user, when=today).order_by("started_at"),
+    )
+    return JsonResponse({"resJson": res_json})
+    # return redirect("todos:today")  # 추후에 비동기로 바꾸는거 권장
 
 
 def update(request, pk):
@@ -184,7 +205,7 @@ def update(request, pk):
                         Tag.objects.create(todo=todo, content=t)
                 else:
                     Tag.objects.create(todo=todo, content=tags)
-        return redirect("todos:today")
+        # return redirect("todos:today")
 
         context = {
             "todoTitle": todo.title,
