@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Study
+from .models import Study, StudyTodo
 from .forms import StudyForm, StudyTodoForm
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 from django.contrib import messages
+from datetime import datetime, timedelta
 
 # Create your views here.
 # 스터디 목록
@@ -55,29 +56,60 @@ def create(request):
 # Study todo 생성
 def create_todos(request, study_pk):
     if request.method == "POST":
-        # URL 로 받은 pk 를 가지고 특정 study 를 가져옴
-        # 날짜도 통신으로 받아온다.
         study = Study.objects.get(pk=study_pk)
-        todoForm = StudyTodoForm(request.POST)
-        if todoForm.is_valid() and study.owner == request.user:
-            todo = todoForm.save(commit=False)
-            # 스터디원 모두를 위해 생성
-            users = study.participated
-            for user in users:
-                todo.user_id = user
-                todo.save()
 
-        return redirect("studies:index")  # redirect 위치 임시
+        # 가입된 멤버
+        joined_member = []
+        for user in study.participated.all():
+            for studyy in user.join_study.all():
+                if studyy.pk == study_pk:
+                    joined_member.append(user)
+                    break
+        #
+        # 가입된 멤버 각각 생성
+        for userr in joined_member:
+            todoForm = StudyTodoForm(request.POST)
+            if todoForm.is_valid() and study.owner == request.user:
+                todo = todoForm.save(commit=False)
+                todo.when = "1000-12-07"  # None처리 했는데 왜 필요한지 모르겠음
+                todo.study_pk = study
+                todo.user_id = userr
+                todo.save()
+        else:
+            return redirect("studies:detail", study_pk)
+        #
+    print("실패")
+    messages.error(request, "저장 실패.")  # 이거 왜 작동안하지?
+    return redirect("studies:detail", study_pk)
 
 
 def detail(request, study_pk):
-    study = get_object_or_404(Study, pk=study_pk)
-    user = request.user
-    check = False
-    if study in user.join_study.all():
-        check = True
-
-    context = {"study": study, "check": check, "study_todo_form": StudyTodoForm()}
+    study_ = get_object_or_404(Study, pk=study_pk)
+    # 로그인 유저, 시작은 오늘 이하, 끝은 오늘 이상의 study todos
+    today = str(datetime.now())[:10]
+    study_todos = StudyTodo.objects.filter(
+        user_id=request.user, start__lte=today, end__gte=today
+    )
+    #
+    # 가입된 멤버
+    joined_member = []
+    # 가입 신청 멤버
+    application_member = []
+    for user in study_.participated.all():
+        for study in user.join_study.all():
+            if study.pk == study_pk:
+                joined_member.append(user)
+                break
+        else:
+            application_member.append(user)
+    #
+    context = {
+        "study": study_,
+        "study_todo_form": StudyTodoForm(),
+        "joined_member": joined_member,
+        "application_member": application_member,
+        "study_todos": study_todos,
+    }
 
     return render(request, "studies/complete/study_detail.html", context)
 
@@ -86,21 +118,6 @@ def detail(request, study_pk):
 def info(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
 
-    # 가입된 멤버
-    joined_member = []
-    # 가입된 멤버 수
-    member_number = 0
-    # 가입 신청 멤버
-    application_member = []
-    for user in study.participated.all():
-        for study in user.join_study.all():
-            if study.pk == study_pk:
-                joined_member.append(user)
-                break
-        else:
-            application_member.append(user)
-    member_number = len(joined_member)
-    #
     start = str(study.start_at)
     end = str(study.end_at)
     context = {
@@ -108,11 +125,6 @@ def info(request, study_pk):
         "study_todo_form": StudyTodoForm(),
         "start": start,
         "end": end,
-        #
-        "joined_member": joined_member,
-        "member_number": member_number,
-        "application_member": application_member,
-        #
     }
 
     return render(request, "studies/complete/study_info.html", context)
@@ -145,6 +157,7 @@ def refusal(request, study_pk, user_pk):
 
 
 def accept(request, user_pk, study_pk):
+    print(user_pk, study_pk)
     user = get_object_or_404(get_user_model(), pk=user_pk)
     study = get_object_or_404(Study, pk=study_pk)
 
@@ -160,7 +173,7 @@ def accept(request, user_pk, study_pk):
         else:
             messages.error(request, "최대 인원을 초과하였습니다.")
             return redirect("studies:detail", study_pk)
-    # Study 클래스에 member_number추가하면 활성화
+
     # 가입된 멤버 수
     member_number = 0
     for user in study.participated.all():
@@ -174,4 +187,5 @@ def accept(request, user_pk, study_pk):
         "is_accepted": is_accepted,
         "studyCount": user.join_study.count(),
     }
-    return redirect("studies:info", study_pk)  # 나중에 detail로
+    print(user_pk, study_pk)
+    return redirect("studies:detail", study_pk)  # 나중에 detail로
