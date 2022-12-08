@@ -11,4 +11,5 @@ urlpatterns = [
     path("delete/", views.delete, name="delete"),
     path("update/", views.update, name="update"),
     path("profile/", views.profile, name="profile"),
+    path("<str:tag>/", views.same_tag, name="sametag"),
 ]

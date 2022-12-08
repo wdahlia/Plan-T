@@ -65,7 +65,7 @@ def login(request):
     }
 
     # 바꿔야 함!
-    return render(request, "test/form.html", context)
+    return render(request, "accounts/working/login.html", context)
 
 
 # 로그아웃, 데코레이터 추가 필요
@@ -118,7 +118,8 @@ import operator
 def profile(request):
     you = request.user
     user = User.objects.filter(pk=you.pk)
-    # 지금껏 user 가 쓴 tag 를 몇번 썼는지, 그리고 몇번 썼는지에 따라 크기가 달라지게
+
+    # 지금껏 user 가 쓴 tag 를 몇번 썼는지, 그리고 몇번 썼는지 세어서 context 로 넘겨줌
     todo = Todos.objects.filter(user_id=request.user)
     tags = Tag.objects.filter(todo__in=todo)
 
@@ -128,8 +129,18 @@ def profile(request):
             tag_count[t.content] += 1
         else:
             tag_count[t.content] = 1
-        tag_count.add(t.content)
-    toptag = sorted(tag_count.items(), key=operator.itemgetter(1), reverse=True)[:10]
-
-    context = {"user": user, "todos": todo, "toptag": toptag}
+    sorted_tag = sorted(tag_count.items(), key=operator.itemgetter(1), reverse=True)
+    sorted_tag = sorted_tag[:10]
+    result = []
+    for tt in sorted_tag:
+        result.append({"content": tt[0], "count": tt[1]})
+    context = {"user": user, "todos": todo, "result": result}
     return render(request, "accounts/working/mypage.html", context)
+
+
+def same_tag(request, tag):
+    same_tags = Tag.objects.filter(content=tag)
+    # todos = Todos.objects.filter(pk__in=tag.todo)
+
+    context = {"todos": todos, "same_tags": same_tags}
+    return render(request, "accounts/working/same_tag.html", context)

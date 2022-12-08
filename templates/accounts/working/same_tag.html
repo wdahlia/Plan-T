@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block body %}
+
+{% for todo in todos %}
+<div>
+  <div>{{ todo.title }}</div>
+  <div>{{ todo.content }}</div>
+  <div>{{ todo.when }}</div>
+  <div>{{ todo.is_completed }}</div>
+</div>
+{% endfor %}
+<hr>
+{% for tag in tags %}
+<div>{{ tag.content }}</div>
+{% endfor %}
+
+{% endblock body %}
