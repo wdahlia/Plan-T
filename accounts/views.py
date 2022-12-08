@@ -117,10 +117,10 @@ import operator
 # 프로필, 데코레이터 추가 필요
 def profile(request):
     you = request.user
-    user = User.objects.filter(pk=you.pk)
+    user = User.objects.get(pk=you.pk)
 
     # 지금껏 user 가 쓴 tag 를 몇번 썼는지, 그리고 몇번 썼는지 세어서 context 로 넘겨줌
-    todo = Todos.objects.filter(user_id=request.user)
+    todo = Todos.objects.filter(user_id=user)
     tags = Tag.objects.filter(todo__in=todo)
 
     tag_count = {}
@@ -139,6 +139,12 @@ def profile(request):
 
 
 def same_tag(request, tag):
-    same_tags = Tag.objects.filter(content=tag)
+    you = request.user
+    user = User.objects.get(pk=you.pk)
+    todo = Todos.objects.filter(user_id=user)
+    same_tags = Tag.objects.filter(
+        content=tag,
+        todo__in=todo,
+    )
     context = {"same_tags": same_tags}
     return render(request, "accounts/working/same_tag.html", context)
