@@ -1,74 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Index</title>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="../../../static/styles/init.css">
+  <link rel="stylesheet" href="../../../static/styles/study_index.css">
+</head>
+<body>
 
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Index</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
-    <link rel="stylesheet" href="../../../static/styles/init.css">
-    <link rel="stylesheet" href="../../../static/styles/study_index.css">
-  </head>
 
-  <body>
-
-    <div class="container" id="study-index-area">
-      <div class="box">
-        <!-- search bar Area -->
-        <article class="study-search">
-          <div class="search-box">
-            <input placeholder="" required="" class="input" name="text" type="text">
-            <div class="icon">
-              <svg viewbox="0 0 512 512" class="ionicon" xmlns="http://www.w3.org/2000/svg">
-                <title>Search</title>
-                <path stroke-width="52" stroke-miterlimit="10" stroke="currentColor" fill="none" d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"></path>
-                <path d="M338.29 338.29L448 448" stroke-width="52" stroke-miterlimit="10" stroke-linecap="round" stroke="currentColor" fill="#3cddaa"></path>
+  <div class="container" id="study-index-area">
+    <div class="box">
+      <!-- search bar Area -->
+      <article class="study-search">
+        <div class="search-box">
+          <input placeholder="" required="" class="input" name="text" type="text">
+          <div class="icon">
+              <svg viewBox="0 0 512 512" class="ionicon" xmlns="http://www.w3.org/2000/svg">
+                  <title>Search</title>
+                  <path stroke-width="52" stroke-miterlimit="10" stroke="currentColor" fill="none" d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"></path>
+                  <path d="M338.29 338.29L448 448" stroke-width="52" stroke-miterlimit="10" stroke-linecap="round" stroke="currentColor" fill="#3cddaa"></path>
               </svg>
+          </div>
+        </div>
+        <a href="./create_study.html" class="create-box">
+          <span class="study-add-icon material-symbols-outlined">add_circle</span>
+          <span class="study-add-text">스터디 만들기</span>
+        </a>
+      </article>
+      
+      <!-- category area -->
+      <article class="study-category">
+        <div class="st">
+          <input type="radio" name="tabmenu" id="tab0" class="tabs" checked="checked">
+          <label for="tab0" class="tab">ALL</label>
+          <input type="radio" name="tabmenu" id="tab1" class="tabs">
+          <label for="tab1" class="tab">생활</label>
+          <input type="radio" name="tabmenu" id="tab2" class="tabs">
+          <label for="tab2" class="tab">IT/개발</label>
+          <input type="radio" name="tabmenu" id="tab3" class="tabs">
+          <label for="tab3" class="tab">외국어</label>
+          <input type="radio" name="tabmenu" id="tab4" class="tabs">
+          <label for="tab4" class="tab">생활</label>
+          <input type="radio" name="tabmenu" id="tab5" class="tabs">
+          <label for="tab5" class="tab">인문</label>
+          <input type="radio" name="tabmenu" id="tab6" class="tabs">
+          <label for="tab6" class="tab">취업</label>
+          <input type="radio" name="tabmenu" id="tab7" class="tabs">
+          <label for="tab7" class="tab">면접</label>
+          <input type="radio" name="tabmenu" id="tab8" class="tabs">
+          <label for="tab8" class="tab">기타</label>
+          <span class="glider"></span>
+        </div>
+      </article>
+
+
+      <!-- study index body -->
+      <section class="study-list">
+        <div class="study-room">
+          <div class="study-header">
+            <div class="study-category">
+              생활
+            </div>
+            <div class="leader-img">
+              <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" alt="">
             </div>
           </div>
-          <a href="{% url 'studies:create' %}" class="create-box">
-            <span class="study-add-icon material-symbols-outlined">add_circle</span>
-            <span class="study-add-text">스터디 만들기</span>
-          </a>
-        </article>
-
-        <!-- category area -->
-        <article class="study-category">
-          <form action="" method="get" class="st" id="select-category">
-            <input type="radio" name="tabmenu" id="tab0" class="tabs" checked="checked">
-            <label for="tab0" class="tab">ALL</label>
-            <input type="radio" name="tabmenu" id="tab1" class="tabs" value="생활">
-            <label for="tab1" class="tab">생활</label>
-            <input type="radio" name="tabmenu" id="tab2" class="tabs" value="IT/개발">
-            <label for="tab2" class="tab">IT/개발</label>
-            <input type="radio" name="tabmenu" id="tab3" class="tabs" value="외국어">
-            <label for="tab3" class="tab">외국어</label>
-            <input type="radio" name="tabmenu" id="tab4" class="tabs" value="수능">
-            <label for="tab4" class="tab">수능</label>
-            <input type="radio" name="tabmenu" id="tab5" class="tabs" value="인문">
-            <label for="tab5" class="tab">인문</label>
-            <input type="radio" name="tabmenu" id="tab6" class="tabs" value="취업">
-            <label for="tab6" class="tab">취업</label>
-            <input type="radio" name="tabmenu" id="tab7" class="tabs" value="면접">
-            <label for="tab7" class="tab">면접</label>
-            <input type="radio" name="tabmenu" id="tab8" class="tabs" value="기타">
-            <label for="tab8" class="tab">기타</label>
-            <span class="glider"></span>
-          </form>
-        </article>
-        <!-- study index body -->
-        <section class="study-list">
-          {% for study in category_studies %}
-            <div class="study-room">
-              <div class="study-header">
-                <div class="study-category">
-                  {{study.category}}
-                </div>
-                <div class="leader-img">
-                  <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" alt="">
-                </div>
+          <div class="study-body">
+            <div class="study-name-area">
+              <div class="study-name">
+                Plan-T
               </div>
+
+              <div class="people-num">
+                <span class="participant-num">3명</span> 
+                / 
+                <span class="all-num">5명</span>
+
               <div class="study-body">
                 <div class="study-name-area">
                   <div class="study-name">
@@ -104,27 +116,53 @@
                 {% else %}
                   <a href="{% url 'studies:info' study.pk %}" class="join-btn">가입하기</a>
                 {% endif %}
+
               </div>
             </div>
-          {% endfor %}
-          <div class="study-room"></div>
-          <div class="study-room"></div>
-          <div class="study-room"></div>
-          <div class="study-room"></div>
-          <div class="study-room"></div>
-          <div class="study-room"></div>
-          <div class="study-room"></div>
-        </section>
-      </div>
+            <fieldset class="study-info">
+              <legend>스터디 소개</legend>
+              <div>
+                월요일부터 금요일까지 매주 오전 6시에 기상 인증
+              </div>
+            </fieldset>
+            <fieldset class="study-date">
+              <legend>스터디 기간</legend>
+              <div>
+                22.12.06 ~ 22.12.31
+              </div>
+            </fieldset>
+          </div>
+          <div class="study-footer">
+            <a href="./study_detail.html" class="join-btn">가입하기</a>
+          </div>
+        </div>
+        <div class="study-room">
+          
+        </div>
+        <div class="study-room">
+          
+        </div>
+        <div class="study-room">
+          
+        </div>
+        <div class="study-room">
+          
+        </div>
+        <div class="study-room">
+          
+        </div>
+        <div class="study-room">
+          
+        </div>
+        <div class="study-room">
+          
+        </div>
+      </section>
     </div>
-    <script>
-      const selectCategory = document.querySelector('#select-category');
-      selectCategory.addEventListener('click', function (event) {
-        selectCategory.action = 'http://localhost:8000/studies';
-        selectCategory.method = 'GET';
-        selectCategory.submit()
-      })
-    </script>
-  </body>
+  </div>
+  
 
+  
+</body>
 </html>
+

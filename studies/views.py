@@ -18,7 +18,7 @@ def index(request):
 
     context = {"category_studies": category_studies}
 
-    return render(request, "studies/working/study_index.html", context)
+    return render(request, "studies/complete/study_index.html", context)
 
 
 # 스터디 생성
