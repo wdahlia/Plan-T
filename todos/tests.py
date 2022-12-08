@@ -1,6 +1,8 @@
 from django.test import TestCase
 
-# a = {1, 2, 3, 4, 5, 6}
-# c = set(range(7, 9))
+a = "asdf"
+b = a.replace("b", "n")
+print(b)
 
-# print(c.isdisjoint(a))
+
+# replace 는 걍 둬도 되고 split , 하려고 하는데 , 가 없으면 문제

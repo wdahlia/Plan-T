@@ -22,5 +22,5 @@ class Todos(models.Model):
 
 
 class Tag(models.Model):
-    todo = models.ForeignKey("Todos", on_delete=models.CASCADE)
+    todo = models.ForeignKey("Todos", on_delete=models.CASCADE, related_name="tagged")
     content = models.CharField(max_length=30)
