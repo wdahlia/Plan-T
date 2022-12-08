@@ -193,6 +193,11 @@
   resize: none;
   padding: 15px;
   margin-bottom: 2.5rem;
+  width: 100%;
+}
+
+#study-todo-area text-area[id="study-detail-text"] {
+  width: 100%;
 }
 
 /* date 생성 */

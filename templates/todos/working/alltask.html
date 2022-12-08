@@ -26,24 +26,24 @@
               </button>
             </div>
             <div class="past-date_all">
+              <span class="arrow-icon">
               <div class="past-date">
-                <span class="arrow-icon">
                   <img src="../../../static/img/arrow_forward.svg" alt="">
                 </span>
                 <button class="datetime">
                   2022-11-01
                 </button>
               </div>
-              <ul class="past-task_list">
+              <ul class="task_listup">
                 <li class="task-li-content">
                   <span>task</span>
                   <input type="checkbox" name="" id="past-check">
-                    <label for="past-check"></label>
+                  <label for="past-check"></label>
                 </li>
                 <li class="task-li-content">
                   <span>task</span>
                   <input type="checkbox" name="" id="past-check">
-                    <label for="past-check"></label>
+                  <label for="past-check"></label>
                 </li>
               </ul>
             </div>
@@ -88,22 +88,34 @@
               </div>
             </div>
           </div>
-          <div class="past-timeline">
+          <div class="today-timeline">
             <div class="timeline-box">
               <span class="arrow-icon">
                 <img src="../../../static/img/arrow_forward.svg" alt="">
               </span>
-              <button class="time-point">
+              <button class="times">
                 오늘
               </button>
             </div>
+            <ul class="task_listup">
+              <li class="task-li-content">
+                <span>task</span>
+                <input type="checkbox" name="" id="past-check">
+                <label for="past-check"></label>
+              </li>
+              <li class="task-li-content">
+                <span>task</span>
+                <input type="checkbox" name="" id="past-check">
+                <label for="past-check"></label>
+              </li>
+            </ul>
           </div>
-          <div class="past-timeline">
+          <div class="tomorrow-timeline">
             <div class="timeline-box">
               <span class="arrow-icon">
                 <img src="../../../static/img/arrow_forward.svg" alt="">
               </span>
-              <button class="time-point">
+              <button class="times">
                 내일
               </button>
             </div>
@@ -131,75 +143,87 @@
     </div>
   </section>
 
-  <!-- 눌렀을때 나타나는 폼 -->
-  <script>
-    let taskContents = document.querySelectorAll(".task-li-content")
-    const timeDetailForm = document.querySelector(".timedetail-form")
-    const timeBoxArea = document.querySelector(".time-box-area")
-
-    const taskTimelineToggle = function(e) {
-      e.preventDefault();
-      console.log(e)
-      timeDetailForm.classList.toggle('activate');
-      timeBoxArea.classList.toggle('activate');
-      
+  
+ <!-- 눌렀을때 나타나는 폼 -->
+ <script>
+   let taskContents = document.querySelectorAll(".task-li-content")
+   const timeDetailForm = document.querySelector(".timedetail-form")
+   const timeBoxArea = document.querySelector(".time-box-area")
+   
+   const taskTimelineToggle = function(e) {
+     e.preventDefault();
+     console.log(e)
+     timeDetailForm.classList.toggle('activate');
+     timeBoxArea.classList.toggle('activate');
+     
     }
-
+    
     taskContents.forEach(tasklist => {
       tasklist.addEventListener('click', taskTimelineToggle);
     });
-      
     
+    
+    
+    </script>
 
-  </script>
+<script>
+  let uploadFile = document.getElementById("today-task-imgfile");
+  let loadedFile = document.querySelector(".loaded-file")
+  const noneFile = document.querySelector(".upload-none")
   
-  <script>
-    let uploadFile = document.getElementById("today-task-imgfile");
-    let loadedFile = document.querySelector(".loaded-file")
-    const noneFile = document.querySelector(".upload-none")
-    
-    loadedFile.style.display = "none";
-
-    uploadFile.onchange = () => {
-        noneFile.style.display = "none";
-        loadedFile.style.display = "block";
-        let uploadFileName = uploadFile.files[0].name;
-        loadedFile.innerText = `${uploadFileName}`;
-    }
-   
+  loadedFile.style.display = "none";
+  
+  uploadFile.onchange = () => {
+    noneFile.style.display = "none";
+    loadedFile.style.display = "block";
+    let uploadFileName = uploadFile.files[0].name;
+    loadedFile.innerText = `${uploadFileName}`;
+  }
+  
   </script>
-
+  <!-- 과거, 오늘, 내일 토글 -->
   <script>
-    const timelineBtn = document.querySelectorAll('.time-point');
-    timelineBtn.forEach(el => {
-      el.addEventListener('click', function(el){
-        const parentDiv = el.target.parentElement.parentElement;
+    // 과거 토글
+    const timelineBtn = document.querySelector('.time-point');
+      timelineBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        const parentDiv = e.target.parentElement.parentElement;
+        let timePoint = parentDiv.classList.value;
         const dateList = parentDiv.querySelectorAll('.past-date_all');
-        for (let i=0; i < dateList.length; i++) {
-          if (dateList[i].style.display === "none") {
-            dateList[i].style.display = "block";
-        } else {
-          dateList[i].style.display = "none";
-        }
-        }
-      });
-    })
-
-    const timeBtn = document.querySelectorAll('.datetime')
-    timeBtn.forEach(e => {
-      e.addEventListener('click', function(e){
-        const parentElem = e.target.parentElement.parentElement
-        const timeList = parentElem.querySelectorAll('.task-li-content');
-        for (let j=0; j < timeList.length; j++) {
-          if (timeList[j].style.display === "none") {
-            timeList[j].style.display = "flex";
-          } else {
-            timeList[j].style.display = "none";
-          }
-        }
-      });
-    });
+          for (let i=0; i < dateList.length; i++) {
+            dateList[i].classList.toggle('activate');
+         };
+         
+         const ymdBtn = parentDiv.querySelector('.datetime');
+         ymdBtn.addEventListener('click', function(e){
+             e.preventDefault();
+             const parentElem = e.target.parentElement.parentElement
+             const timeList = parentElem.querySelectorAll('.task-li-content');
+             for (let j=0; j < timeList.length; j++) {
+               timeList[j].classList.toggle('activate');
+             }
+           }) 
+       });
     
+    // 오늘, 내일 토글 - 클래스 이름 변경
+    const times = document.querySelectorAll('.times');
+    times.forEach(time => {
+      time.addEventListener('click', (e) => {
+        e.preventDefault();
+        const parenDiv = e.target.parentElement.parentElement;
+        console.log(parenDiv)
+        const taskList = parenDiv.querySelectorAll('.task-li-content');
+        console.log(taskList)
+        for (let k=0; k < taskList.length; k++) {
+          taskList[k].classList.toggle('activate');
+        }
+
+      })
+    })
+      
+       
+       
   </script>
+
 </body>
 </html>
