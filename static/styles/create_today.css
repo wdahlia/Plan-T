@@ -4,16 +4,14 @@
 
 /* todayList Form */
 
-
-#today-form, 
-#today-detail-form, 
-#create-study-form, 
-#study-detail-area, 
+#today-form,
+#today-detail-form,
+#create-study-form,
+#study-detail-area,
 #update-study-form {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-
+	display: flex;
+	flex-direction: column;
+	position: relative;
 }
 
 #today-form .today_task-title,
@@ -26,12 +24,9 @@
 	padding: 1rem;
 }
 
-#today-form .keyword-box {
-	width: 113px;
-}
-
 #today-form .keyword-box,
 #today-detail-form .keyword-box {
+	width: 113px;
 	margin: 1rem 0;
 	height: 34px;
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
@@ -41,10 +36,11 @@
 }
 
 #today-form .keyword-box input[type="text"],
-#today-detail-form .keyword-box span {
+#today-detail-form .keyword-box input[type="text"] {
 	line-height: 34px;
 }
-#today-form .keyword-box input[type="text"] {
+#today-form .keyword-box input[type="text"],
+#today-detail-form .keyword-box input[type="text"] {
 	padding: 0 1rem;
 }
 
@@ -115,6 +111,10 @@
 	border-radius: 20px;
 	text-align: center;
 	margin-top: 0.2rem;
+}
+#today-detail-form #starttime-pick-edit,
+#today-detail-form #endtime-pick-edit {
+	width: 120px;
 }
 
 #today-form .time-tilder,

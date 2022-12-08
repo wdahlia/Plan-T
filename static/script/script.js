@@ -142,6 +142,7 @@ try {
     const detailBtnDel = document.querySelector('#detail-btn-del');
     const detailDelForm = document.querySelector('#detail-del-form');
     const todayStudyArea = document.querySelector('.today-study-area');
+    const updateBtn = document.querySelector('#todo-update');
 
     // 할일 클릭 시 옆에 상세 토글 나오는 기능, json 데이터 비동기, 할일 active 토글 기능
     const taskMenu = function (e) {
@@ -200,14 +201,39 @@ try {
                 detailET.value = jsonParse[idx].fields.expired_at;
                 ;
             })
+    };
 
-
-    }
-    // tasks.forEach(task => {
-    //     task.addEventListener('click', taskMenu);
-    // });
+    // 각 할일을 누를 때마다 이벤트 작동하도록 forEach 사용
     taskConts.forEach(taskCont => {
         taskCont.addEventListener('click', taskMenu);
+    });
+
+    // today todo 업데이트 비동기
+    updateBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const taskDetailForm = document.querySelector('#today-detail-form');
+
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        let urls = taskDetailForm.getAttribute('action');
+        console.log(urls);
+        axios({
+            method: 'POST',
+            url: `${urls}`,
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'multipart/form-data'
+            },
+            data: new FormData(taskDetailForm),
+        })
+            .then((res) => {
+                const data2 = res.data;
+                console.log(data2);
+                for (let i = 0; i < taskConts.length; i++) {
+                    if (taskConts[i].parentElement.classList.contains('activate')) {
+                        taskConts[i].innerText = data2.todoTitle;
+                    }
+                }
+            })
     });
 
 } catch { }
