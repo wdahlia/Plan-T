@@ -42,7 +42,11 @@ SECRET_KEY = get_secret("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "plan-t.site",
+    "*.ap-northeast-2.compute.amazonaws.com",
+    "127.0.0.1"
+]
 
 
 # Application definition
@@ -51,6 +55,11 @@ INSTALLED_APPS = [
     "accounts",
     "todos",
     "studies",
+    "chat",
+
+    # package
+    "channels",
+    "daphne",
     "imagekit",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -94,7 +103,18 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "pjt.wsgi.application"
+# For daphne
+ASGI_APPLICATION = "pjt.asgi.application"
 
+# For channels
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        }
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
