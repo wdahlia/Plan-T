@@ -89,7 +89,11 @@
         {% for todo in today_todos %}
         <li class="task" data-todo-pk="{{todo.pk}}">
           <p class="task-cont">{{ todo.title }}</p>
+          {% if todo.is_completed %}
+          <input type="checkbox" name="task-chb{{todo.pk}}" id="task-chb{{todo.pk}}" checked>
+          {% else %}
           <input type="checkbox" name="task-chb{{todo.pk}}" id="task-chb{{todo.pk}}">
+          {% endif %}
           <label for="task-chb{{todo.pk}}" class="task-chb"></label>
         </li>
         {%empty%}
