@@ -18,31 +18,39 @@ try {
 } catch { }
 
 try {
-
+    //  today 할일 달성도 그래프 생성
     var ctx = document.getElementById('today-progress-crc').getContext("2d");
 
-    // var r = -Math.PI / 2;
+    // 부채꼴 넓이 구해서 대입
     var $r1 = (270 * Math.PI / 180) - Math.PI / 2;
     var r1 = -Math.PI / 2;
-    console.log($r1, r1);
     function graph() {
-        // r1 = r1 + ($r1 - r1) * 0.045;
-        r1 = 1.6
-        console.log(r1);
-        console.log(Math.round((r1 * 180 / Math.PI + 90) / 360 * 100));
+        // console.log($r1);
+        r1 = r1 + ($r1 - r1) * 0.66;
+        // console.log((r1 * 180 / Math.PI + 90));
+        // r1 = r1 + ($r1 - r1);
+        // const i = 0.0133;
+        // r1 = r1 + ($r1 - r1) * 1.33;
+        // console.log(Math.round((r1 * 180 / Math.PI + 90) / 360 * 100));
+        const rateArea = document.querySelector('#progress-per');
+        let achRate = Number(rateArea.dataset.achRate);
+        console.log(achRate);
+
 
         ctx.clearRect(0, 0, 100, 100);
         ctx.strokeStyle = "#3cddaa";
         ctx.lineWidth = 10;
         ctx.lineCap = "round";
         ctx.beginPath();
-        ctx.arc(50, 50, 40, -Math.PI / 2, r1, false);
+        // ctx.arc(50, 50, 40, -Math.PI / 2, r1, false);
+        ctx.arc(50, 50, 40, Math.PI * 3 / 2, Math.PI * 1 / 2 + Math.PI);
         ctx.stroke();
 
-        // const rateArea = document.querySelector('#progress-per');
-        // let achRate = Number(rateArea.dataset.achRate);
-        // console.log(achRate);
+        // console.log(Math.PI * 1 / 2 + Math.PI);
+
         // rateArea.innerText = `${achRate}%`;
+
+
 
         document.getElementById('progress-per').innerHTML = Math.round((r1 * 180 / Math.PI + 90) / 360 * 100) + "%";
     }
@@ -137,14 +145,16 @@ try {
 
 try {
     // 할일 기능 관련 DOM 객체 지정
+    const taskList = document.querySelector('.today-task-list');
     const tasks = document.querySelectorAll('.today-task-list .task');
-    const taskConts = document.querySelectorAll('.today-task-list .task .task-cont')
+    let taskConts = document.querySelectorAll('.today-task-list .task .task-cont');
     const taskView = document.querySelector('#task-detail');
     const taskDetailForm = document.querySelector('#today-detail-form');
     const detailTit = document.querySelector('#detail-title');
     const detailCont = document.querySelector('#detail-cont');
     const detailST = document.querySelector('#starttime-pick-edit');
     const detailET = document.querySelector('#endtime-pick-edit');
+    const detailTag = document.querySelector('#detail-tag');
     const detailBtnDel = document.querySelector('#detail-btn-del');
     const detailDelForm = document.querySelector('#detail-del-form');
     const todayStudyArea = document.querySelector('.today-study-area');
@@ -183,29 +193,30 @@ try {
         })
             .then((res) => {
                 const data = res.data.resJson;
-                jsonParse = JSON.parse(data);
+                const data2 = res.data.resJson2;
 
-                // const nodes = [...this.parentElement.children];
-                // const idx = nodes.indexOf(this);
+                todoTasks = JSON.parse(data);
+                todoTags = JSON.parse(data2);
+                // console.log(todoTags);
+
                 const nodes = [...tasks];
                 const idx = nodes.indexOf(this.parentElement);
 
                 // todo 수정 업데이트 버튼 actions 속성 부여
-                const todoPK = jsonParse[idx].pk;
-                updateUrl = updateUrl + `${todoPK}`;
-                // updateUrl = this.dataset.taskUrl;
+                const todoPK = todoTasks[idx].pk;
+                updateUrl += `${todoPK}`;
                 taskDetailForm.setAttribute('action', `${updateUrl}`);
 
                 // todo 삭제 버튼 href 속성 부여
-                delUrl = delUrl + `${todoPK}`;
+                delUrl += `${todoPK}`;
                 detailDelForm.setAttribute('action', `${delUrl}`);
 
                 // 받아온 todo 데이터  input에 대입
-                detailTit.value = jsonParse[idx].fields.title;
-                detailCont.value = jsonParse[idx].fields.content;
-                detailST.value = jsonParse[idx].fields.started_at;
-                detailET.value = jsonParse[idx].fields.expired_at;
-                ;
+                detailTit.value = todoTasks[idx].fields.title;
+                detailCont.value = todoTasks[idx].fields.content;
+                detailST.value = todoTasks[idx].fields.started_at;
+                detailET.value = todoTasks[idx].fields.expired_at;
+                // detailTag.value = todoTags[idx]
             })
     };
 
@@ -234,7 +245,6 @@ try {
             .then((res) => {
                 console.log(res);
                 const data2 = res.data;
-                console.log(data2);
                 for (let i = 0; i < taskConts.length; i++) {
                     if (taskConts[i].parentElement.classList.contains('activate')) {
                         taskConts[i].innerText = data2.todoTitle;
@@ -242,6 +252,62 @@ try {
                 }
             })
     });
+
+    detailBtnDel.addEventListener('click', function (e) {
+        e.preventDefault();
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        let urls = detailDelForm.getAttribute('action');
+
+        axios({
+            method: 'POST',
+            url: `${urls}`,
+            headers: {
+                'X-CSRFToken': csrftoken,
+            },
+        })
+            .then((res) => {
+                const data = res.data.resJson;
+                const jsonParse = JSON.parse(data)
+                taskList.replaceChildren();
+
+                // 받아온 json에 데이터가 있으면 새 데이터로 채워넣기
+                if (jsonParse.length != 0) {
+                    for (let j = 0; j < jsonParse.length; j++) {
+                        if (jsonParse[j].fields.is_completed) {
+                            taskList.insertAdjacentHTML("beforeend", `
+                                <li class="task deactivate"  data-todo-pk="${jsonParse[j].pk}">
+                                <p class="task-cont">${jsonParse[j].fields.title}</p>
+                                <input type="checkbox" name="task-chb${jsonParse[j].pk}" id="task-chb${jsonParse[j].pk}" checked="checked">
+                                <label for="task-chb${jsonParse[j].pk}" class="task-chb"></label>
+                                </li>
+                                `)
+                        } else {
+                            taskList.insertAdjacentHTML("beforeend", `
+                                <li class="task" data-todo-pk="${jsonParse[j].pk}">
+                                <p class="task-cont">${jsonParse[j].fields.title}</p>
+                                <input type="checkbox" name="task-chb${jsonParse[j].pk}" id="task-chb${jsonParse[j].pk}" >
+                                <label for="task-chb${jsonParse[j].pk}" class="task-chb"></label>
+                                </li>
+                                `)
+                        }
+
+                    }
+                } else {
+                    // 받아오는 데이터 없으면 비어있는 표시 넣기
+                    taskList.insertAdjacentHTML("beforeend", `
+                        <li class="task-empty">
+                        <p class="task-cont"> 작성된 할일이 없어요 :(</p>
+                        </li>
+                        `)
+                }
+                taskView.classList.remove('activate');
+
+                taskConts = document.querySelectorAll('.today-task-list .task .task-cont');
+                console.log(taskConts);
+            })
+    })
+
+
 
 } catch { }
 
