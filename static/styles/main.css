@@ -131,28 +131,27 @@ body {
 	justify-content: space-around;
 	align-items: center;
 }
-#header .navi .user-area .calendar {
-	margin-right: 0.8rem;
-	padding: 0.3rem 0.4rem;
-	border-radius: 50%;
-	cursor: pointer;
-	line-height: 0.6rem;
-	transition: 0.3s ease-out;
-}
-#header .navi .user-area .calendar span {
-	font-size: 1.8rem;
-}
-#header .navi .user-area .calendar:hover {
-	background: var(--main);
-	color: var(--bg);
-}
 
 #header .navi .user-area .user-prof {
+	align-content: center;
 	border-radius: 50%;
 	height: 30px;
 	overflow: hidden;
 	margin-right: 0.5rem;
 }
+#header .navi .user-area a {
+	vertical-align: middle;
+	margin-left: 0.6rem;
+}
+#header .navi .user-area .logout-btn span {
+	font-size: 1.5rem;
+	vertical-align: middle;
+	transition: 0.2s ease;
+}
+#header .navi .user-area .logout-btn:hover span {
+	color: var(--main);
+}
+
 /* footer */
 footer {
 	margin-top: 2rem;

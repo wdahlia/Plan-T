@@ -4,7 +4,7 @@ from .forms import TodosForm
 from .models import Todos, Tag
 from datetime import datetime, timedelta
 from django.contrib import messages
-from ..function import change_value
+from function import change_value
 from django.http import JsonResponse
 from django.core import serializers
 import json
@@ -108,11 +108,11 @@ def create(request):
             todo.save()
             if tags != "":
                 if "," in tags:
-                    taglist = list(tags.replace(" ", "").split(","))
+                    taglist = set(tags.replace(" ", "").split(","))
+                    for t in taglist:
+                        Tag.objects.create(todo=todo, content=t)
                 else:
-                    taglist = list(tags.replace(" ", ""))
-                for t in taglist:
-                    Tag.objects.create(todo=todo, content=t)
+                    Tag.objects.create(todo=todo, content=tags)
 
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:
@@ -176,21 +176,23 @@ def update(request, pk):
                 start,
                 end,
             )
-            todo.tags.add(tag)
             todo.save()
             if tags != "":
                 if "," in tags:
-                    taglist = list(tags.replace(" ", "").split(","))
+                    taglist = set(tags.replace(" ", "").split(","))
+                    for t in taglist:
+                        Tag.objects.create(todo=todo, content=t)
                 else:
-                    taglist = list(tags.replace(" ", ""))
-                for t in taglist:
-                    Tag.objects.create(todo=todo, content=t)
+                    Tag.objects.create(todo=todo, content=tags)
+        return redirect("todos:today")
+
         context = {
             "todoTitle": todo.title,
             "todoCont": todo.content,
         }
         return JsonResponse(context)
         # return redirect("todos:today")
+
     else:
         todoForm = TodosForm(instance=todo)
         context = {
@@ -282,11 +284,13 @@ def read_all(request):
     # 한달 단위로 한다고 했는데 그러면 미래도 한달단위인지?
     now = datetime.now()
     today = str(now)[:10]
+    yesterday = str(now - timedelta(1))[:10]
+    # print(str(yesterday)[:10])
     # 과거
     # months=1을 통하여 월별 관리, 모든 과거: lte
     few_month_ago = str(now - relativedelta(months=1))[:10]
     past = Todos.objects.filter(
-        user_id=request.user, when__range=(few_month_ago, today)
+        user_id=request.user, when__range=(few_month_ago, yesterday)
     ).order_by("-when")
     # 현재
     present = Todos.objects.filter(user_id=request.user, when=today)
@@ -310,7 +314,7 @@ def read_all(request):
         "present": present,
         "future": future,
     }
-    return render(request, "todos/working/read_all.html", context)
+    return render(request, "todos/complete/all_todos.html", context)
 
 
 def stuty_list(request):

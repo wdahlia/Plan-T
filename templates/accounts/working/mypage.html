@@ -45,10 +45,12 @@
             <div class="user-tag box">
                 <h4 class="tit">많이 쓴 태그 top 10</h4>
                 {% for tag in result %}
-                <span class="tag" style="position:relative">
-                    {{ tag.content }}
-                    <span class="count">{{ tag.count }}</span>
-                </span>
+                <a href="{% url 'accounts:sametag' tag.content %}">
+                    <span class="tag" style="position:relative">
+                        {{ tag.content }}
+                        <span class="count">{{ tag.count }}</span>
+                    </span>
+                </a>
                 {% endfor %}
 
             </div>
