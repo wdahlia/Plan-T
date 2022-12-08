@@ -3,18 +3,25 @@
 @import url(./main.css);
 @import url(./create_today.css);
 
+
 #create-study-form {
   margin: 0rem 2rem 2rem;
 }
+
 #study-detail-area,
-#update-study-form { 
+#study-info-area{ 
   margin: 2rem;
+}
+
+#update-study-form{
+  margin: 4.75rem 2rem;
 }
 
 /* study, detail studyname input */
 #create-study-form input[id="create-study-name"],
 #study-detail-area input[id="study-detail-name"],
-#update-study-form input[id="update-study-name"] {
+#update-study-form input[id="update-study-name"],
+#study-info-area input[id="study-info-name"]{
     width: 100%;
     border-radius: 15px;
     padding: 15px;
@@ -26,9 +33,10 @@
 }
 
 
+#study-info-area .study-info-categories,
 #create-study-form .study-create-categories,
 #study-detail-area .study-detail-categories,
-#update-study-form .study-update-categories {
+#update-study-form .study-update-categories{
   margin-bottom: 2.5rem;
   border-radius: 10px;
 }
@@ -47,13 +55,13 @@
   margin-bottom: 1rem;
 }
 
-/* study detail label */
-#study-detail-area label[for="study-detail-name"],
-#study-detail-area .study-detail-categories legend,
-.study-detail-datepicker .study-start-picker legend,
-.study-detail-datepicker .study-end-picker legend,
-#study-detail-area label[for="study-members-num"],
-#study-detail-area label[for="study-info-text"]{
+/* study info label */
+#study-info-area label[for="study-info-name"],
+#study-info-area label[for="study-members-num"],
+#study-info-area .study-info-categories legend,
+.study-info-datepicker .study-start-picker legend,
+.study-info-datepicker .study-end-picker legend,
+#study-info-area label[for="study-info-text"]{
   font-size: 18px;
   letter-spacing: -1px;
   color: var(--main);
@@ -75,8 +83,19 @@
   margin-bottom: 1rem;
 }
 
+/* study detail label */
+#study-detail-area label[for="study-detail-text"],
+#study-detail-area label[for="study-detail-name"],
+#study-detail-area label[for="study-members-num"]{
+  font-size: 18px;
+  letter-spacing: -1px;
+  color: var(--main);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
 
-#study-detail-area .categories-area,
+
+#study-info-area .categories-area,
 #create-study-form .categories-area,
 #update-study-form .categories-area {
   font-family: "NanumSquareNeo";
@@ -85,13 +104,13 @@
   justify-content: space-around;
 }
 
-#study-detail-area .study-detail-categories input[type="radio"],
+#study-info-area .study-info-categories input[type="radio"],
 #create-study-form .study-create-categories input[type="radio"],
 #update-study-form .study-update-categories input[type="radio"] {
   display: none;
 }
 
-#study-detail-area .study-detail-categories input[type="radio"]:checked + label,
+#study-info-area .study-info-categories input[type="radio"]:checked + label,
 #create-study-form .study-create-categories input[type="radio"]:checked + label,
 #update-study-form .study-update-categories input[type="radio"]:checked + label {
   background-color: var(--main);
@@ -99,7 +118,7 @@
 
 }
 
-#study-detail-area .study-detail-categories label,
+#study-info-area .study-info-categories label,
 #create-study-form .study-create-categories label,
 #update-study-form .study-update-categories label {
   padding: 0.7rem 1rem;
@@ -111,7 +130,7 @@
   letter-spacing: -.8px;
 }
 
-#study-detail-area .study-detail-categories label:hover,
+#study-info-area .study-info-categories label:hover,
 #create-study-form .study-create-categories label:hover,
 #update-study-form .study-create-categories label:hover {
   background-color: var(--deact);
@@ -119,54 +138,53 @@
 }
 
 /* study 인원 */
-
-#study-detail-area .members-area {
+#study-info-area .members-area,
+#study-detail-area .members-area{
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 }
 
-#study-detail-area .study-membernum {
+#study-info-area .study-membernum,
+#study-detail-area .study-membernum{
   width: 200px;
   background-color: var(--deact);
   padding: 0.8rem 1rem;
   border-radius: 20px;
   text-align: center;
+  margin-right: 1rem;
 }
 
-#study-detail-area .members-area span {
+#study-info-area .members-area span,
+#study-detail-area .members-area span{
   font-weight: 700;
   font-size: 23px;
   color: var(--gr-dark);
 }
 
-#study-detail-area .total span {
-  align-self: end;
-  font-size: 15px;
-  font-weight: 500;
-}
-
+#study-info-area .study-totalnum,
 #study-detail-area .study-totalnum,
 #create-study-form input[type="number"],
-#update-study-form input[type="number"] {
+#update-study-form input[type="number"]{
   width: 200px;
   background-color: var(--sub);
   padding: 0.8rem 1rem;
   border-radius: 20px;
   text-align: center;
+  margin-left: 1rem;
 }
 
 /* study textarea */
-
 #create-study-form label[for="study-info-text"],
-#study-detail-area label[for="study-info-text"],
-#update-study-form label[for="update-info-text"] {
+#study-info-area label[for="study-info-text"],
+#update-study-form label[for="update-info-text"]{
   margin-top: 2.5rem;
 }
 
+#study-todo-area textarea[id="study-detail-text"],
+#study-info-area textarea[id="study-info-text"],
 #create-study-form textarea[id="study-info-text"],
-#study-detail-area textarea[id="study-info-text"],
-#update-study-form textarea[id="update-info-text"] {
+#update-study-form textarea[id="update-info-text"]{
   background-color: var(--bg);
   border: none;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
@@ -178,13 +196,17 @@
 }
 
 /* date 생성 */
+#study-todo-area .datepicker-area,
 #create-study-form .study-datepicker,
-#study-detail-area .study-detail-datepicker,
+#study-info-area .study-info-datepicker,
 #update-study-form .study-update-datepicker {
   display: flex;
   justify-content: space-evenly;
 }
 
+
+#study-info-area input[id="study-start-date"],
+#study-info-area input[id="study-end-date"],
 #create-study-form input[id="study-start-date"],
 #create-study-form input[id="study-end-date"],
 #study-detail-area input[id="study-start-date"],
@@ -200,6 +222,22 @@
   letter-spacing: -1px;
 }
 
+#study-todo-area input[id="studytask-start"],
+#study-todo-area input[id="studytask-end"]{
+  display: block !important;
+  font-family: "NanumSquareNeo";
+  padding: 0.9rem;
+  border: 2px solid var(--bg);
+  border-radius: 20px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+
+.study-picker-area .studytask-startpick,
+.study-picker-area .studytask-endpick,
+.study-info-datepicker .study-start-picker,
+.study-info-datepicker .study-end-picker,
 .study-datepicker .study-start-picker,
 .study-datepicker .study-end-picker,
 .study-detail-datepicker .study-start-picker,

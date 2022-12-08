@@ -165,17 +165,19 @@
 #study-index-area .study-list {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-top: 7rem;
 }
 
 #study-index-area .study-room {
   position: relative;
-  margin: 1rem auto;
+  margin: 5rem 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
-  width: 300px;
-  height: 420px;
+  width: 320px;
+  height: 450px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   background-color: var(--bg);
@@ -187,7 +189,7 @@
   left: 0;
   top: 0;
   width: 100%;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: -1px;
   padding: 0.8rem 1rem;
   background-color: var(--main);
@@ -195,6 +197,7 @@
   border-radius: 18px 18px 0 0;
   color: var(--bg);
   text-align: start;
+  margin-bottom: 7rem;
 }
 
 #study-index-area .study-header .leader-img img{
@@ -223,11 +226,11 @@
 #study-index-area .study-body .study-date {
   padding: 0.8rem 2rem;
   background-color: var(--bg);
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.045);
   border-radius: 18px;
   margin: 10px 0;
   word-break: break-all;
-  border: 1px solid var(--main);
+  border: 1px solid var(--deact);
 }
 
 #study-index-area .study-body .study-name {
@@ -237,19 +240,24 @@
   margin: 10px 0;
   /* letter-spacing: -1px; */
   font-weight: 700;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 170px;
 }
 
 #study-index-area .people-num {
   border-radius: 20px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
   background-color: var(--bg);
-  width: 70px;
+  width: 85px;
   text-align: center;
   padding: 0.6rem;
   /* border: 1.7px solid var(--main-hl); */
   font-weight: 700;
   color: var(--deact);
   font-size: 13px;
+  letter-spacing: -1px;
 }
 
 #study-index-area .people-num .participant-num {
@@ -262,9 +270,10 @@
 
 #study-index-area .study-body .study-info legend,
 #study-index-area .study-body .study-date legend {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 700;
-  color: var(--main);
+  color: var(--gr-dark);
+  text-align: start;
 }
 
 #study-index-area .study-body .study-info div,
@@ -283,19 +292,23 @@
   height: 120px;
   line-height: 2;
   /* letter-spacing: -1px; */
-  
   /* overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis; */
 }
 
+#study-index-area .study-footer{
+  margin-bottom: 1rem;
+}
 #study-index-area .join-btn{
-  padding: 0.8rem 2rem;
+  padding: 0.65rem 1.3rem;
   align-self: center;
-  background-color: var(--main);
+  background-color: var(--gr);
   border-radius: 10px;
   font-weight: 700;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  /* margin-bottom: 2rem; */
+  /* border: 2.5px solid var(--gr); */
 }
 
 #study-index-area .join-btn:hover{

@@ -24,11 +24,11 @@
         {% csrf_token %}
         <div class="input-area">
           <input type="text" name="username" id="id_username" autofocus="autofocus">
-          <label for="username">아이디</label>
+          <label for="id_username">아이디</label>
         </div>
         <div class="input-area">
           <input type="password" name="password" id="id_password">
-          <label for="password">비밀번호</label>
+          <label for="id_password">비밀번호</label>
           <button type="submit" class="btn">로그인</button>
           <a href="{% url 'social:begin' 'google-oauth2' %}" style="display: block; margin-top: -20px;">
             <button class='btn' style='width: 100%; border-bottom: 30px;'>G+login</button>
