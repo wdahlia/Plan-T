@@ -4,42 +4,39 @@
 
 /* todayList Form */
 
-
-#today-form, 
-#today-detail-form, 
-#create-study-form, 
-#study-detail-area, 
+#today-form,
+#today-detail-form,
+#create-study-form,
+#study-detail-area,
 #update-study-form,
 #study-task-form,
-#study-info-area{
-  display: flex;
-  flex-direction: column;
-  position: relative;
-
+#study-info-area {
+	display: flex;
+	flex-direction: column;
+	position: relative;
 }
 
 #today-form .today_task-title,
 #today-detail-form .today_task-title,
-#study-task-form .study_task-title{
-  height: 49px;
-  background: var(--bg);
-  border: 2px solid var(--main);
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-  padding: 1rem;
-
+#study-task-form .study_task-title {
+	height: 49px;
+	background: var(--bg);
+	border: 2px solid var(--main);
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+	border-radius: 20px;
+	padding: 1rem;
 }
 
 #today-form .keyword-box,
 #study-task-form .keyword-box,
-#study-todo-area .keyword-box{
+#study-todo-area .keyword-box {
 	width: 113px;
 }
 
 #today-form .keyword-box,
 #today-detail-form .keyword-box,
 #study-task-form .keyword-box,
-#study-todo-area .keyword-box{
+#study-todo-area .keyword-box {
 	margin: 1rem 0;
 	height: 34px;
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
@@ -51,19 +48,19 @@
 #today-form .keyword-box input[type="text"],
 #today-detail-form .keyword-box span,
 #study-task-form .keyword-box input[type="text"],
-#study-todo-area .keyword-box input[type="text"]{
+#study-todo-area .keyword-box input[type="text"] {
 	line-height: 34px;
 }
 #today-form .keyword-box input[type="text"],
 #study-task-form .keyword-box input[type="text"],
-#study-todo-area .keyword-box input[type="text"]{
+#study-todo-area .keyword-box input[type="text"] {
 	padding: 0 1rem;
 }
 
 #today-form .today_task-textarea,
 #today-detail-form .today_task-textarea,
 #study-task-form .study_task-textarea,
-#study-todo-area .study_task-textarea{
+#study-todo-area .study_task-textarea {
 	font-family: "Noto Sans KR", sans-serif;
 	font-size: 1rem;
 	border-radius: 20px;
@@ -80,18 +77,17 @@
 	margin-top: 1rem;
 }
 
-
 #today-form .today_task-textarea:active,
 #today-detail-form .today_task-textarea:active,
 #study-task-form .study_task-textarea:active,
-#study-todo-area .study_task-textarea:active{
+#study-todo-area .study_task-textarea:active {
 	border: none;
 }
 
 #today-form .today_task-textarea:focus,
 #today-detail-form .today_task-textarea:focus,
 #study-task-form .study_task-textarea:focus,
-#study-todo-area .study_task-textarea:focus{
+#study-todo-area .study_task-textarea:focus {
 	outline: var(--main) solid 2px;
 }
 
@@ -121,7 +117,7 @@
 #today-form .timepicker-area .starttime-select,
 #today-form .timepicker-area .endtime-select,
 #study-task-form .datapicker-area #studytask-start,
-#study-task-form .datapicker-area #studytask-end{
+#study-task-form .datapicker-area #studytask-end {
 	display: flex;
 	flex-direction: column;
 }
@@ -147,6 +143,10 @@
 	text-align: center;
 	margin-top: 0.2rem;
 }
+#today-detail-form #starttime-pick-edit,
+#today-detail-form #endtime-pick-edit {
+	width: 120px;
+}
 
 #today-form .time-tilder,
 #today-detail-form .time-tilder {
@@ -156,7 +156,6 @@
 	text-align: center;
 	vertical-align: bottom;
 }
-
 
 /* 사진 업로드 */
 #today-form input[type="file"],
@@ -171,7 +170,7 @@
 
 #today-form .today-task-fileadd,
 #today-detail-form .today-task-fileadd,
-#study-todo-area .study-task-fileadd{
+#study-todo-area .study-task-fileadd {
 	position: relative;
 	margin: 1rem 0;
 	border: 2px dotted var(--main);
@@ -183,7 +182,7 @@
 #today-form .today-task-fileadd legend,
 #today-detail-form .today-task-fileadd legend,
 #study-task-form .study-task-fileadd legend,
-#study-todo-area .study-task-fileadd legend{
+#study-todo-area .study-task-fileadd legend {
 	color: var(--main);
 	padding: 0 5px;
 	letter-spacing: -1px;
@@ -192,7 +191,7 @@
 
 #today-form .today-task-fileadd label,
 #today-detail-form .today-task-fileadd label,
-#study-todo-area .study-task-fileadd label{
+#study-todo-area .study-task-fileadd label {
 	color: var(--main);
 	letter-spacing: -1px;
 	font-weight: 700;
@@ -207,7 +206,7 @@
 
 #today-form .today-task-fileadd .loaded-file,
 #today-detail-form .today-task-fileadd .loaded-file,
-#study-todo-area .study-task-fileadd .study-loaded-file{
+#study-todo-area .study-task-fileadd .study-loaded-file {
 	width: 100%;
 	height: 100%;
 	text-align: center;
@@ -216,7 +215,7 @@
 
 #today-form .today-task-fileadd .upload-none,
 #today-detail-form .today-task-fileadd .upload-none,
-#study-todo-area .study-task-fileadd .study-upload-none{
+#study-todo-area .study-task-fileadd .study-upload-none {
 	width: 100%;
 	height: 100%;
 	display: flex;

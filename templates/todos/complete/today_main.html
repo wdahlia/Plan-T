@@ -139,10 +139,10 @@
             <input type="file" name="todoimg" class="today_task-img" id="today-task-imgfile">
           </fieldset> -->
           <div class="keyword-box">
-            <input type="text" name="tag" id="" placeholder="#keyword">
+            <input type="text" name="tags" id="" placeholder="#keyword">
           </div>
           <div class="btn-area">
-            <button type="submit" class="btn">할일 수정</button>
+            <button class="btn" id="todo-update">할일 수정</button>
         </form>
         <form action="" method="post" id="detail-del-form">
           {% csrf_token %}

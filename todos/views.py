@@ -4,7 +4,7 @@ from .forms import TodosForm
 from .models import Todos, Tag
 from datetime import datetime, timedelta
 from django.contrib import messages
-from function import change_value
+from .function import change_value
 from django.http import JsonResponse
 from django.core import serializers
 import json
@@ -129,6 +129,7 @@ def delete(request, todos_pk):
 
 def update(request, pk):
     todo = get_object_or_404(Todos, pk=pk)
+
     if request.method == "POST":
         todoForm = TodosForm(request.POST, request.FILES, instance=todo)
         start, end, when, tags = (
@@ -142,27 +143,30 @@ def update(request, pk):
         today = str(datetime.now())[:10]
         today_todos = Todos.objects.filter(user_id=request.user, when=today)
 
+        # 시간은 수정 기능 막아둬서 주석 처리함
+
         # 시간 입력이 잘못되었을때
-        exist = set()
-        for todo in today_todos:
-            if todo.started_at != "":
-                st = change_value(todo.started_at)
-                ed = change_value(todo.expired_at)
-                for t in range(st, ed + 1):
-                    exist.add(t)
-        if (start != "") and (end != ""):
-            timetable = set(range(change_value(start), change_value(end) + 1))
-            if (start <= end) and (timetable.isdisjoint(exist)):
-                pass
-            else:
-                messages.warning(request, "시간이 잘못되었습니다.")
-                return redirect("todos:today")
-        elif (start != "") and (end == ""):
-            messages.error(request, "끝나는 시간을 입력해주세요.")
-            return redirect("todos:today")
-        elif (start == "") and (end != ""):
-            messages.error(request, "시작 시간을 입력해주세요.")
-            return redirect("todos:today")
+        # exist = set()
+        # for todo in today_todos:
+        #     if todo.started_at != "":
+        #         st = change_value(todo.started_at)
+        #         ed = change_value(todo.expired_at)
+        #         for t in range(st, ed + 1):
+        #             exist.add(t)
+
+        # if (start != "") and (end != ""):
+        #     timetable = set(range(change_value(start), change_value(end) + 1))
+        #     if (start <= end) and (timetable.isdisjoint(exist)):
+        #         pass
+        #     else:
+        #         messages.warning(request, "시간이 잘못되었습니다.")
+        #         return redirect("todos:today")
+        # elif (start != "") and (end == ""):
+        #     messages.error(request, "끝나는 시간을 입력해주세요.")
+        #     return redirect("todos:today")
+        # elif (start == "") and (end != ""):
+        #     messages.error(request, "시작 시간을 입력해주세요.")
+        #     return redirect("todos:today")
 
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
@@ -181,7 +185,12 @@ def update(request, pk):
                     taglist = list(tags.replace(" ", ""))
                 for t in taglist:
                     Tag.objects.create(todo=todo, content=t)
-        return redirect("todos:today")
+        context = {
+            "todoTitle": todo.title,
+            "todoCont": todo.content,
+        }
+        return JsonResponse(context)
+        # return redirect("todos:today")
     else:
         todoForm = TodosForm(instance=todo)
         context = {
@@ -215,7 +224,7 @@ def week(request):
         "next": next_,
         "last": last_,
     }
-    return render(request, "todos/working/week_todos.html", context)
+    return render(request, "todos/complete/week_todos.html", context)
 
 
 def week_asyn(request, few_week):
@@ -235,7 +244,7 @@ def week_asyn(request, few_week):
     for i in range(7):
         temp = week + timedelta(days=i)
         # RuntimeWarning: 이 나온다.
-        temp_time = temp.strftime("%Y-%m-%d") + " 09:00:00"
+        temp_time = temp.strftime("%Y-%m-%d")
         time_list.append(Todos.objects.filter(when=temp_time))
         res_json = serializers.serialize("json", Todos.objects.filter(when=temp_time))
         # print(res_json)
@@ -259,7 +268,7 @@ def week_asyn(request, few_week):
         # "next": next_,
         # "last": last_,
     }
-    return render(request, "todos/working/week_todos.html", context)
+    return render(request, "todos/complete/week_todos.html", context)
 
 
 from dateutil.relativedelta import relativedelta
