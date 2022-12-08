@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="container" id="allTodos">
+    <div class="lnb-area">
+        <div class="lnb">
+            <input type="radio" name="tabmenu" id="tab1" class="tabs">
+            <label for="tab1" class="tab">
+                <a href="{% url 'todos:week' %}">WEEK</a>
+            </label>
+            <input type="radio" name="tabmenu" id="tab2" class="tabs">
+            <label for="tab2" class="tab">TODAY</label>
+            <input type="radio" name="tabmenu" id="tab3" class="tabs" checked="checked">
+            <label for="tab3" class="tab">ALL</label>
+            <span class="glider"></span>
+        </div>
+    </div>
+    <section class="task-timeline">
+        <div class="container">
+            <div class="box-area" id="timeline-box-area">
+                <div class="box time-box-area" id="time-box">
+                    <div class="past-timeline">
+                        <div class="timeline-box">
+                            <span class="arrow-icon">
+                                <img src="../../../static/img/arrow_forward.svg" alt="">
+                            </span>
+                            <button class="time-point">
+                                과거
+                            </button>
+                        </div>
+                        {% for pastTodo in past %}
+                        <div class="past-date_all">
+                            <div class="past-date">
+                                <span class="arrow-icon">
+                                    <img src="../../../static/img/arrow_forward.svg" alt="">
+                                </span>
+                                <button class="datetime">
+                                    {{pastTodo.when}}
+                                </button>
+                            </div>
+                            <ul class="past-task_list">
+                                <li class="task-li-content">
+                                    <span> {{pastTodo.title}} </span>
+                                    <input type="checkbox" name="" id="past-check">
+                                    <label for="past-check"></label>
+                                </li>
+                                <li class="task-li-content">
+                                    <span>task</span>
+                                    <input type="checkbox" name="" id="past-check">
+                                    <label for="past-check"></label>
+                                </li>
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="past-timeline">
+                        <div class="timeline-box">
+                            <span class="arrow-icon">
+                                <img src="../../../static/img/arrow_forward.svg" alt="">
+                            </span>
+                            <button class="time-point">
+                                오늘
+                            </button>
+                        </div>
+
+                        <div class="past-date_all">
+                            <div class="past-date">
+                                <span class="arrow-icon">
+                                    <img src="../../../static/img/arrow_forward.svg" alt="">
+                                </span>
+                                <button class="datetime">
+                                    12-01
+                                </button>
+                            </div>
+                            <ul class="past-task_list">
+                                {% for today in present %}
+                                <li class="task-li-content">
+                                    <span> {{today.title}} </span>
+                                    <input type="checkbox" name="" id="past-check">
+                                    <label for="past-check"></label>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="past-timeline">
+                        <div class="timeline-box">
+                            <span class="arrow-icon">
+                                <img src="../../../static/img/arrow_forward.svg" alt="">
+                            </span>
+                            <button class="time-point">
+                                내일
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="box timedetail-form" id="timedetail-form-area">
+                    <form action="" method="post" id="today-detail-form">
+                        <input type="text" name="today_task-title" value="task title" class="today_task-title">
+                        <div class="keyword-box">
+                            <span>keyword</span>
+                        </div>
+                        <textarea name="today_task-textarea" class="today_task-textarea" cols="30" rows="10"></textarea>
+                        <fieldset class="today-task-fileadd">
+                            <legend>Image/File</legend>
+                            <label for="today-task-imgfile">
+                                <div class="loaded-file"></div>
+                                <div class="upload-none">
+                                    <span class="attach_img-icon material-symbols-outlined">imagesmode</span>
+                                    사진/파일을 첨부하세요
+                                </div>
+                            </label>
+                            <input type="file" name="today_task-img" class="today_task-img" id="today-task-imgfile">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- 눌렀을때 나타나는 폼 -->
+<script>
+    let taskContents = document.querySelectorAll(".task-li-content")
+    const timeDetailForm = document.querySelector(".timedetail-form")
+    const timeBoxArea = document.querySelector(".time-box-area")
+
+    const taskTimelineToggle = function (e) {
+        e.preventDefault();
+        console.log(e)
+        timeDetailForm
+            .classList
+            .toggle('activate');
+        timeBoxArea
+            .classList
+            .toggle('activate');
+
+    }
+
+    taskContents.forEach(tasklist => {
+        tasklist.addEventListener('click', taskTimelineToggle);
+    });
+
+    let uploadFile = document.getElementById("today-task-imgfile");
+    let loadedFile = document.querySelector(".loaded-file")
+    const noneFile = document.querySelector(".upload-none")
+
+    loadedFile.style.display = "none";
+
+    uploadFile.onchange = () => {
+        noneFile.style.display = "none";
+        loadedFile.style.display = "block";
+        let uploadFileName = uploadFile
+            .files[0]
+            .name;
+        loadedFile.innerText = `${uploadFileName}`;
+    }
+
+    const timelineBtn = document.querySelectorAll('.time-point');
+    timelineBtn.forEach(el => {
+        el.addEventListener('click', function (el) {
+            const parentDiv = el.target.parentElement.parentElement;
+            const dateList = parentDiv.querySelectorAll('.past-date_all');
+            for (let i = 0; i < dateList.length; i++) {
+                if (dateList[i].style.display === "none") {
+                    dateList[i].style.display = "block";
+                } else {
+                    dateList[i].style.display = "none";
+                }
+            }
+        });
+    })
+
+    const timeBtn = document.querySelectorAll('.datetime')
+    timeBtn.forEach(e => {
+        e.addEventListener('click', function (e) {
+            const parentElem = e.target.parentElement.parentElement
+            const timeList = parentElem.querySelectorAll('.task-li-content');
+            for (let j = 0; j < timeList.length; j++) {
+                if (timeList[j].style.display === "none") {
+                    timeList[j].style.display = "flex";
+                } else {
+                    timeList[j].style.display = "none";
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

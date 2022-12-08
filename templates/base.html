@@ -49,6 +49,7 @@
                         </li>
                     </ul>
                 </div>
+                {% if request.user.is_authenticated %}
                 <div class="user-area">
                     <div class="user-prof">
                         <img src="https://dummyimage.com/30x30" alt="">
@@ -56,7 +57,12 @@
                     <a href="{% url 'accounts:profile' %}" class="username">
                         {{request.user}}
                     </a>
+                    <a href="{% url 'accounts:logout' %}" class="logout-btn">
+                        <span class="material-symbols-outlined">
+                            logout
+                        </span></a>
                 </div>
+                {% endif %}
             </nav>
         </div>
     </header>
