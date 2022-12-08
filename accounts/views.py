@@ -11,11 +11,6 @@ from todos.models import Todos, Tag
 from accounts.models import User
 
 # Create your views here.
-# 임시 함수
-def test(request):
-    return render(request, "test/main.html")
-
-
 # 회원가입
 def signup(request):
     if request.method == "POST":
@@ -74,7 +69,7 @@ def logout(request):
         auth_logout(request)
 
     # 바꿔야 함!
-    return redirect("accounts:test")
+    return redirect("accounts/complete/accounts_form.html")
 
 
 # 회원탈퇴, 데코레이터 추가 필요
@@ -83,7 +78,7 @@ def delete(request):
         request.user.delete()
 
     # 바꿔야 함!
-    return redirect("accounts:test")
+    return redirect("accounts/complete/accounts_form.html")
 
 
 # 회원정보 수정, 데코레이터 추가 필요
@@ -99,7 +94,7 @@ def update(request):
             update_session_auth_hash(request, form.user)
 
             # 바꿔야 함!
-            return redirect("accounts:test")
+            return redirect("accounts/complete/accounts_form.html")
 
     else:
         form = CustomUserChangeForm(request.user)
@@ -129,12 +124,20 @@ def profile(request):
             tag_count[t.content] += 1
         else:
             tag_count[t.content] = 1
+    
     sorted_tag = sorted(tag_count.items(), key=operator.itemgetter(1), reverse=True)
     sorted_tag = sorted_tag[:10]
+    
     result = []
     for tt in sorted_tag:
         result.append({"content": tt[0], "count": tt[1]})
-    context = {"user": user, "todos": todo, "result": result}
+    
+    context = {
+        "user": user, 
+        "todos": todo, 
+        "result": result
+    }
+
     return render(request, "accounts/working/mypage.html", context)
 
 
@@ -146,5 +149,9 @@ def same_tag(request, tag):
         content=tag,
         todo__in=todo,
     )
-    context = {"same_tags": same_tags}
+
+    context = {
+        "same_tags": same_tags
+    }
+
     return render(request, "accounts/working/same_tag.html", context)
