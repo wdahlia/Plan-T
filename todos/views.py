@@ -4,7 +4,7 @@ from .forms import TodosForm
 from .models import Todos, Tag
 from datetime import datetime, timedelta
 from django.contrib import messages
-from function import change_value
+from .function import change_value
 from django.http import JsonResponse
 from django.core import serializers
 import json
@@ -107,7 +107,7 @@ def create(request):
             if tags != "":
                 taglist = list(tags.replace(" ", "").split(","))
                 for t in taglist:
-                    Tag.objects.create(todo=todo, content=t)
+                    Tag.objects.create(todo=td.pk, content=t)
 
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:
@@ -168,11 +168,12 @@ def update(request, pk):
                 start,
                 end,
             )
-            todo.save()
+            todo.tags.add(tag)
+            td = todo.save()
             if tags != "":
                 taglist = list(tags.replace(" ", "").split(","))
                 for t in taglist:
-                    Tag.objects.create(todo=todo, content=t)
+                    Tag.objects.create(todo=td.pk, content=t)
         return redirect("todos:today")
     else:
         todoForm = TodosForm(instance=todo)
@@ -227,7 +228,7 @@ def week_asyn(request, few_week):
     for i in range(7):
         temp = week + timedelta(days=i)
         # RuntimeWarning: 이 나온다.
-        temp_time = temp.strftime("%Y-%m-%d")
+        temp_time = temp.strftime("%Y-%m-%d") + " 09:00:00"
         time_list.append(Todos.objects.filter(when=temp_time))
         res_json = serializers.serialize("json", Todos.objects.filter(when=temp_time))
         # print(res_json)

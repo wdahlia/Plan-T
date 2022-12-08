@@ -146,15 +146,15 @@ def accept(request, user_pk, study_pk):
             messages.error(request, "최대 인원을 초과하였습니다.")
             return redirect("studies:detail", study_pk)
     # Study 클래스에 member_number추가하면 활성화
-    # # 가입된 멤버 수
-    # member_number = 0
-    # for user in study.participated.all():
-    #     for study in user.join_study.all():
-    #         if study.pk == study_pk:
-    #             member_number += 1
-    #             break
-    # study.member_number = member_number
-    # study.save()
+    # 가입된 멤버 수
+    member_number = 0
+    for user in study.participated.all():
+        for study in user.join_study.all():
+            if study.pk == study_pk:
+                member_number += 1
+                break
+    study.member_number = member_number
+    study.save()
     context = {
         "is_accepted": is_accepted,
         "studyCount": user.join_study.count(),
