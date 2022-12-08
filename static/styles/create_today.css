@@ -104,7 +104,7 @@
 /* timepicker */
 
 #today-form .timepicker-area,
-#study-task-form .datepicker-area {
+#study-task-form .datepicker-area,
 #today-detail-form .timepicker-area {
 	display: flex;
 	justify-content: space-evenly;
@@ -127,7 +127,7 @@
 }
 
 #today-form label,
-#study-task-form label{
+#study-task-form label,
 #today-detail-form label {
 	text-indent: 20px;
 	font-size: 0.8rem;
@@ -138,7 +138,7 @@
 #today-form #starttime-pick,
 #today-form #endtime-pick,
 #study-task-form #studytask-start,
-#study-task-form #studytask-end{
+#study-task-form #studytask-end,
 #today-detail-form #starttime-pick-edit,
 #today-detail-form #endtime-pick-edit {
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);

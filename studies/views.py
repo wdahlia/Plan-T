@@ -49,7 +49,7 @@ def create(request):
 
     context = {"studyform": studyform}
 
-    return render(request, "studies/working/create_study.html", context)
+    return render(request, "studies/complete/create_study.html", context)
 
 
 # Study todo 생성
@@ -79,7 +79,7 @@ def detail(request, study_pk):
 
     context = {"study": study, "check": check, "study_todo_form": StudyTodoForm()}
 
-    return render(request, "studies/test/detail.html", context)
+    return render(request, "studies/complete/study_detail.html", context)
 
 
 # study.participated.all
@@ -115,7 +115,7 @@ def info(request, study_pk):
         #
     }
 
-    return render(request, "studies/working/study_info.html", context)
+    return render(request, "studies/complete/study_info.html", context)
 
 
 def join(request, study_pk):

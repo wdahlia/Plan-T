@@ -66,57 +66,17 @@
             <div class="study-category">
               생활
             </div>
-            <div class="leader-img">
-              <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" alt="">
-            </div>
+      
           </div>
           <div class="study-body">
             <div class="study-name-area">
               <div class="study-name">
                 Plan-T
               </div>
-
               <div class="people-num">
                 <span class="participant-num">3명</span> 
                 / 
                 <span class="all-num">5명</span>
-
-              <div class="study-body">
-                <div class="study-name-area">
-                  <div class="study-name">
-                    {{study.title}}
-                  </div>
-                  <div class="people-num">
-                    <span class="participant-num">
-                      {{study.member_number}}명
-                    </span>
-                    /
-                    <span class="all-num">{{study.max_people}}명</span>
-                  </div>
-                </div>
-                <fieldset class="study-info">
-                  <legend>스터디 소개</legend>
-                  <div>
-                    {{study.desc}}
-                  </div>
-                </fieldset>
-                <fieldset class="study-date">
-                  <legend>스터디 기간</legend>
-                  <div>
-                    {{study.start_at|date:"Y-m-d"}}
-                    ~
-                    {{study.end_at|date:"Y-m-d"}}
-                  </div>
-                </fieldset>
-              </div>
-              <!-- 디테일 페이지가 아직 안 만들어진거 같아서 처리 안함.-->
-              <div class="study-footer">
-                {% if request.user in study.participated.all%}
-                  <a href="{% url 'studies:detail' study.pk %}" class="join-btn">진입하기</a>
-                {% else %}
-                  <a href="{% url 'studies:info' study.pk %}" class="join-btn">가입하기</a>
-                {% endif %}
-
               </div>
             </div>
             <fieldset class="study-info">

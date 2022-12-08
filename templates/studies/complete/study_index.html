@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
 
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Index</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
-    <link rel="stylesheet" href="../../../static/styles/init.css">
-    <link rel="stylesheet" href="../../../static/styles/study_index.css">
-  </head>
-
-  <body>
+{% block body %}
 
     <div class="container" id="study-index-area">
       <div class="box">
@@ -65,13 +55,6 @@
                 <div class="study-category">
                   {{study.category}}
                 </div>
-                <div class="leader-img">
-                  {% if study.owner.image %}
-                  <img src="{{ study.owner.image }}" alt="{{ study.owner.image.url }}">
-                  {% else %}
-                  <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" alt="">
-                  {% endif %}
-                </div>
               </div>
               <div class="study-body">
                 <div class="study-name-area">
@@ -93,9 +76,9 @@
                 <fieldset class="study-date">
                   <legend>스터디 기간</legend>
                   <div>
-                    {{study.start_at}}
+                    {{study.start_at | date:"Y-m-d"}}
                     ~
-                    {{study.end_at}}
+                    {{study.end_at | date:"Y-m-d"}}
                   </div>
                 </fieldset>
               </div>
@@ -120,6 +103,4 @@
         selectCategory.submit()
       })
     </script>
-  </body>
-
-</html>
+{% endblock body %}
