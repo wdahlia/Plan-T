@@ -8,20 +8,19 @@
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <link rel="stylesheet" href="../../../static/styles/init.css">
-  <link rel="stylesheet" href="../../../static/styles/study.css">
+  <link rel="stylesheet" href="../../../static/styles/study_form.css">
 </head>
 <body>
 
   <div class="container">
     <div class="box">
-      <article id="study-detail-area">
-        
+      <article id="study-info-area">
         <!-- 스터디 title -->
-        <label for="study-detail-name"># 스터디 이름</label>
-        <input type="text" name="" value="Plan-T" class="study-detail-title" id="study-detail-name" disabled> 
+        <label for="study-info-name"># 스터디 이름</label>
+        <input type="text" name="" value="Plan-T" class="study-info-title" id="study-info-name" disabled> 
       
         <!-- 스터디 category -->
-        <fieldset class="study-detail-categories">
+        <fieldset class="study-info-categories">
           <legend># 카테고리</legend>
           <div class="categories-area">
             <input type="radio" name="ct" id="ct0" checked>
@@ -42,44 +41,20 @@
             <label for="ct7">기타</label>
           </div>
         </fieldset>
+
         <!-- 스터디 인원 -->
-        
         <label for="study-members-num"># 스터디 인원</label>
         <div class="members-area" id="study-members-num">
           <div class="study-membernum">3명</div>
           <span>/</span>
           <div class="study-totalnum">5명</div>
         </div>
-        
-        <!-- 스터디 장의 경우, 스터디 승인 받아주는 창 보여짐 -->
-
-        <ul class="approve-members">
-          <h6></h6>
-          <li>
-            <div class="approve-user-info">
-              <!-- user profile img -->
-              <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" alt="" class="study-detail-userimg">
-              <!-- username -->
-              <h6>dahlia</h6>
-            </div>
-            <div class="detail-btn-group">
-              <!-- approval btn -->
-              <form action="">
-                <input type="submit" value="승인" class="approval-btn">
-              </form>
-              <!-- reject btn -->
-              <form action="">
-                <input type="submit" value="거절" class="reject-btn">
-              </form>
-            </div>
-          </li>
-        </ul>
-
+      
         <!-- 스터디 소개 --> 
         <label for="study-info-text"># 스터디 소개</label>
         <textarea name="" id="study-info-text" cols="30" rows="10" disabled>스터디 장</textarea>
         <!-- 시작일, 종료일-->
-        <div class="study-detail-datepicker">
+        <div class="study-info-datepicker">
           <fieldset class="study-start-picker">
             <legend># 시작일</legend>
             <input type="date" name="" value="2022-03-20" id="study-start-date" disabled>
