@@ -71,10 +71,10 @@
             </label>
             <input type="file" name="file" class="today_task-img" id="today-task-imgfile">
           </fieldset>
+          <div class="keyword-box">
+            <input type="text" name="tags" id="" placeholder="#keyword">
+          </div>
           <div class="btn-area">
-            <div class="keyword-box">
-              <input type="text" name="keyword" id="" placeholder="#keyword">
-            </div>
             <button type="submit" class="btn">할일 추가</button>
           </div>
         </form>
@@ -89,61 +89,21 @@
         {% for todo in today_todos %}
         <li class="task" data-todo-pk="{{todo.pk}}">
           <p class="task-cont">{{ todo.title }}</p>
-          <input type="checkbox" name="task-chb{{forloop.counter}}" id="task-chb{{forloop.counter}}">
-          <label for="task-chb{{forloop.counter}}" class="task-chb"></label>
+          <input type="checkbox" name="task-chb{{todo.pk}}" id="task-chb{{todo.pk}}">
+          <label for="task-chb{{todo.pk}}" class="task-chb"></label>
+        </li>
+        {%empty%}
+        <li class="task deactivate">
+          <p class="task-cont "> 아직 작성된 할일이 없어요 :(</p>
         </li>
         {% endfor %}
-
-        <!-- <li class="task activate">
-          <a class="task-btn btn-edit">수정</a>
-          <a class="task-btn btn-del">삭제</a>
-          <p class="task-cont">task</p>
-          <input type="checkbox" name="task-chb1" id="task-chb1">
-          <label for="task-chb1" class="task-chb"></label>
-        </li> -->
-        <div class="task-btn-area">
-          <a class="task-btn btn-edit material-symbols-outlined">
-            edit
-          </a>
-          <a class="task-btn btn-del material-symbols-outlined">
-            delete
-          </a>
-        </div>
-        <li class="task">
-          <p class="task-cont">dummy task</p>
-          <input type="checkbox" name="task-chb2" id="task-chb2">
-          <label for="task-chb2" class="task-chb"></label>
-        </li>
       </ul>
 
       <div class="today-timetable">
-        <p>{{time_list}}</p>
-        <div class="timetable-col">
-          <div class="timetable-hour">
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min "></p>
-          </div>
-          <div class="timetable-hour">
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min activate"></p>
-            <p class="timetable-min activate"></p>
-          </div>
-          <div class="timetable-hour">
-            <p class="timetable-min activate"></p>
-            <p class="timetable-min activate"></p>
-            <p class="timetable-min activate"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-            <p class="timetable-min"></p>
-          </div>
-        </div>
+        <div class="timetable-hour hour-left"> </div>
+        <div class="timetable-box timetable-left"></div>
+        <div class="timetable-hour hour-right"> </div>
+        <div class="timetable-box timetable-right"></div>
       </div>
     </div>
 
@@ -153,17 +113,19 @@
           {% csrf_token %}
           <input type="date" name="when">
           <input type="text" name="title" class="today_task-title" id="detail-title">
-          <!-- <div class="timepicker-area">
-            <div class="starttime-select">
-              <label for="starttime-pick">시작 시간</label>
-              <input type="text" id="starttime-pick" value="" name="start" class="time-pickable" readonly="readonly">
+          <div class="timepicker-area">
+            <div class="starttime-select-edit">
+              <label for="starttime-pick-edit">시작 시간</label>
+              <input type="text" id="starttime-pick-edit" value="" name="started_at" class="time-pickable"
+                readonly="readonly">
             </div>
             <span class="time-tilder">~</span>
-            <div class="endtime-select">
-              <label for="endtime-pick">종료 시간</label>
-              <input type="text" id="endtime-pick" value="" name="end" class="time-pickable" readonly="readonly">
+            <div class="endtime-select-edit">
+              <label for="endtime-pick-edit">종료 시간</label>
+              <input type="text" id="endtime-pick-edit" value="" name="expired_at" class="time-pickable"
+                readonly="readonly">
             </div>
-          </div> -->
+          </div>
           <textarea name="content" class="today_task-textarea" id="detail-cont" cols="30" rows="10"></textarea>
           <!-- <fieldset class="today-task-fileadd">
             <legend>Image/File</legend>
@@ -177,10 +139,10 @@
             <input type="file" name="todoimg" class="today_task-img" id="today-task-imgfile">
           </fieldset> -->
           <div class="keyword-box">
-            <span>keyword</span>
+            <input type="text" name="tag" id="" placeholder="#keyword">
           </div>
           <div class="btn-area">
-            <button type="submit" class="btn">할일 수정하기</button>
+            <button type="submit" class="btn">할일 수정</button>
         </form>
         <form action="" method="post" id="detail-del-form">
           {% csrf_token %}
@@ -204,13 +166,18 @@
       </ul>
     </div>
   </div>
-
+  <div class="time-test">
+    {% for time in time_list %}
+    <p class="testbox" data-time-array="{{time}}">{{time}}</p>
+    {% endfor %}
+  </div>
 </div>
 
 </div>
 </div>
 
 <script>
+  const timePickerArea = document.querySelector('.timepicker-area');
   function activate() {
 
     document
@@ -229,8 +196,7 @@
             }
 
             document.removeEventListener("mousedown", onClickAway);
-            document
-              .body
+            timePickerArea
               .removeChild(activePicker);
             activePicker = null;
           };
@@ -242,17 +208,14 @@
 
   function show(timePickable) {
     const picker = buildPicker(timePickable);
-    const { bottom: top, left } = timePickable.getBoundingClientRect();
-    document
-      .body
-      .appendChild(picker);
+    // const { bottom: top, left } = timePickable.getBoundingClientRect();
+    console.log(this);
+    timePickerArea.appendChild(picker);
 
-    picker.style.top = `${top}px`;
-    picker.style.left = `${left}px`;
+    // picker.style.top = `${top}px`;
+    // picker.style.left = `${left}px`;
 
-    document
-      .body
-      .appendChild(picker);
+    // timePickerArea.appendChild(picker);
 
     return picker;
   }
@@ -260,10 +223,9 @@
   function buildPicker(timePickable) {
 
     // const todayFormArea = document.querySelector('.today-task-add-spec');
-    const timePickerArea = document.querySelector('.timepicker-area');
 
     const picker = document.createElement("div");
-    timePickerArea.appendChild(picker);
+    // timePickerArea.appendChild(picker);
 
     const hourOptions = [
       6,
@@ -408,12 +370,12 @@
       openStudyArea.style.width = "380px";
       openStudyArea.style.alignSelf = "start";
       openIcon.style.transform = "rotate(180deg)";
-      taskArea.style.width = "70%";
+      // taskArea.style.width = "80%";
       taskArea.style.transition = "0.8s ease";
     } else {
       openStudyArea.style.display = "none";
       openIcon.style.transform = "rotate(-360deg)";
-      taskArea.style.width = "95%";
+      // taskArea.style.width = "80%";
       studyArea.style.transition = "0.8s ease";
       studyArea.style.justifyContent = "center";
       studyArea.style.width = "5%";

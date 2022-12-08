@@ -130,20 +130,37 @@ try {
 
 
 try {
+    // 할일 기능 관련 DOM 객체 지정
     const tasks = document.querySelectorAll('.today-task-list .task');
+    const taskConts = document.querySelectorAll('.today-task-list .task .task-cont')
     const taskView = document.querySelector('#task-detail');
     const taskDetailForm = document.querySelector('#today-detail-form');
     const detailTit = document.querySelector('#detail-title');
     const detailCont = document.querySelector('#detail-cont');
+    const detailST = document.querySelector('#starttime-pick-edit');
+    const detailET = document.querySelector('#endtime-pick-edit');
     const detailBtnDel = document.querySelector('#detail-btn-del');
     const detailDelForm = document.querySelector('#detail-del-form');
+    const todayStudyArea = document.querySelector('.today-study-area');
 
+    // 할일 클릭 시 옆에 상세 토글 나오는 기능, json 데이터 비동기, 할일 active 토글 기능
     const taskMenu = function (e) {
-        // console.log(this.dataset.todoPk);
         e.preventDefault();
-        taskView.classList.toggle('activate');
 
-        this.classList.toggle('activate');
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks[i].classList.contains('activate')) {
+                tasks[i].classList.remove('activate');
+            }
+        }
+        todayStudyArea.classList.toggle('hide');
+        taskView.classList.toggle('activate');
+        // this.classList.toggle('activate');
+        if (taskView.classList.contains('activate')) {
+            this.parentElement.classList.add('activate');
+        } else {
+            this.parentElement.classList.remove('activate');
+        }
+        // this.classList.toggle('activate');
 
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
         let delUrl = '/todos/delete/';
@@ -161,8 +178,10 @@ try {
                 const data = res.data.resJson;
                 jsonParse = JSON.parse(data);
 
-                const nodes = [...this.parentElement.children];
-                const idx = nodes.indexOf(this);
+                // const nodes = [...this.parentElement.children];
+                // const idx = nodes.indexOf(this);
+                const nodes = [...tasks];
+                const idx = nodes.indexOf(this.parentElement);
 
                 // todo 수정 업데이트 버튼 actions 속성 부여
                 const todoPK = jsonParse[idx].pk;
@@ -174,17 +193,78 @@ try {
                 delUrl = delUrl + `${todoPK}`;
                 detailDelForm.setAttribute('action', `${delUrl}`);
 
+                // 받아온 todo 데이터  input에 대입
                 detailTit.value = jsonParse[idx].fields.title;
                 detailCont.value = jsonParse[idx].fields.content;
-
+                detailST.value = jsonParse[idx].fields.started_at;
+                detailET.value = jsonParse[idx].fields.expired_at;
                 ;
             })
 
 
     }
-    tasks.forEach(task => {
-        task.addEventListener('click', taskMenu);
-    })
+    // tasks.forEach(task => {
+    //     task.addEventListener('click', taskMenu);
+    // });
+    taskConts.forEach(taskCont => {
+        taskCont.addEventListener('click', taskMenu);
+    });
+
+} catch { }
+
+try {
+    // 타임테이블 생성
+    const timetableAreaL = document.querySelector('.timetable-left');
+    const timetableAreaR = document.querySelector('.timetable-right');
+    const timetableHourL = document.querySelector('.hour-left');
+    const timetableHourR = document.querySelector('.hour-right');
+    let num = 54
+
+    while (timetableAreaL.children.length < 54) {
+        const timeMinBox = document.createElement('p');
+        timeMinBox.classList.add('timetable-min');
+        timetableAreaL.appendChild(timeMinBox);
+    }
+    while (timetableAreaR.children.length < 54) {
+        const timeMinBox = document.createElement('p');
+        timeMinBox.classList.add('timetable-min');
+        timetableAreaR.appendChild(timeMinBox);
+    }
+    for (let i = 0; i < 9; i++) {
+        const hourTimeL = document.createElement('p');
+        hourTimeL.innerText = i + 6;
+        timetableHourL.appendChild(hourTimeL);
+
+        const hourTimeR = document.createElement('p');
+        hourTimeR.innerText = i + 15;
+        timetableHourR.appendChild(hourTimeR);
+    }
+
+    // 장고 템플릿으로 time_list 값 넣어둔 DOM 가져오기
+    const testBox = document.querySelectorAll('.testbox');
+
+    for (let i = 0; i < testBox.length; i++) {
+        // dataset으로 time_list 값 가져옴
+        let lng = testBox[i].dataset.timeArray.length - 1;
+        let arr = testBox[i].dataset.timeArray.substring(1, lng);
+
+        // str 을 num 으로 변경 > for 문 활용하기 위해서 변경함
+        arr = arr.split(', ')
+        let startAt = Number(arr[0]);
+        let minCnt = Number(arr[1]);
+
+        if (startAt > 54) {
+            startAt -= 54;
+            for (let j = startAt; j < startAt + minCnt; j++) {
+                timetableAreaR.children[j].classList.add('activate');
+            }
+        } else {
+            for (let j = startAt; j < startAt + minCnt; j++) {
+                timetableAreaL.children[j].classList.add('activate');
+            }
+        }
+    }
+
 
 } catch { }
 
@@ -194,9 +274,12 @@ try {
     const todayMonth = document.querySelector('.today-date-month');
     const todayDay = document.querySelector('.today-date-day');
 
+    // 오늘 날짜 구해서 todos-today 에 date인풋 value 값으로 바로 넣어주기
     todayDate.value = currentDate.substring(0, 10);
-    todayMonth.innerText = currentDate.substring(6, 8);
-    todayDay.innerText = currentDate.substring(9, 11);
+
+    // todos-today 메인에 현재날짜 표시
+    todayMonth.innerText = currentDate.split('. ')[1];
+    todayDay.innerText = currentDate.split('. ')[2];
 
 } catch { }
 
@@ -205,6 +288,26 @@ try {
     // 요일 activate
     const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',]
     const weekdayNow = week[new Date().getDay()];
+    const prevWeekValue = document.querySelector('.prev-week');
+    const nextWeekValue = document.querySelector('.next-week');
+    const weekUpdate = function (days) {
+        let datumP = new Date();
+        // console.log(weekSun);
+        datumP.setDate(datumP.getDate() - datumP.getDay() + days);
+        console.log(datumP);
+        let prevWeek = datumP.toLocaleString().split('. ').slice(0, 3);
+        // console.log(prevWeek);
+        prevWeekValue.innerText = `~ ${prevWeek[0]}.${prevWeek[1]}.${prevWeek[2]}`;
+        datumP.setDate(datumP.getDate() + 6);
+        console.log(datumP);
+        let nextWeek = datumP.toLocaleString().split('. ').slice(0, 3);
+        // console.log(nextWeek);
+        nextWeekValue.innerText = `${nextWeek[0]}.${nextWeek[1]}.${nextWeek[2]} ~`;
+    };
+    weekUpdate(0);
+
+    // console.log(datumP.toLocaleString().split('. ')[2]);
+
 
     const weekArea = document.querySelector('.week-area');
     const weekdayAll = document.querySelectorAll('.weekday');
@@ -228,24 +331,33 @@ try {
     const weekBtn = document.querySelectorAll('.week-btn');
 
     let cnt = 0;
+    let weekCnt = 0;
     const weekMove = function (e) {
         e.preventDefault();
+        // 주차 날짜 업데이트
+
         const isPrev = e.target.parentElement.dataset.isPrev;
         let urls = '/todos/week/';
         if (isPrev === 'true') {
             cnt--;
+            weekCnt -= 7;
+            console.log(weekCnt);
             cnt = String(cnt);
             urls = `${urls}${cnt}`
             e.target.parentElement.setAttribute('data-week-cnt', `${cnt}`)
         } else {
             cnt++;
+            weekCnt += 7;
             cnt = String(cnt);
             urls = `${urls}${cnt}`
             e.target.parentElement.setAttribute('data-week-cnt', `${cnt}`)
         }
         e.target.parentElement.setAttribute('href', `${urls}`);
 
+        weekUpdate(weekCnt);
+
         for (let i = 0; i < 7; i++) {
+            // 이번주가 아니면 요일에 activate 표시 제거
             if (cnt != 0) {
                 weekdayAll[i].classList.remove('activate');
                 weekArea.scrollTo({
@@ -265,22 +377,19 @@ try {
             }
         }
 
-
-
+        //  todo 데이터 불러오는 axios
         axios({
             method: 'get',
             url: `${urls}`,
         })
             .then((res) => {
-
                 let data = res.data.resJson;
                 jsonParse = JSON.parse(data[1]);
 
                 const tasklist = document.querySelectorAll('.task-list');
-                const tasktest = document.querySelector('.task-cont-test');
 
+                // 새 데이터 채우기 전 기존 html 삭제하기
                 for (let i = 0; i < 7; i++) {
-
                     while (tasklist[i].hasChildNodes()) {
                         tasklist[i].removeChild(
                             tasklist[i].firstChild
@@ -291,24 +400,36 @@ try {
                 for (let i = 0; i < data.length; i++) {
                     jsonParse = JSON.parse(data[i]);
 
+                    // 받아온 json에 데이터가 있으면 새 데이터로 채워넣기
                     if (jsonParse.length != 0) {
-
                         for (let j = 0; j < jsonParse.length; j++) {
-
-                            tasklist[i].insertAdjacentHTML("beforeend", `
-                            <li class="task">
+                            if (jsonParse[j].fields.is_completed) {
+                                tasklist[i].insertAdjacentHTML("beforeend", `
+                                <li class="task deactivate">
                                 <p class="task-cont">${jsonParse[j].fields.title}</p>
-                            </li>
-                            `)
+                                <input type="checkbox" name="task-chb${jsonParse[j].pk}" id="task-chb${jsonParse[j].pk}" checked="checked">
+                                <label for="task-chb${jsonParse[j].pk}" class="task-chb"></label>
+                                </li>
+                                `)
+                            } else {
+                                tasklist[i].insertAdjacentHTML("beforeend", `
+                                <li class="task">
+                                <p class="task-cont">${jsonParse[j].fields.title}</p>
+                                <input type="checkbox" name="task-chb${jsonParse[j].pk}" id="task-chb${jsonParse[j].pk}" >
+                                <label for="task-chb${jsonParse[j].pk}" class="task-chb"></label>
+                                </li>
+                                `)
+                            }
 
                         }
+                    } else {
+                        // 받아오는 데이터 없으면 비어있는 표시 넣기
+                        tasklist[i].insertAdjacentHTML("beforeend", `
+                        <li class="task-empty">
+                        <p class="task-cont"> 작성된 할일이 없어요 :(</p>
+                        </li>
+                        `)
                     }
-
-                    tasklist[i].insertAdjacentHTML("beforeend", `
-                            <li class="task deactivate">
-                                <p class="task-cont">add task</p>
-                            </li>
-                            `)
                 }
             });
     };
@@ -336,13 +457,13 @@ try {
         }
     );
 
-    inputTags.forEach(function (v, i, o) {  
+    inputTags.forEach(function (v, i, o) {
         // 렌더링 되고나서 초기 상태에 따른 활성화 클래스 추가 
         if (v.checked)
             v.parentElement.classList.add("deactivate");
         else
             v.parentElement.classList.remove("deactivate");
-                
+
         v.addEventListener("click", () => {
             // 현재 체크 값 및 todo id 값 추출 
             is_completed = (v.checked) ? true : false;

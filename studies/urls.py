@@ -8,7 +8,8 @@ urlpatterns = [
     path("create/", views.create, name="create"),
     path("create/<int:study_pk>", views.create_todos, name="create_todos"),
     path("detail/<int:study_pk>", views.detail, name="detail"),
-    path("info/<int:study_pk>", views.detail, name="info"),  # inpo views 완성되면 수정필요
+    path("info/<int:study_pk>", views.info, name="info"),
     path("detail/<int:study_pk>/join", views.join, name="join"),
+    path("detail/<int:study_pk>/<int:user_pk>/refusal", views.refusal, name="refusal"),
     path("detail/<int:study_pk>/<int:user_pk>/accept", views.accept, name="accept"),
 ]

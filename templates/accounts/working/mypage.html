@@ -10,7 +10,19 @@
     <link rel="stylesheet" href="../../../static/styles/init.css">
     <link rel="stylesheet" href="../../../static/styles/accounts.css">
     <title>Document</title>
+    <style>
+        .count {
+            position: absolute;
+            background-color: red;
+            color: white;
+            font-size: 9px;
+            padding: 5px;
+            border-radius: 20px;
+            bottom: 22px;
+        }
+    </style>
 </head>
+
 
 <body>
 
@@ -31,8 +43,14 @@
                 <p>유저 그래프 https://pixe.la/</p>
             </div>
             <div class="user-tag box">
-                <h4 class="tit">제일 많이 쓴 태그</h4>
-                <span class="tag">tag</span>
+                <h4 class="tit">많이 쓴 태그 top 10</h4>
+                {% for tag in result %}
+                <span class="tag" style="position:relative">
+                    {{ tag.content }}
+                    <span class="count">{{ tag.count }}</span>
+                </span>
+                {% endfor %}
+
             </div>
             <div class="user-log box">
                 <h4 class="tit">나의 스터디 현황</h4>

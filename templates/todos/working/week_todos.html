@@ -23,10 +23,10 @@
         <span class="material-symbols-outlined  week-btn-prev">
           arrow_back_ios
         </span>
-        <span>prev</span>
+        <span class="prev-week">prev</span>
       </a>
       <a href="" class="week-btn" data-is-prev="false" data-week-cnt="1">
-        <span>next</span>
+        <span class="next-week">next</span>
         <span class="material-symbols-outlined week-btn-next">
           arrow_forward_ios
         </span>
@@ -49,6 +49,10 @@
           <input type="checkbox" name="task-chb{{ todo.id }}" id="task-chb{{ todo.id }}">
           {% endif %}
           <label for="task-chb{{ todo.id }}" class="task-chb"></label>
+        </li>
+        {%empty%}
+        <li class="task-empty">
+          <p class="task-cont"> 작성된 할일이 없어요 :(</p>
         </li>
         {% endfor %}
       </ul>

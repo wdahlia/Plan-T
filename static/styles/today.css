@@ -65,15 +65,15 @@
 	justify-content: center;
 }
 
-/* #today .box {
-  text-align: center;
-} */
-
 #today .today-info {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-bottom: 0.8rem;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 #today .today-date {
 	font-weight: 700;
@@ -230,13 +230,18 @@
 }
 
 #today .box .today-section {
-	margin-top: 2rem;
+	margin-top: 3rem;
 	display: none;
-	padding: 0rem;
+	/* padding: 5rem; */
 }
 
 #today .today-section.activate {
 	padding: 1.5rem;
+}
+
+#today .box .today-section .today-task-add-spec {
+	max-width: 65%;
+	margin: 0 auto;
 }
 
 #today .today-section input[type="date"] {
@@ -267,23 +272,60 @@
 /* task area */
 #today .today-task-area {
 	display: flex;
-	justify-content: center;
 	margin-right: 1.5rem;
-	width: 95%;
+	align-content: center;
+	height: 80%;
 }
 
 /* task timetable */
+#today .today-timetable {
+	display: flex;
+}
+#today .today-timetable .timetable-hour {
+	font-family: "NanumSquareNeo", sans-serif;
+	font-size: 1.3em;
+	color: var(--txtgr);
+}
+#today .today-timetable .timetable-hour p {
+	margin: 0.48rem 0 0;
+	line-height: 35px;
+	padding: 0.14rem 0;
+}
+#today .today-timetable .timetable-box {
+	display: flex;
+	flex-wrap: wrap;
+	width: 290px;
+	align-content: flex-start;
+}
+#today .today-timetable .timetable-min {
+	width: 35px;
+	height: 35px;
+	background: var(--gr);
+	margin: 0.4rem;
+}
+#today .today-timetable .timetable-min.activate {
+	background: var(--main);
+}
+#today .time-test {
+	display: none;
+	z-index: -9999;
+}
+
+/* today task list */
+
 #today .today-task-list {
 	margin-right: 2rem;
+	padding: 0 1rem;
 	position: relative;
+	max-height: 432px;
+	overflow-y: auto;
 }
-/* #today .today-task-list .task {
-} */
-#today .today-task-list .task.ef-blur {
-	filter: blur(3px);
+#week .task-list.task-empty {
+	padding: 0.6rem 1.2rem;
 }
 #today .today-task-list .task,
-#week .task-list .task {
+#week .task-list .task,
+#week .task-list .task-empty {
 	width: 300px;
 	display: flex;
 	justify-content: space-between;
@@ -291,44 +333,21 @@
 	margin-bottom: 0.5rem;
 	transition: 0.15s ease-in-out;
 }
-#today .today-task-list .task {
+#today .today-task-list .task .task-cont {
 	cursor: pointer;
 }
-#today .today-task-list .task-btn-area {
-	position: absolute;
-	left: 50%;
-	top: 0;
-	transform: translateX(-50%);
-	z-index: -1;
-	opacity: 0;
-	transition: 0.15s ease-in-out;
-}
-#today .today-task-list .task-btn-area.activate {
-	z-index: 1;
-	opacity: 1;
-	/* transform: translateY(-50%); */
-}
-#today .today-task-list .task-btn {
-	cursor: pointer;
-	border-radius: 50%;
-	width: 45px;
-	height: 45px;
-	line-height: 40px;
-	text-align: center;
-	color: var(--main);
-	border: 2px solid var(--main);
-	transition: 0.2s ease-in-out;
+#today .today-task-list .task .task-cont,
+#week .week-area .task-list .task-cont,
+#week .task-list.task-empty .task-cont {
+	width: 95%;
+	height: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-inline-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
 }
 
-#today .today-task-list .btn-edit {
-	margin-right: 0.3rem;
-}
-
-#today .today-task-list .task-btn:hover {
-	background: var(--main);
-	color: var(--txt);
-	border: 2px solid rgba(0, 0, 0, 0);
-}
 #today .today-task-list .task .task-chb,
 #week .task-list .task .task-chb {
 	position: relative;
@@ -372,23 +391,6 @@
 	opacity: 1;
 	transform: rotate(45deg) scale(1);
 }
-/* #today .today-timetable .timetable-hour:first-child {
-  margin-top: 0.3rem;
-} */
-#today .today-timetable .timetable-hour {
-	display: flex;
-	align-items: center;
-	padding: 0.43rem 0;
-}
-#today .today-timetable .timetable-min {
-	width: 35px;
-	height: 35px;
-	background: var(--gr);
-	margin-right: 0.3rem;
-}
-#today .today-timetable .timetable-min.activate {
-	background: var(--main);
-}
 
 /* today task detail form */
 
@@ -397,12 +399,12 @@
 	width: 0;
 	overflow: hidden;
 	opacity: 0;
-	transition: 0.25s ease-in-out;
+	transition: 0.3s ease;
 }
 
 #today #task-detail.activate {
 	padding: 1rem;
-	width: 100%;
+	width: 30%;
 	opacity: 1;
 	overflow: unset;
 }
@@ -411,7 +413,7 @@
 }
 #today #task-detail .btn-del {
 	position: absolute;
-	right: 0;
+	right: 5px;
 	bottom: 5px;
 	border-radius: 0.5rem;
 	padding: 0.5rem;
@@ -430,6 +432,7 @@
 /* study area */
 #today .today-study-area {
 	width: 5%;
+	height: 480px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -437,7 +440,13 @@
 	margin-left: 1rem;
 	cursor: pointer;
 }
-
+#today .today-study-area.hide {
+	width: 0;
+	opacity: 0;
+}
+/* #today .study-task-list {
+	overflow-y: scroll;
+} */
 #today .study-tasklist-area {
 	display: none;
 	color: var(--txt);

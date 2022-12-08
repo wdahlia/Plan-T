@@ -16,10 +16,6 @@ def index(request):
     else:
         category_studies = Study.objects.filter(category=category)
 
-    print(category)
-    print("--------------------")
-    for c in category_studies:
-        print(c.participated.all())
     context = {"category_studies": category_studies}
 
     return render(request, "studies/complete/study_index.html", context)
@@ -29,21 +25,18 @@ def index(request):
 def create(request):
     if request.method == "POST":
         studyform = StudyForm(request.POST)
-        # start, end = (
-        #     request.POST.get("start_at"),
-        #     request.POST.get("end_at"),
-        # )
-        # print(start, end)
-        # print(start)
-        # print(end)
         if studyform.is_valid():
             form = studyform.save(commit=False)
-            # if start is not None:
-            #     form.start_at = (
-            #         start  # auto로 시간 저장하는 시점이 저장되는 순간인듯. 동근이가 해결한 방법으로 다시 해야 할뜻
-            #     )
-            # if end is not None:
-            #     form.end_at = end
+            # 시간저장(선택)
+            start, end = (
+                request.POST.get("start_at"),
+                request.POST.get("end_at"),
+            )
+            if start != "":
+                form.start_at = start
+            if end != "":
+                form.end_at = end
+            #
             form.owner = request.user
             form.save()
 
@@ -89,6 +82,42 @@ def detail(request, study_pk):
     return render(request, "studies/test/detail.html", context)
 
 
+# study.participated.all
+def info(request, study_pk):
+    study = get_object_or_404(Study, pk=study_pk)
+
+    # 가입된 멤버
+    joined_member = []
+    # 가입된 멤버 수
+    member_number = 0
+    # 가입 신청 멤버
+    application_member = []
+    for user in study.participated.all():
+        for study in user.join_study.all():
+            if study.pk == study_pk:
+                joined_member.append(user)
+                break
+        else:
+            application_member.append(user)
+    member_number = len(joined_member)
+    #
+    start = str(study.start_at)
+    end = str(study.end_at)
+    context = {
+        "study": study,
+        "study_todo_form": StudyTodoForm(),
+        "start": start,
+        "end": end,
+        #
+        "joined_member": joined_member,
+        "member_number": member_number,
+        "application_member": application_member,
+        #
+    }
+
+    return render(request, "studies/working/study_info.html", context)
+
+
 def join(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
     # 탈퇴
@@ -103,6 +132,15 @@ def join(request, study_pk):
         "is_participated": is_participated,
         "studyCount": study.participated.count(),
     }
+    return redirect("studies:info", study_pk)
+
+
+def refusal(request, study_pk, user_pk):
+    study = get_object_or_404(Study, pk=study_pk)
+    user = get_object_or_404(get_user_model(), pk=user_pk)
+    # 거절
+    study.participated.remove(user)
+
     return redirect("studies:detail", study_pk)
 
 
@@ -122,22 +160,18 @@ def accept(request, user_pk, study_pk):
         else:
             messages.error(request, "최대 인원을 초과하였습니다.")
             return redirect("studies:detail", study_pk)
+    # Study 클래스에 member_number추가하면 활성화
+    # 가입된 멤버 수
+    member_number = 0
+    for user in study.participated.all():
+        for study in user.join_study.all():
+            if study.pk == study_pk:
+                member_number += 1
+                break
+    study.member_number = member_number
+    study.save()
     context = {
         "is_accepted": is_accepted,
         "studyCount": user.join_study.count(),
     }
-    return redirect("studies:detail", study_pk)
-
-
-# # 검증하는 시스템 대략적으로 만들어 봄
-# def test(request, user_pk, study_pk):
-#     user = get_object_or_404(get_user_model(), pk=user_pk)
-#     study = get_object_or_404(Study, pk=study_pk)
-#     # 이 부분 되는지 테스트 필요
-#     # 만약 study에서 user를 가입 허용목록에 있으면
-#     if user in study.participated:
-#         pass  # 환영합니다.
-#     else:
-#         return ()  # 들어가지 못하게
-#     context = {}
-#     return JsonResponse(context)
+    return redirect("studies:info", study_pk)  # 나중에 detail로

@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model as User
 from .forms import TodosForm
-from .models import Todos
+from .models import Todos, Tag
 from datetime import datetime, timedelta
 from django.contrib import messages
-from .function import change_value
+from function import change_value
 from django.http import JsonResponse
 from django.core import serializers
 import json
+import math
 
 # Create your views here.
 def today(request):
@@ -16,9 +17,13 @@ def today(request):
     today_todos = Todos.objects.filter(user_id=request.user, when=today).order_by(
         "started_at"
     )
-    # timetable 넘겨주기 위해
+
+    # timetable 넘겨주기 위해 & 달성율 체크
+    achievement_cnt = 0
     time_list = []
     for todo in today_todos:
+        if todo.is_completed == True:
+            achievement_cnt += 1
         if (
             todo.started_at is not None  # 나중에 지워야됨
             and todo.expired_at is not None  # 나중에 지워야됨
@@ -32,7 +37,10 @@ def today(request):
             time_list.append([])
             time_list[-1].append(start)
             time_list[-1].append(time)
-
+    if len(today_todos) != 0:
+        achievement_rate = round(100 * (achievement_cnt / len(today_todos)))
+    else:
+        achievement_rate = 0
     todosForm = TodosForm()
 
     if request.method == "POST":
@@ -48,16 +56,17 @@ def today(request):
         "time_list": time_list,
         "today_todos": today_todos,
         "todosForm": todosForm,
+        "achievement_rate": achievement_rate,
     }
     return render(request, "todos/complete/today_main.html", context)
 
 
 def create(request):
     if request.method == "POST":
-        start, end, tag = (
+        start, end, tags = (
             request.POST.get("started_at"),
             request.POST.get("expired_at"),
-            request.POST.get("tag"),
+            request.POST.get("tags"),
         )
         todoForm = TodosForm(request.POST, request.FILES)
 
@@ -96,9 +105,15 @@ def create(request):
                 start,
                 end,
             )
-            if tag is not None:
-                todo.tags.add(tag)
             todo.save()
+            if tags != "":
+                if "," in tags:
+                    taglist = list(tags.replace(" ", "").split(","))
+                else:
+                    taglist = list(tags.replace(" ", ""))
+                for t in taglist:
+                    Tag.objects.create(todo=todo, content=t)
+
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:
         messages.warning(request, "잘 못 된 접근입니다.")
@@ -116,11 +131,11 @@ def update(request, pk):
     todo = get_object_or_404(Todos, pk=pk)
     if request.method == "POST":
         todoForm = TodosForm(request.POST, request.FILES, instance=todo)
-        start, end, when, tag = (
+        start, end, when, tags = (
             request.POST.get("started_at"),
             request.POST.get("expired_at"),
             request.POST.get("when"),
-            request.POST.get("tag"),
+            request.POST.get("tags"),
         )
 
         user = request.user
@@ -130,36 +145,42 @@ def update(request, pk):
         # 시간 입력이 잘못되었을때
         exist = set()
         for todo in today_todos:
-            if todo.started_at is not None:
+            if todo.started_at != "":
                 st = change_value(todo.started_at)
                 ed = change_value(todo.expired_at)
                 for t in range(st, ed + 1):
                     exist.add(t)
-        if start is not None and end is not None:
+        if (start != "") and (end != ""):
             timetable = set(range(change_value(start), change_value(end) + 1))
-            if (start < end) and timetable.isdisjoint(exist):
+            if (start <= end) and (timetable.isdisjoint(exist)):
                 pass
             else:
                 messages.warning(request, "시간이 잘못되었습니다.")
                 return redirect("todos:today")
-        elif start is not None and end is None:
+        elif (start != "") and (end == ""):
             messages.error(request, "끝나는 시간을 입력해주세요.")
             return redirect("todos:today")
-        elif start is None and end is not None:
+        elif (start == "") and (end != ""):
             messages.error(request, "시작 시간을 입력해주세요.")
             return redirect("todos:today")
-        #
 
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
             todo.user_id, todo.when, todo.started_at, todo.expired_at = (
                 user,
-                when,
+                today,
                 start,
                 end,
             )
             todo.tags.add(tag)
             todo.save()
+            if tags != "":
+                if "," in tags:
+                    taglist = list(tags.replace(" ", "").split(","))
+                else:
+                    taglist = list(tags.replace(" ", ""))
+                for t in taglist:
+                    Tag.objects.create(todo=todo, content=t)
         return redirect("todos:today")
     else:
         todoForm = TodosForm(instance=todo)
