@@ -47,7 +47,7 @@
 
           <label for="study-members-num"># 스터디 인원</label>
           <div class="members-area" id="study-members-num">
-            <div class="study-membernum">{{member_number}}명</div>
+            <div class="study-membernum">{{study.member_number}}명</div>
             <span>/</span>
             <div class="study-totalnum">{{study.max_people}}명</div>
           </div>
@@ -75,7 +75,7 @@
                       <input type="submit" value="승인" class="approval-btn">
                     </form>
                     <!-- reject btn -->
-                    <form action="">
+                    <form action="{% url 'studies:refusal' study.pk user.pk%}">
                       <input type="submit" value="거절" class="reject-btn">
                     </form>
                   </div>
