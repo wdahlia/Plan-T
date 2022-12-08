@@ -4,7 +4,7 @@ from .forms import TodosForm
 from .models import Todos, Tag
 from datetime import datetime, timedelta
 from django.contrib import messages
-from .function import change_value
+from function import change_value
 from django.http import JsonResponse
 from django.core import serializers
 import json
@@ -112,7 +112,7 @@ def create(request):
                 else:
                     taglist = list(tags.replace(" ", ""))
                 for t in taglist:
-                    Tag.objects.create(todo=td.pk, content=t)
+                    Tag.objects.create(todo=todo, content=t)
 
         return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
     else:
@@ -173,14 +173,14 @@ def update(request, pk):
                 end,
             )
             todo.tags.add(tag)
-            td = todo.save()
+            todo.save()
             if tags != "":
                 if "," in tags:
                     taglist = list(tags.replace(" ", "").split(","))
                 else:
                     taglist = list(tags.replace(" ", ""))
                 for t in taglist:
-                    Tag.objects.create(todo=td.pk, content=t)
+                    Tag.objects.create(todo=todo, content=t)
         return redirect("todos:today")
     else:
         todoForm = TodosForm(instance=todo)
