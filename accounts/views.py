@@ -140,7 +140,5 @@ def profile(request):
 
 def same_tag(request, tag):
     same_tags = Tag.objects.filter(content=tag)
-    # todos = Todos.objects.filter(pk__in=tag.todo)
-
-    context = {"todos": todos, "same_tags": same_tags}
+    context = {"same_tags": same_tags}
     return render(request, "accounts/working/same_tag.html", context)

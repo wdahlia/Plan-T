@@ -108,9 +108,9 @@ def create(request):
             todo.save()
             if tags != "":
                 if "," in tags:
-                    taglist = list(tags.replace(" ", "").split(","))
+                    taglist = set(tags.replace(" ", "").split(","))
                 else:
-                    taglist = list(tags.replace(" ", ""))
+                    taglist = set(tags.replace(" ", ""))
                 for t in taglist:
                     Tag.objects.create(todo=todo, content=t)
 
@@ -172,13 +172,12 @@ def update(request, pk):
                 start,
                 end,
             )
-            todo.tags.add(tag)
             todo.save()
             if tags != "":
                 if "," in tags:
-                    taglist = list(tags.replace(" ", "").split(","))
+                    taglist = set(tags.replace(" ", "").split(","))
                 else:
-                    taglist = list(tags.replace(" ", ""))
+                    taglist = set(tags.replace(" ", ""))
                 for t in taglist:
                     Tag.objects.create(todo=todo, content=t)
         return redirect("todos:today")
