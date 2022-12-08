@@ -25,7 +25,7 @@
             let chatLog = document.querySelector('#chat-log');
 
             // Line Feed check and add nickname to message
-            chatLog.value += {{ nickname }} + " : " +  data.message;
+            chatLog.value += "{{ nickname }}" + " : " +  data.message;
             chatLog.value += (!chatLog.value.includes('\n')) ? '' : '\n';
 
             // scrolling
