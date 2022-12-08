@@ -19,19 +19,19 @@ try {
 
 try {
 
-
     var ctx = document.getElementById('today-progress-crc').getContext("2d");
 
     // var r = -Math.PI / 2;
     var $r1 = (270 * Math.PI / 180) - Math.PI / 2;
     var r1 = -Math.PI / 2;
-
+    console.log($r1, r1);
     function graph() {
-        console.log(ctx);
-        r1 = r1 + ($r1 - r1) * 0.045;
+        // r1 = r1 + ($r1 - r1) * 0.045;
+        r1 = 1.6
+        console.log(r1);
+        console.log(Math.round((r1 * 180 / Math.PI + 90) / 360 * 100));
 
         ctx.clearRect(0, 0, 100, 100);
-
         ctx.strokeStyle = "#3cddaa";
         ctx.lineWidth = 10;
         ctx.lineCap = "round";
@@ -39,8 +39,14 @@ try {
         ctx.arc(50, 50, 40, -Math.PI / 2, r1, false);
         ctx.stroke();
 
+        // const rateArea = document.querySelector('#progress-per');
+        // let achRate = Number(rateArea.dataset.achRate);
+        // console.log(achRate);
+        // rateArea.innerText = `${achRate}%`;
+
         document.getElementById('progress-per').innerHTML = Math.round((r1 * 180 / Math.PI + 90) / 360 * 100) + "%";
     }
+    graph();
     // const progress = setInterval(graph, 40);
     // setTimeout(function () {
     //     clearInterval(progress)
@@ -49,7 +55,7 @@ try {
 } catch { }
 
 try {
-
+    //  today 할일 등록 토글 
     let slideUp = (target, duration = 500) => {
         target.style.transitionProperty = "height, margin, padding";
         target.style.transitionDuration = duration + "ms";
@@ -142,6 +148,7 @@ try {
     const detailBtnDel = document.querySelector('#detail-btn-del');
     const detailDelForm = document.querySelector('#detail-del-form');
     const todayStudyArea = document.querySelector('.today-study-area');
+    const updateBtn = document.querySelector('#todo-update');
 
     // 할일 클릭 시 옆에 상세 토글 나오는 기능, json 데이터 비동기, 할일 active 토글 기능
     const taskMenu = function (e) {
@@ -200,14 +207,40 @@ try {
                 detailET.value = jsonParse[idx].fields.expired_at;
                 ;
             })
+    };
 
-
-    }
-    // tasks.forEach(task => {
-    //     task.addEventListener('click', taskMenu);
-    // });
+    // 각 할일을 누를 때마다 이벤트 작동하도록 forEach 사용
     taskConts.forEach(taskCont => {
         taskCont.addEventListener('click', taskMenu);
+    });
+
+    // today todo 업데이트 비동기
+    updateBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const taskDetailForm = document.querySelector('#today-detail-form');
+
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+        let urls = taskDetailForm.getAttribute('action');
+        console.log(urls);
+        axios({
+            method: 'POST',
+            url: `${urls}`,
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'multipart/form-data'
+            },
+            data: new FormData(taskDetailForm),
+        })
+            .then((res) => {
+                console.log(res);
+                const data2 = res.data;
+                console.log(data2);
+                for (let i = 0; i < taskConts.length; i++) {
+                    if (taskConts[i].parentElement.classList.contains('activate')) {
+                        taskConts[i].innerText = data2.todoTitle;
+                    }
+                }
+            })
     });
 
 } catch { }
@@ -294,7 +327,6 @@ try {
         let datumP = new Date();
         // console.log(weekSun);
         datumP.setDate(datumP.getDate() - datumP.getDay() + days);
-        console.log(datumP);
         let prevWeek = datumP.toLocaleString().split('. ').slice(0, 3);
         // console.log(prevWeek);
         prevWeekValue.innerText = `~ ${prevWeek[0]}.${prevWeek[1]}.${prevWeek[2]}`;

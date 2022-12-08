@@ -18,7 +18,7 @@ def index(request):
 
     context = {"category_studies": category_studies}
 
-    return render(request, "studies/working/study_index.html", context)
+    return render(request, "studies/complete/study_index.html", context)
 
 
 # 스터디 생성
@@ -49,7 +49,7 @@ def create(request):
 
     context = {"studyform": studyform}
 
-    return render(request, "studies/working/create_study.html", context)
+    return render(request, "studies/complete/create_study.html", context)
 
 
 # Study todo 생성
@@ -79,13 +79,15 @@ def detail(request, study_pk):
 
     context = {"study": study, "check": check, "study_todo_form": StudyTodoForm()}
 
-    return render(request, "studies/test/detail.html", context)
+    return render(request, "studies/complete/study_detail.html", context)
 
 
 # study.participated.all
 def info(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
 
+    # 가입된 멤버
+    joined_member = []
     # 가입된 멤버 수
     member_number = 0
     # 가입 신청 멤버
@@ -93,11 +95,12 @@ def info(request, study_pk):
     for user in study.participated.all():
         for study in user.join_study.all():
             if study.pk == study_pk:
-                member_number += 1
+                joined_member.append(user)
                 break
         else:
             application_member.append(user)
-
+    member_number = len(joined_member)
+    #
     start = str(study.start_at)
     end = str(study.end_at)
     context = {
@@ -105,11 +108,14 @@ def info(request, study_pk):
         "study_todo_form": StudyTodoForm(),
         "start": start,
         "end": end,
+        #
+        "joined_member": joined_member,
         "member_number": member_number,
         "application_member": application_member,
+        #
     }
 
-    return render(request, "studies/working/study_info.html", context)
+    return render(request, "studies/complete/study_info.html", context)
 
 
 def join(request, study_pk):
@@ -127,6 +133,15 @@ def join(request, study_pk):
         "studyCount": study.participated.count(),
     }
     return redirect("studies:info", study_pk)
+
+
+def refusal(request, study_pk, user_pk):
+    study = get_object_or_404(Study, pk=study_pk)
+    user = get_object_or_404(get_user_model(), pk=user_pk)
+    # 거절
+    study.participated.remove(user)
+
+    return redirect("studies:detail", study_pk)
 
 
 def accept(request, user_pk, study_pk):
