@@ -32,7 +32,7 @@
       </div>
       <div class="login">
         <div class="logo">
-          <img src="{% url 'img/planT_logo.svg' %}" alt="plan-t logo">
+          <img src="{% static 'img/planT_logo.svg' %}" alt="plan-t logo">
         </div>
         <form action="{% url 'accounts:login' %}" id="login-form" method="POST">
           {% csrf_token %}

@@ -46,6 +46,7 @@ ALLOWED_HOSTS = [
     "plan-t.site",
     "*.ap-northeast-2.compute.amazonaws.com",
     "127.0.0.1",
+    "localhost",
 ]
 
 
