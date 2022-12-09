@@ -3,25 +3,25 @@
 
 {% block body %}
 
-    <div class="container" id="study-index-area">
-      <div class="box">
-        <!-- search bar Area -->
-        <article class="study-search">
-          <div class="search-box">
-            <input placeholder="" required="" class="input" name="text" type="text">
-            <div class="icon">
-              <svg viewbox="0 0 512 512" class="ionicon" xmlns="http://www.w3.org/2000/svg">
-                <title>Search</title>
-                <path stroke-width="52" stroke-miterlimit="10" stroke="currentColor" fill="none" d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"></path>
-                <path d="M338.29 338.29L448 448" stroke-width="52" stroke-miterlimit="10" stroke-linecap="round" stroke="currentColor" fill="#3cddaa"></path>
-              </svg>
-            </div>
+  <div class="container" id="study-index-area">
+    <div class="box">
+      <!-- search bar Area -->
+      <article class="study-search">
+        <div class="search-box">
+          <input placeholder="" required="" class="input" name="text" type="text">
+          <div class="icon">
+            <svg viewbox="0 0 512 512" class="ionicon" xmlns="http://www.w3.org/2000/svg">
+              <title>Search</title>
+              <path stroke-width="52" stroke-miterlimit="10" stroke="currentColor" fill="none" d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"></path>
+              <path d="M338.29 338.29L448 448" stroke-width="52" stroke-miterlimit="10" stroke-linecap="round" stroke="currentColor" fill="#3cddaa"></path>
+            </svg>
           </div>
-          <a href="{% url 'studies:create' %}" class="create-box">
-            <span class="study-add-icon material-symbols-outlined">add_circle</span>
-            <span class="study-add-text">스터디 만들기</span>
-          </a>
-        </article>
+        </div>
+        <a href="{% url 'studies:create' %}" class="create-box">
+          <span class="study-add-icon material-symbols-outlined">add_circle</span>
+          <span class="study-add-text">스터디 만들기</span>
+        </a>
+      </article>
 
         <!-- category area -->
         <article class="study-category">
@@ -56,45 +56,45 @@
                   {{study.category}}
                 </div>
               </div>
-              <div class="study-body">
-                <div class="study-name-area">
-                  <div class="study-name">
-                    {{study.title}}
-                  </div>
-                  <div class="people-num">
-                    <span class="participant-num">{{study.participated.all|length}}명</span>
-                    /
-                    <span class="all-num">{{study.max_people}}명</span>
-                  </div>
+            </div>
+            <div class="study-body">
+              <div class="study-name-area">
+                <div class="study-name">
+                  {{study.title}}
                 </div>
-                <fieldset class="study-info">
-                  <legend>스터디 소개</legend>
-                  <div>
-                    {{study.desc}}
-                  </div>
-                </fieldset>
-                <fieldset class="study-date">
-                  <legend>스터디 기간</legend>
-                  <div>
-                    {{study.start_at | date:"Y-m-d"}}
-                    ~
-                    {{study.end_at | date:"Y-m-d"}}
-                  </div>
-                </fieldset>
+                <div class="people-num">
+                  <span class="participant-num">{{study.member_number}}명</span>
+                  /
+                  <span class="all-num">{{study.max_people}}명</span>
+                </div>
               </div>
-              <!-- 디테일 페이지가 아직 안 만들어진거 같아서 처리 안함.-->
-              <div class="study-footer">
-                {% if request.user in study.participated.all%}
-                  <a href="{% url 'studies:info' study.pk %}" class="join-btn">진입하기</a>
-                {% else %}
-                  <a href="{% url 'studies:detail' study.pk %}" class="join-btn">가입하기</a>
-                {% endif %}
-              </div>
+              <fieldset class="study-info">
+                <legend>스터디 소개</legend>
+                <div>
+                  {{study.desc}}
+                </div>
+              </fieldset>
+              <fieldset class="study-date">
+                <legend>스터디 기간</legend>
+                <div>
+                  {{study.start_at | date:"y-m-d"}}
+                  ~
+                  {{study.end_at | date:"y-m-d"}}
+                </div>
+              </fieldset>
+            </div>
+            <!-- 진입하기 or 가입하기 -->
+            <div class="study-footer">
+              {% if request.user in study.participated.all%}
+                <a href="{% url 'studies:detail' study.pk %}" class="join-btn">진입하기</a>
+              {% else %}
+                <a href="{% url 'studies:info' study.pk %}" class="join-btn">가입하기</a>
+              {% endif %}
             </div>
           {% endfor %}
         </section>
-      </div>
     </div>
+    
     <script>
       const selectCategory = document.querySelector('#select-category');
       selectCategory.addEventListener('click', function (event) {
@@ -115,4 +115,5 @@
       }
     </script>
     
+
 {% endblock body %}

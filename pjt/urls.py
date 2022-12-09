@@ -27,4 +27,5 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("studies/", include("studies.urls")),
     path("social/", include("social_django.urls", namespace="social")),
+    path("chat/", include("chat.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

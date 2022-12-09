@@ -89,11 +89,15 @@
         {% for todo in today_todos %}
         <li class="task" data-todo-pk="{{todo.pk}}">
           <p class="task-cont">{{ todo.title }}</p>
+          {% if todo.is_completed %}
+          <input type="checkbox" name="task-chb{{todo.pk}}" id="task-chb{{todo.pk}}" checked>
+          {% else %}
           <input type="checkbox" name="task-chb{{todo.pk}}" id="task-chb{{todo.pk}}">
+          {% endif %}
           <label for="task-chb{{todo.pk}}" class="task-chb"></label>
         </li>
         {%empty%}
-        <li class="task deactivate">
+        <li class="task task-empty">
           <p class="task-cont "> 아직 작성된 할일이 없어요 :(</p>
         </li>
         {% endfor %}
@@ -139,7 +143,7 @@
             <input type="file" name="todoimg" class="today_task-img" id="today-task-imgfile">
           </fieldset> -->
           <div class="keyword-box">
-            <input type="text" name="tags" id="" placeholder="#keyword">
+            <input type="text" name="tags" id="" placeholder="#keyword" id="detail-tag">
           </div>
           <div class="btn-area">
             <button class="btn" id="todo-update">할일 수정</button>
