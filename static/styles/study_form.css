@@ -3,19 +3,25 @@
 @import url(./main.css);
 @import url(./create_today.css);
 
+.info-box {
+  margin-top: 5rem;
+}
 
 #create-study-form {
   margin: 0rem 2rem 2rem;
 }
 
-#study-detail-area,
-#study-info-area{ 
+/* #study-detail-area { 
   margin: 2rem;
-}
+} */
 
-#update-study-form{
+/* #study-info-area {
+  margin: 4.8rem 2rem;
+} */
+
+/* #update-study-form{
   margin: 4.75rem 2rem;
-}
+} */
 
 /* study, detail studyname input */
 #create-study-form input[id="create-study-name"],
@@ -268,7 +274,11 @@
 #create-study-form .study-btn-area .study-create-btn,
 #create-study-form .study-btn-area .study-cancel-btn,
 #update-study-form .edit-btn-area .study-edit-btn,
-#update-study-form .edit-btn-area .edit-cancel-btn {
+#update-study-form .edit-btn-area .edit-cancel-btn,
+#study-info-area .study-cancel-btn,
+#study-info-area .detail-direct-btn,
+#study-info-area .enter-btn,
+#study-info-area .study-del-btn {
   padding: 0.8rem 1.5rem;
   border-radius: 10px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
@@ -277,23 +287,35 @@
   font-weight: 700;
 }
 
+#study-info-area .enter-btn {
+  border: 2px solid var(--gr);
+}
+
 #create-study-form .study-btn-area .study-create-btn,
-#update-study-form .edit-btn-area .study-edit-btn {
+#update-study-form .edit-btn-area .study-edit-btn,
+#study-info-area .detail-direct-btn {
   background-color: var(--main);
 }
 
 #create-study-form .study-btn-area .study-create-btn:hover,
-#update-study-form .edit-btn-area .study-edit-btn:hover {
+#update-study-form .edit-btn-area .study-edit-btn:hover,
+#study-info-area .detail-direct-btn:hover {
   background-color: var(--main-hl);
 }
 
+#study-info-area .enter-btn:hover {
+  background-color: var(--sub);
+}
+
 #create-study-form .study-btn-area .study-cancel-btn,
-#update-study-form .edit-btn-area .edit-cancel-btn {
+#update-study-form .edit-btn-area .edit-cancel-btn,
+#study-info-area .study-cancel-btn {
   background-color: var(--gr);  
 }
 
 #create-study-form .study-btn-area .study-cancel-btn:hover,
-#update-study-form .edit-btn-area .edit-cancel-btn:hover {
+#update-study-form .edit-btn-area .edit-cancel-btn:hover,
+#study-info-area .study-cancel-btn:hover {
   background-color: var(--txtgr);  
 }
 
@@ -351,8 +373,13 @@
   background-color: var(--sub);
 }
 
-#study-detail-area .detail-btn-group .reject-btn {
+#study-detail-area .detail-btn-group .reject-btn,
+#study-info-area .study-del-btn {
   background-color: var(--gr-wrn);
+}
+
+#study-info-area .study-del-btn:hover {
+  background-color: var(--wrn);
 }
 
 /* 수정 아이콘 */
@@ -375,4 +402,13 @@
 #create-study-form .update-direct-icon span:hover {
   color: var(--bg);
   background-color: var(--main);
+}
+
+
+/* study_info info-btn-li */
+
+#study-info-area .info-btn-li {
+  margin-top: 6rem;
+  display: flex;
+  justify-content: center;
 }

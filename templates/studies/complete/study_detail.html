@@ -3,12 +3,17 @@
 
 {% block body %}
   <div class="container" id="study-todo-area">
-    <div class="box">
+    <div class="box detail-box">
       <section id="study-detail-area">
-        <!-- 스터디 수정 버튼 -->
-        <a href="./study_update.html" class="edit-direct-btn">
-          <span class="edit-icon_img material-symbols-outlined">edit_note</span>
-        </a>
+        <div class="study-detail-btn">
+          <!-- 스터디 수정, 되돌아가기 버튼 -->
+          <a href="" class="edit-direct-btn">
+            <span class="edit-icon_img material-symbols-outlined">edit_note</span>
+          </a>
+          <a href="{% url 'studies:info' study.pk %}">
+            <span class="goback-icon_img material-symbols-outlined">undo</span>
+          </a>
+        </div>
         <!-- 스터디 title -->
         <label for="study-detail-name"># 스터디 이름</label>
         <input type="text" name="" value="{{study.title}}" class="study-detail-title" id="study-detail-name" disabled="disabled">
