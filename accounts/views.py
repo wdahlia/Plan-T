@@ -73,7 +73,7 @@ def logout(request):
         auth_logout(request)
 
     # 바꿔야 함!
-    return redirect("accounts/working/login.html")
+    return redirect("accounts:login")
 
 
 # 회원탈퇴
@@ -83,7 +83,7 @@ def delete(request):
         request.user.delete()
 
     # 바꿔야 함!
-    return redirect("accounts/working/login.html")
+    return redirect("accounts:login")
 
 
 # 회원정보 수정
@@ -100,7 +100,7 @@ def update(request):
             update_session_auth_hash(request, form.user)
 
             # 바꿔야 함!
-            return redirect("accounts/working/mypage.html")
+            return redirect("accounts:profile")
 
     else:
         form = CustomUserChangeForm(request.user)
