@@ -315,6 +315,7 @@
   /* border: 2.5px solid var(--gr); */
 }
 
-#study-index-area .join-btn:hover{
+#study-index-area .join-btn:hover,
+#study-index-area .create-box:hover{
   background-color: var(--main-hl);
 }

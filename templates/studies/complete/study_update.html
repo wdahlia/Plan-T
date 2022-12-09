@@ -56,7 +56,7 @@
         <!-- 수정, 취소 버튼 -->
         <div class="edit-btn-area">
           <input type="submit" value="수정" class="study-edit-btn">
-          <a href="./study_detail.html" class="edit-cancel-btn">취소</a>
+          <a href="{% url 'studies:detail' study.pk %}" class="edit-cancel-btn">취소</a>
         </div>
       </form>
     </div>

@@ -3,13 +3,16 @@
 @import url(./main.css);
 @import url(./create_today.css);
 
-.info-box {
-  margin-top: 5rem;
+.info-box,
+#update-study-area .update-box,
+#study-todo-area .detail-box,
+#create-study-area .study-create-box {
+  margin-top: 3rem;
 }
 
-#create-study-form {
+/* #create-study-form {
   margin: 0rem 2rem 2rem;
-}
+} */
 
 /* #study-detail-area { 
   margin: 2rem;
@@ -263,9 +266,9 @@
 
 /* 스터디 생성, 취소 버튼 */
 
-#create-study-form .study-btn-area,
-#update-study-form .edit-btn-area {
-  margin-top: 7rem;
+#update-study-form .edit-btn-area,
+#create-study-form .study-btn-area {
+  margin-top: 3.7rem;
   display: flex;
   justify-content: center;
   align-items: center;
