@@ -16,7 +16,6 @@
 	--wrn: #ff8b8b;
 	--gr-wrn: #ff8b8ba9;
 	--sub-wrn: #ff8b8b5d;
-	;
 }
 
 body {
@@ -30,7 +29,7 @@ body {
 	-ms-use-select: none;
 	user-select: none;
 }
-	
+
 /* commons */
 
 .container {
@@ -81,7 +80,6 @@ body {
 	background: var(--deact);
 	color: var(--txtgr);
 }
-
 
 /* header */
 #header {
