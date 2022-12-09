@@ -62,4 +62,16 @@
     </div>
   </div>
 
+  <script>
+    const categoryField = document.querySelector(".categories-area");
+    const tabs = categoryField.childNodes;
+    const check = "{{ study.category }}";
+
+    for (let l = 0; l < tabs.length; l++) {
+      if (tabs[l].value === check) {
+        console.log(tabs[l].value)
+        tabs[l].checked = true;
+      }
+    };
+  </script>
 {% endblock body %}
