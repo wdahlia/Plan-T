@@ -7,8 +7,11 @@ from django.contrib.auth import (
     update_session_auth_hash,
 )
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 from todos.models import Todos, Tag
 from accounts.models import User
+import operator
+from .decorator import login_message_required
 
 # Create your views here.
 # 회원가입
@@ -63,25 +66,28 @@ def login(request):
     return render(request, "accounts/working/login.html", context)
 
 
-# 로그아웃, 데코레이터 추가 필요
+# 로그아웃
+@login_required
 def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
 
     # 바꿔야 함!
-    return redirect("accounts/complete/accounts_form.html")
+    return redirect("accounts:login")
 
 
-# 회원탈퇴, 데코레이터 추가 필요
+# 회원탈퇴
+@login_required
 def delete(request):
     if request.user.is_authenticated:
         request.user.delete()
 
     # 바꿔야 함!
-    return redirect("accounts/complete/accounts_form.html")
+    return redirect("accounts:login")
 
 
-# 회원정보 수정, 데코레이터 추가 필요
+# 회원정보 수정
+@login_message_required
 def update(request):
     if request.method == "POST":
         form = CustomUserChangeForm(request.user, request.POST)
@@ -94,7 +100,7 @@ def update(request):
             update_session_auth_hash(request, form.user)
 
             # 바꿔야 함!
-            return redirect("accounts/complete/accounts_form.html")
+            return redirect("accounts:profile")
 
     else:
         form = CustomUserChangeForm(request.user)
@@ -104,12 +110,11 @@ def update(request):
     }
 
     # 바꿔야 함!
-    return render(request, "test/form.html", context)
+    return render(request, "accounts/complete/accounts_form.html", context)
 
 
-import operator
-
-# 프로필, 데코레이터 추가 필요
+# 프로필
+@login_required
 def profile(request):
     you = request.user
     user = User.objects.get(pk=you.pk)
@@ -141,6 +146,8 @@ def profile(request):
     return render(request, "accounts/working/mypage.html", context)
 
 
+# 특정 태그의 Todo 목록
+@login_required
 def same_tag(request, tag):
     you = request.user
     user = User.objects.get(pk=you.pk)

@@ -4,7 +4,7 @@
 {% block body %}
 
   <div class="container">
-    <div class="box">
+    <div class="box info-box">
       <article id="study-info-area">
         <!-- 스터디 title -->
         <label for="study-info-name"># 스터디 이름</label>
@@ -14,21 +14,21 @@
         <fieldset class="study-info-categories">
           <legend># 카테고리</legend>
           <div class="categories-area">
-            <input type="radio" name="ct" id="ct0" checked>
+            <input type="radio" name="ct" id="ct0" value="생활">
             <label for="ct0">생활</label>
-            <input type="radio" name="ct" id="ct1">
+            <input type="radio" name="ct" id="ct1" value="IT/개발">
             <label for="ct1">IT/개발</label>
-            <input type="radio" name="ct" id="ct2">
+            <input type="radio" name="ct" id="ct2" value="외국어">
             <label for="ct2">외국어</label>
-            <input type="radio" name="ct" id="ct3">
+            <input type="radio" name="ct" id="ct3" value="인문">
             <label for="ct3">인문</label>
-            <input type="radio" name="ct" id="ct4">
+            <input type="radio" name="ct" id="ct4" value="수능">
             <label for="ct4">수능</label>
-            <input type="radio" name="ct" id="ct5">
+            <input type="radio" name="ct" id="ct5" value="취업">
             <label for="ct5">취업</label>
-            <input type="radio" name="ct" id="ct6">
+            <input type="radio" name="ct" id="ct6" value="면접">
             <label for="ct6">면접</label>
-            <input type="radio" name="ct" id="ct7">
+            <input type="radio" name="ct" id="ct7" value="기타">
             <label for="ct7">기타</label>
           </div>
         </fieldset>
@@ -87,20 +87,39 @@
             </fieldset>
           </div>
 
-          <!-- 스터디 디테일 페이지 이동 (승인받은 회원만) -->
-            <a href="{% url 'studies:detail' study.pk %}">진입</a>
-          <!-- 스터디 가입 -->
-          {% if request.user != study.owner %}
-            <a href="{% url 'studies:join' study.pk %}">가입(임시)</a>
-          {% endif %}
-          <!-- 스터디 삭제 (스터디 장에게만) -->
-            <form action="">
-              <input type="submit" value="삭제">
-            </form>
-          <!-- 스터디 index로 다시 돌아가기 -->
-            <a href="{% url 'studies:index' %}" class="study-cancel-btn">돌아가기</a>
+          <div class="info-btn-li">
+            <!-- 스터디 디테일 페이지 이동 (승인받은 회원만) -->
+              <a href="{% url 'studies:detail' study.pk %}" class="detail-direct-btn">진입</a>
+            <!-- 스터디 가입 -->
+            {% if request.user != study.owner %}
+              <a href="{% url 'studies:join' study.pk %}" class="enter-btn">가입</a>
+            {% endif %}
+            {% if request.user == study.owner %}
+              <!-- 스터디 삭제 (스터디 장에게만) -->
+              <form action="">
+                <input type="submit" class="study-del-btn" value="삭제">
+              </form>
+            {% endif %}
+            <!-- 스터디 index로 다시 돌아가기 -->
+              <a href="{% url 'studies:index' %}" class="study-cancel-btn">돌아가기</a>
+          </div>
       </article>
     </div>
   </div>
 
+  <script>
+    const categoryField = document.querySelector(".categories-area");
+    const tabs = categoryField.childNodes;
+    const check = "{{ study.category }}";
+
+    for (let l=0; l < tabs.length; l++) { 
+      if (tabs[l].value === check) {
+        console.log(tabs[l].value)
+        tabs[l].checked = true;
+      } else {
+        tabs[l].disabled = true;
+      }
+    };
+    
+  </script>
 {% endblock body %}

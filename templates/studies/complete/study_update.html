@@ -3,62 +3,75 @@
 
 {% block body %}
   <div class="container" id="update-study-area">
-    <div class="box">
+    <div class="box update-box">
       <form action="" method="post" id="update-study-form">
+        {% csrf_token %}
         <!-- 스터디 title -->
         <label for="update-study-name"># 스터디 이름</label>
-        <input type="text" name="" value="" placeholder="" class="update-study-title" id="update-study-name"> 
-      
+        <input type="text" name="title" value="{{study.title}}" placeholder="" class="update-study-title" id="update-study-name">
+
         <!-- 스터디 category -->
         <fieldset class="study-update-categories">
           <legend># 카테고리</legend>
           <div class="categories-area">
-            <input type="radio" name="ct" id="ct0">
+            <input type="radio" name="category" id="ct0" value="생활">
             <label for="ct0">생활</label>
-            <input type="radio" name="ct" id="ct1">
+            <input type="radio" name="category" id="ct1" value="IT/개발">
             <label for="ct1">IT/개발</label>
-            <input type="radio" name="ct" id="ct2">
+            <input type="radio" name="category" id="ct2" value="외국어">
             <label for="ct2">외국어</label>
-            <input type="radio" name="ct" id="ct3">
+            <input type="radio" name="category" id="ct3" value="인문">
             <label for="ct3">인문</label>
-            <input type="radio" name="ct" id="ct4">
+            <input type="radio" name="category" id="ct4" value="수능">
             <label for="ct4">수능</label>
-            <input type="radio" name="ct" id="ct5">
+            <input type="radio" name="category" id="ct5" value="취업">
             <label for="ct5">취업</label>
-            <input type="radio" name="ct" id="ct6">
+            <input type="radio" name="category" id="ct6" value="면접">
             <label for="ct6">면접</label>
-            <input type="radio" name="ct" id="ct7">
+            <input type="radio" name="category" id="ct7" value="기타">
             <label for="ct7">기타</label>
           </div>
         </fieldset>
 
         <!-- 스터디 인원 -->
         <label for="update-members-num"># 스터디 인원</label>
-        <input type="number" name="" value="2" min="2" max="" id="update-members-num">
+        <input type="number" name="max_people" value="{{study.max_people}}" min="2" max="" id="update-members-num">
 
         <!-- 스터디 소개 -->
         <label for="update-info-text"># 스터디 소개</label>
-        <textarea name="" id="update-info-text" cols="30" rows="10"></textarea>
+        <textarea name="desc" id="update-info-text" cols="30" rows="10">{{study.desc}}</textarea>
 
         <!-- 시작일, 종료일-->
         <div class="study-update-datepicker">
           <fieldset class="study-start-picker">
             <legend># 시작일</legend>
-            <input type="date" name="" id="study-start-date">
+            <input type="date" name="start_at" id="study-start-date" value="{{study_start}}">
           </fieldset>
           <fieldset class="study-end-picker">
             <legend># 종료일</legend>
-            <input type="date" name="" id="study-end-date">
+            <input type="date" name="end_at" id="study-end-date" value="{{study_end}}">
           </fieldset>
         </div>
 
         <!-- 수정, 취소 버튼 -->
         <div class="edit-btn-area">
           <input type="submit" value="수정" class="study-edit-btn">
-          <a href="./study_detail.html" class="edit-cancel-btn">취소</a>
+          <a href="{% url 'studies:detail' study.pk %}" class="edit-cancel-btn">취소</a>
         </div>
       </form>
     </div>
   </div>
-  
+
+  <script>
+    const categoryField = document.querySelector(".categories-area");
+    const tabs = categoryField.childNodes;
+    const check = "{{ study.category }}";
+
+    for (let l = 0; l < tabs.length; l++) {
+      if (tabs[l].value === check) {
+        console.log(tabs[l].value)
+        tabs[l].checked = true;
+      }
+    };
+  </script>
 {% endblock body %}
