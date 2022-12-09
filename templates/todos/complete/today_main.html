@@ -150,15 +150,15 @@
         </span>
         <div class="study-tasklist-area">
           <h3 class="tit">Study</h3>
-          {% for study_todos in today_study_todos %}
-            <ul class="study-task-list">
+          <ul class="study-task-list">
+            {% for study_todos in today_study_todos %}
               <li class="task">
                 <a href="{% url 'studies:detail' study_todos.pk %}">
                   {{study_todos.title}}
                 </a>
               </li>
-            </ul>
-          {% endfor %}
+            {% endfor %}
+          </ul>
         </div>
       </div>
       <div class="time-test">
