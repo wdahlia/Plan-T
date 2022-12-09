@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Study, StudyTodos
+from .models import Study, StudyTodos, StudyTodosManagement
 from .forms import StudyForm, StudyTodosForm
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
@@ -58,9 +58,8 @@ def update(request, study_pk):
 
     if request.method == "POST":
         studyform = StudyForm(request.POST, instance=study_)
-        print("여기")
+
         if studyform.is_valid():
-            print("여기122")
             form = studyform.save(commit=False)
             # 시간저장(선택)
             start, end = (
@@ -69,16 +68,11 @@ def update(request, study_pk):
             )
             form.start_at = start
             form.end_at = end
-            #
-            # form.owner = request.user
             form.save()
-
-            # form.participated.add(request.user)
-            # request.user.join_study.add(form)
-
             return redirect("studies:detail", study_pk)
     else:
         studyform = StudyForm(instance=study_)
+    # 날짜는 str로 바꾸어 줘야 value에서 받을 수 있다.
     study_start = str(study_.start_at)
     study_end = str(study_.end_at)
 
@@ -95,6 +89,7 @@ def update(request, study_pk):
 def create_todos(request, study_pk):
     if request.method == "POST":
         study = Study.objects.get(pk=study_pk)
+        study_todos_management = StudyTodosManagement.objects.create()
 
         # 가입된 멤버
         joined_member = []
@@ -111,17 +106,30 @@ def create_todos(request, study_pk):
                 todo = todoForm.save(commit=False)
                 todo.study_pk = study
                 todo.user_id = userr
+                todo.management_pk = study_todos_management
                 todo.save()
         else:
             return redirect("studies:detail", study_pk)
         #
-    print("실패")
+
     messages.error(request, "저장 실패.")  # 이거 왜 작동안하지?
+    return redirect("studies:detail", study_pk)
+
+
+def delete_todos(request, study_pk, management_pk):
+    management = get_object_or_404(StudyTodosManagement, pk=management_pk)
+    study_ = get_object_or_404(Study, pk=study_pk)
+    if request.user == study_.owner:
+        if request.method == "POST":
+            management.delete()
     return redirect("studies:detail", study_pk)
 
 
 def detail(request, study_pk):
     study_ = get_object_or_404(Study, pk=study_pk)
+    a = StudyTodosManagement.objects.all()
+    for i in a:
+        print(i)
     # 로그인 유저, 시작은 오늘 이하, 끝은 오늘 이상의 study todos
     today = str(datetime.now())[:10]
     study_todos = StudyTodos.objects.filter(
@@ -140,6 +148,8 @@ def detail(request, study_pk):
         else:
             application_member.append(user)
     #
+    for i in study_todos:
+        print(i)
     context = {
         "study": study_,
         "study_todo_form": StudyTodosForm(),

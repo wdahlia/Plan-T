@@ -6,9 +6,11 @@
     <div class="box">
       <section id="study-detail-area">
         <!-- 스터디 수정 버튼 -->
-        <a href="{% url 'studies:update' study.pk %}" class="edit-direct-btn">
-          <span class="edit-icon_img material-symbols-outlined">edit_note</span>
-        </a>
+        {% if request.user == study.owner %}
+          <a href="{% url 'studies:update' study.pk %}" class="edit-direct-btn">
+            <span class="edit-icon_img material-symbols-outlined">edit_note</span>
+          </a>
+        {% endif %}
         <!-- 스터디 title -->
         <label for="study-detail-name"># 스터디 이름</label>
         <input type="text" name="" value="{{study.title}}" class="study-detail-title" id="study-detail-name" disabled="disabled">
@@ -100,6 +102,13 @@
               <p class="task-cont">{{todo.title}}</p>
               <input type="checkbox" name="task-chb1" id="task-chb1">
               <label for="task-chb1" class="task-chb"></label>
+              <!-- study todos 삭제하기 -->
+              {% if request.user == study.owner %}
+                <form action="{% url 'studies:delete_todos' study.pk todo.management_pk.pk%}" method="post">
+                  {% csrf_token %}
+                  <button type="submit">삭제</button>
+                </form>
+              {% endif %}
             </li>
           {% endfor %}
           <li class="task activate">
