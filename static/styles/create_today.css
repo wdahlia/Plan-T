@@ -17,9 +17,16 @@
 }
 
 #study-detail-area,
-#study-info-area{
+#study-info-area,
+#create-study-form,
+.study-todo-section {
 	max-width: 70%;
 	margin: 4.8rem auto;
+}
+
+#update-study-form {
+	max-width: 70%;
+	margin: 2rem auto;
 }
 
 #today-form .today_task-title,

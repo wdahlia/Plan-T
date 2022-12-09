@@ -4,9 +4,10 @@
 @import url(./create_today.css);
 @import url(./study_form.css);
 
-#study-todo-area .detail-box {
+/* #study-todo-area .detail-box {
 	margin-top: 5rem;
-}
+	padding-bottom: 5rem;
+} */
 /* 스터디 아이콘 */
 #study-todo-area .study-detail-btn {
 	display: flex;
@@ -181,9 +182,11 @@
 }
 
 #study-todo-area .study-todo-section .btn-area {
+	margin-top: 2rem;
 	text-align: center;
 	vertical-align: middle;
 }
+
 #study-todo-area .study-todo-section .btn {
 	width: 30%;
 	background: var(--bg);
