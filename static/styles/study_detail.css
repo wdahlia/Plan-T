@@ -4,12 +4,17 @@
 @import url(./create_today.css);
 @import url(./study_form.css);
 
+#study-todo-area .detail-box {
+	margin-top: 5rem;
+}
 /* 스터디 아이콘 */
-#study-todo-area .edit-direct-btn{
-	text-align: end;
+#study-todo-area .study-detail-btn {
+	display: flex;
+	justify-content: end;
 }
 
-#study-todo-area .edit-icon_img{
+#study-todo-area .edit-icon_img,
+#study-todo-area .goback-icon_img {
 	padding: 10px;
 	font-weight: 700;
 	color: var(--txt);
@@ -18,11 +23,21 @@
 	box-shadow: 5px 5px 16px rgba(0, 0, 0, 0.1);
 }
 
-#study-todo-area .edit-icon_img:hover{
+#study-todo-area .goback-icon_img {
+	margin-left: 1rem;
+	background-color: var(--sub-wrn)
+}
+
+#study-todo-area .edit-icon_img:hover,
+#study-todo-area .goback-icon_img:hover {
 	background-color: var(--main);
 	border-radius: 50px;
 	color: var(--bg);
 	box-shadow: none;
+}
+
+#study-todo-area .goback-icon_img:hover {
+	background-color: var(--gr-wrn);
 }
 
 #study-todo-area .box-area {
