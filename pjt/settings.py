@@ -46,6 +46,7 @@ ALLOWED_HOSTS = [
     "plan-t.site",
     "*.ap-northeast-2.compute.amazonaws.com",
     "127.0.0.1",
+    "localhost",
 ]
 
 
@@ -56,7 +57,6 @@ INSTALLED_APPS = [
     "todos",
     "studies",
     "chat",
-
     # package
     "channels",
     "daphne",
@@ -112,7 +112,7 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [("127.0.0.1", 6379)],
-        }
+        },
     }
 }
 

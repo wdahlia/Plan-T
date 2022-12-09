@@ -351,6 +351,7 @@ try {
         arr = arr.split(', ')
         let startAt = Number(arr[0]);
         let minCnt = Number(arr[1]);
+        // console.log(minCnt);
 
         if (startAt > 54) {
             startAt -= 54;
@@ -358,8 +359,19 @@ try {
                 timetableAreaR.children[j].classList.add('activate');
             }
         } else {
-            for (let j = startAt; j < startAt + minCnt; j++) {
-                timetableAreaL.children[j].classList.add('activate');
+            if (minCnt > 7) {
+                let minCntR = minCnt - 7;
+                console.log(minCntR);
+                for (let j = startAt; j < startAt + 6; j++) {
+                    timetableAreaL.children[j].classList.add('activate');
+                }
+                for (let k = startAt + 6 - 54; k < minCntR; k++) {
+                    timetableAreaR.children[k].classList.add('activate');
+                }
+            } else {
+                for (let j = startAt; j < startAt + minCnt; j++) {
+                    timetableAreaL.children[j].classList.add('activate');
+                }
             }
         }
     }
