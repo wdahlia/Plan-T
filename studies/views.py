@@ -5,9 +5,12 @@ from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from datetime import datetime, timedelta
+from django.contrib.auth.decorators import login_required
+from accounts.decorator import login_message_required
 
 # Create your views here.
 # 스터디 목록
+@login_required
 def index(request):
     category = request.GET.get("tabmenu")
 
@@ -23,6 +26,7 @@ def index(request):
 
 
 # 스터디 생성
+@login_message_required
 def create(request):
     if request.method == "POST":
         studyform = StudyForm(request.POST)
@@ -54,6 +58,7 @@ def create(request):
 
 
 # Study todo 생성
+@login_message_required
 def create_todos(request, study_pk):
     if request.method == "POST":
         study = Study.objects.get(pk=study_pk)
@@ -83,6 +88,7 @@ def create_todos(request, study_pk):
     return redirect("studies:detail", study_pk)
 
 
+@login_required
 def detail(request, study_pk):
     study_ = get_object_or_404(Study, pk=study_pk)
     # 로그인 유저, 시작은 오늘 이하, 끝은 오늘 이상의 study todos
@@ -115,6 +121,7 @@ def detail(request, study_pk):
 
 
 # study.participated.all
+@login_required
 def info(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
 
@@ -130,6 +137,7 @@ def info(request, study_pk):
     return render(request, "studies/complete/study_info.html", context)
 
 
+@login_required
 def join(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
     # 탈퇴
@@ -147,6 +155,7 @@ def join(request, study_pk):
     return redirect("studies:info", study_pk)
 
 
+@login_required
 def refusal(request, study_pk, user_pk):
     study = get_object_or_404(Study, pk=study_pk)
     user = get_object_or_404(get_user_model(), pk=user_pk)
@@ -156,6 +165,7 @@ def refusal(request, study_pk, user_pk):
     return redirect("studies:detail", study_pk)
 
 
+@login_required
 def accept(request, user_pk, study_pk):
     print(user_pk, study_pk)
     user = get_object_or_404(get_user_model(), pk=user_pk)
@@ -181,11 +191,14 @@ def accept(request, user_pk, study_pk):
             if study.pk == study_pk:
                 member_number += 1
                 break
+            
     study.member_number = member_number
     study.save()
+
     context = {
         "is_accepted": is_accepted,
         "studyCount": user.join_study.count(),
     }
     print(user_pk, study_pk)
+
     return redirect("studies:detail", study_pk)  # 나중에 detail로

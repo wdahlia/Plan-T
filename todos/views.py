@@ -8,8 +8,12 @@ from function import change_value
 from django.http import JsonResponse
 from django.core import serializers
 import json
+from accounts.decorator import login_message_required
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
 # Create your views here.
+@login_message_required
 def today(request):
     today = str(datetime.now())[:10]
     # 로그인 유저의 today todos 찾기
@@ -67,6 +71,7 @@ def today(request):
     return render(request, "todos/complete/today_main.html", context)
 
 
+@login_message_required
 def create(request):
     if request.method == "POST":
         start, end, tags = (
@@ -126,6 +131,7 @@ def create(request):
         return redirect("todos:today")
 
 
+@login_message_required
 def delete(request, todos_pk):
     today = str(datetime.now())[:10]
 
@@ -147,6 +153,7 @@ def delete(request, todos_pk):
     # return redirect("todos:today")  # 추후에 비동기로 바꾸는거 권장
 
 
+@login_message_required
 def update(request, pk):
     todo = get_object_or_404(Todos, pk=pk)
 
@@ -221,6 +228,7 @@ def update(request, pk):
         return JsonResponse(context)
 
 
+@login_required
 def week(request):
     # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
     few_week = 0  # int(few_week)
@@ -249,6 +257,7 @@ def week(request):
     return render(request, "todos/complete/week_todos.html", context)
 
 
+# 데코레이터 추가 해야함!
 def week_asyn(request, few_week):
     # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
     few_week = int(few_week)
@@ -296,6 +305,7 @@ def week_asyn(request, few_week):
 from dateutil.relativedelta import relativedelta
 
 
+@login_required
 def read_all(request):
     # 값 보내기 위한 알고리즘(past, present, future)
     # 현재 생각하는 문제
@@ -337,6 +347,7 @@ def read_all(request):
     return render(request, "todos/complete/all_todos.html", context)
 
 
+@login_required
 def stuty_list(request):
     today = str(datetime.now())[:10]
     # 로그인 유저의 today todos 찾기
@@ -365,6 +376,7 @@ def stuty_list(request):
 
 
 # checkbox 비동기
+@require_POST
 def is_completed(request):
     if request.method == "POST":
         # JSON 데이터 받음
