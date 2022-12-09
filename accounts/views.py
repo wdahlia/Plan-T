@@ -67,7 +67,7 @@ def login(request):
 
 
 # 로그아웃
-@require_POST
+@login_required
 def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
@@ -77,7 +77,7 @@ def logout(request):
 
 
 # 회원탈퇴
-@require_POST
+@login_required
 def delete(request):
     if request.user.is_authenticated:
         request.user.delete()

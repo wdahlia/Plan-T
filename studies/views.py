@@ -57,6 +57,7 @@ def create(request):
     return render(request, "studies/complete/create_study.html", context)
 
 
+@login_message_required
 def update(request, study_pk):
     study_ = get_object_or_404(Study, pk=study_pk)
 
@@ -92,6 +93,7 @@ def update(request, study_pk):
         "study_start": study_start,
         "study_end": study_end,
     }
+
     return render(request, "studies/complete/study_update.html", context)
 
 

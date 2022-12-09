@@ -263,7 +263,7 @@ def week(request):
     return render(request, "todos/complete/week_todos.html", context)
 
 
-# 데코레이터 추가 해야함!
+@login_required
 def week_asyn(request, few_week):
     # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
     few_week = int(few_week)
