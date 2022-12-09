@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Study, StudyTodo
-from .forms import StudyForm, StudyTodoForm
+from .models import Study, StudyTodos
+from .forms import StudyForm, StudyTodosForm
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 from django.contrib import messages
@@ -57,6 +57,44 @@ def create(request):
     return render(request, "studies/complete/create_study.html", context)
 
 
+def update(request, study_pk):
+    study_ = get_object_or_404(Study, pk=study_pk)
+
+    if request.method == "POST":
+        studyform = StudyForm(request.POST, instance=study_)
+        print("여기")
+        if studyform.is_valid():
+            print("여기122")
+            form = studyform.save(commit=False)
+            # 시간저장(선택)
+            start, end = (
+                request.POST.get("start_at"),
+                request.POST.get("end_at"),
+            )
+            form.start_at = start
+            form.end_at = end
+            #
+            # form.owner = request.user
+            form.save()
+
+            # form.participated.add(request.user)
+            # request.user.join_study.add(form)
+
+            return redirect("studies:detail", study_pk)
+    else:
+        studyform = StudyForm(instance=study_)
+    study_start = str(study_.start_at)
+    study_end = str(study_.end_at)
+
+    context = {
+        "studyform": studyform,
+        "study": study_,
+        "study_start": study_start,
+        "study_end": study_end,
+    }
+    return render(request, "studies/complete/study_update.html", context)
+
+
 # Study todo 생성
 @login_message_required
 def create_todos(request, study_pk):
@@ -73,10 +111,9 @@ def create_todos(request, study_pk):
         #
         # 가입된 멤버 각각 생성
         for userr in joined_member:
-            todoForm = StudyTodoForm(request.POST)
+            todoForm = StudyTodosForm(request.POST)
             if todoForm.is_valid() and study.owner == request.user:
                 todo = todoForm.save(commit=False)
-                todo.when = "1000-12-07"  # None처리 했는데 왜 필요한지 모르겠음
                 todo.study_pk = study
                 todo.user_id = userr
                 todo.save()
@@ -93,7 +130,7 @@ def detail(request, study_pk):
     study_ = get_object_or_404(Study, pk=study_pk)
     # 로그인 유저, 시작은 오늘 이하, 끝은 오늘 이상의 study todos
     today = str(datetime.now())[:10]
-    study_todos = StudyTodo.objects.filter(
+    study_todos = StudyTodos.objects.filter(
         user_id=request.user, start__lte=today, end__gte=today
     )
     #
@@ -111,7 +148,7 @@ def detail(request, study_pk):
     #
     context = {
         "study": study_,
-        "study_todo_form": StudyTodoForm(),
+        "study_todo_form": StudyTodosForm(),
         "joined_member": joined_member,
         "application_member": application_member,
         "study_todos": study_todos,
@@ -129,7 +166,7 @@ def info(request, study_pk):
     end = str(study.end_at)
     context = {
         "study": study,
-        "study_todo_form": StudyTodoForm(),
+        "study_todo_form": StudyTodosForm(),
         "start": start,
         "end": end,
     }

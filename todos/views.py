@@ -11,6 +11,7 @@ import json
 from accounts.decorator import login_message_required
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from studies.models import StudyTodos
 
 # Create your views here.
 @login_message_required
@@ -19,6 +20,10 @@ def today(request):
     # 로그인 유저의 today todos 찾기
     today_todos = Todos.objects.filter(user_id=request.user, when=today).order_by(
         "started_at"
+    )
+    # 오늘 해야 하는 스터디 todos
+    today_study_todos = StudyTodos.objects.filter(
+        user_id=request.user, start__lte=today, end__gte=today
     )
 
     # timetable 넘겨주기 위해 & 달성율 체크
@@ -67,6 +72,7 @@ def today(request):
         "today_todos": today_todos,
         "todosForm": todosForm,
         "achievement_rate": achievement_rate,
+        "today_study_todos": today_study_todos,
     }
     return render(request, "todos/complete/today_main.html", context)
 

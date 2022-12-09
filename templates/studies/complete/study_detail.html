@@ -6,7 +6,7 @@
     <div class="box">
       <section id="study-detail-area">
         <!-- 스터디 수정 버튼 -->
-        <a href="./study_update.html" class="edit-direct-btn">
+        <a href="{% url 'studies:update' study.pk %}" class="edit-direct-btn">
           <span class="edit-icon_img material-symbols-outlined">edit_note</span>
         </a>
         <!-- 스터디 title -->
