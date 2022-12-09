@@ -53,6 +53,44 @@ def create(request):
     return render(request, "studies/complete/create_study.html", context)
 
 
+def update(request, study_pk):
+    study_ = get_object_or_404(Study, pk=study_pk)
+
+    if request.method == "POST":
+        studyform = StudyForm(request.POST, instance=study_)
+        print("여기")
+        if studyform.is_valid():
+            print("여기122")
+            form = studyform.save(commit=False)
+            # 시간저장(선택)
+            start, end = (
+                request.POST.get("start_at"),
+                request.POST.get("end_at"),
+            )
+            form.start_at = start
+            form.end_at = end
+            #
+            # form.owner = request.user
+            form.save()
+
+            # form.participated.add(request.user)
+            # request.user.join_study.add(form)
+
+            return redirect("studies:detail", study_pk)
+    else:
+        studyform = StudyForm(instance=study_)
+    study_start = str(study_.start_at)
+    study_end = str(study_.end_at)
+
+    context = {
+        "studyform": studyform,
+        "study": study_,
+        "study_start": study_start,
+        "study_end": study_end,
+    }
+    return render(request, "studies/complete/study_update.html", context)
+
+
 # Study todo 생성
 def create_todos(request, study_pk):
     if request.method == "POST":
