@@ -90,7 +90,7 @@
 
 .past-timeline .past-date_all.activate{
   display: block;
-  
+}
 
 .past-date:hover > .arrow-icon {
 	transform: rotate(90deg);
@@ -156,7 +156,7 @@
 
 input[id="past-check"]{
   display: none;
-
+}
 
 input[id="past-check"] + label {
 	display: inline-block;
