@@ -1,6 +1,6 @@
 from django import forms
 from .models import Study
-from .models import StudyTodo
+from .models import StudyTodos
 
 
 class StudyForm(forms.ModelForm):
@@ -14,9 +14,9 @@ class StudyForm(forms.ModelForm):
         ]
 
 
-class StudyTodoForm(forms.ModelForm):
+class StudyTodosForm(forms.ModelForm):
     class Meta:
-        model = StudyTodo
+        model = StudyTodos
         fields = [
             "title",
             "content",
