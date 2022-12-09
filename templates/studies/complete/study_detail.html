@@ -3,14 +3,17 @@
 
 {% block body %}
   <div class="container" id="study-todo-area">
-    <div class="box">
+    <div class="box detail-box">
       <section id="study-detail-area">
-        <!-- 스터디 수정 버튼 -->
-        {% if request.user == study.owner %}
+        <div class="study-detail-btn">
+          <!-- 스터디 수정, 되돌아가기 버튼 -->
           <a href="{% url 'studies:update' study.pk %}" class="edit-direct-btn">
             <span class="edit-icon_img material-symbols-outlined">edit_note</span>
           </a>
-        {% endif %}
+          <a href="{% url 'studies:info' study.pk %}">
+            <span class="goback-icon_img material-symbols-outlined">undo</span>
+          </a>
+        </div>
         <!-- 스터디 title -->
         <label for="study-detail-name"># 스터디 이름</label>
         <input type="text" name="" value="{{study.title}}" class="study-detail-title" id="study-detail-name" disabled="disabled">
@@ -85,7 +88,6 @@
               <input type="text" name="title" placeholder="할일 추가하기" class="study_task-title">
               <textarea name="content" class="study_task-textarea" id="id_content" cols="30" rows="10" placeholder="할 일 상세"></textarea>
 
-              <!-- 키워드 -->
               <div class="btn-area">
                 <button type="submit" class="btn">할일 추가</button>
               </div>

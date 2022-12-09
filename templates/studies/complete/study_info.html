@@ -4,7 +4,7 @@
 {% block body %}
 
   <div class="container">
-    <div class="box">
+    <div class="box info-box">
       <article id="study-info-area">
         <!-- 스터디 title -->
         <label for="study-info-name"># 스터디 이름</label>
@@ -87,18 +87,22 @@
             </fieldset>
           </div>
 
-          <!-- 스터디 디테일 페이지 이동 (승인받은 회원만) -->
-            <a href="{% url 'studies:detail' study.pk %}">진입</a>
-          <!-- 스터디 가입 -->
-          {% if request.user != study.owner %}
-            <a href="{% url 'studies:join' study.pk %}">가입(임시)</a>
-          {% endif %}
-          <!-- 스터디 삭제 (스터디 장에게만) -->
-            <form action="">
-              <input type="submit" value="삭제">
-            </form>
-          <!-- 스터디 index로 다시 돌아가기 -->
-            <a href="{% url 'studies:index' %}" class="study-cancel-btn">돌아가기</a>
+          <div class="info-btn-li">
+            <!-- 스터디 디테일 페이지 이동 (승인받은 회원만) -->
+              <a href="{% url 'studies:detail' study.pk %}" class="detail-direct-btn">진입</a>
+            <!-- 스터디 가입 -->
+            {% if request.user != study.owner %}
+              <a href="{% url 'studies:join' study.pk %}" class="enter-btn">가입</a>
+            {% endif %}
+            {% if request.user == study.owner %}
+              <!-- 스터디 삭제 (스터디 장에게만) -->
+              <form action="">
+                <input type="submit" class="study-del-btn" value="삭제">
+              </form>
+            {% endif %}
+            <!-- 스터디 index로 다시 돌아가기 -->
+              <a href="{% url 'studies:index' %}" class="study-cancel-btn">돌아가기</a>
+          </div>
       </article>
     </div>
   </div>
@@ -112,6 +116,8 @@
       if (tabs[l].value === check) {
         console.log(tabs[l].value)
         tabs[l].checked = true;
+      } else {
+        tabs[l].disabled = true;
       }
     };
     

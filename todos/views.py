@@ -8,9 +8,13 @@ from function import change_value
 from django.http import JsonResponse
 from django.core import serializers
 import json
+from accounts.decorator import login_message_required
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from studies.models import StudyTodos
 
 # Create your views here.
+@login_message_required
 def today(request):
     today = str(datetime.now())[:10]
     # 로그인 유저의 today todos 찾기
@@ -44,7 +48,14 @@ def today(request):
             time_list[-1].append(start)
             time_list[-1].append(time)
 
-        # tag_list.append(Tag.objects.get(todo=todo.pk))
+        # print(Todos.objects.get(pk=todo.pk).tagged.all())
+        today_tag = Todos.objects.get(pk=todo.pk).tagged.all()
+        if today_tag:
+            # tag_list.append(today_tag)
+            tag_json = serializers.serialize("json", today_tag)
+            tag_list.append(tag_json)
+        else:
+            tag_list.append("")
 
     if len(today_todos) != 0:
         achievement_rate = round(100 * (achievement_cnt / len(today_todos)))
@@ -59,12 +70,11 @@ def today(request):
                 "started_at"
             ),
         )
-        res_json2 = serializers.serialize("json", tag_list)
-        return JsonResponse({"resJson": res_json, "resJson2": res_json2})
+        # res_json2 = serializers.serialize("json", tag_list)
+        return JsonResponse({"resJson": res_json, "resJson2": tag_list})
 
     context = {
         "time_list": time_list,
-        "tag_list": tag_list,
         "today_todos": today_todos,
         "todosForm": todosForm,
         "achievement_rate": achievement_rate,
@@ -73,6 +83,7 @@ def today(request):
     return render(request, "todos/complete/today_main.html", context)
 
 
+@login_message_required
 def create(request):
     if request.method == "POST":
         start, end, tags = (
@@ -132,6 +143,7 @@ def create(request):
         return redirect("todos:today")
 
 
+@login_message_required
 def delete(request, todos_pk):
     today = str(datetime.now())[:10]
 
@@ -153,8 +165,10 @@ def delete(request, todos_pk):
     # return redirect("todos:today")  # 추후에 비동기로 바꾸는거 권장
 
 
+@login_message_required
 def update(request, pk):
     todo = get_object_or_404(Todos, pk=pk)
+    todo_tags = Tag.objects.filter(todo=pk)
 
     if request.method == "POST":
         todoForm = TodosForm(request.POST, request.FILES, instance=todo)
@@ -194,6 +208,11 @@ def update(request, pk):
         #     messages.error(request, "시작 시간을 입력해주세요.")
         #     return redirect("todos:today")
 
+        # 해당 투두에 태그가 있을 때 json으로 보냄
+        if todo_tags:
+            tag_json = serializers.serialize("json", todo_tags.order_by("id"))
+        if not todo_tags:
+            tag_json = ""
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
             todo.user_id, todo.when, todo.started_at, todo.expired_at = (
@@ -215,6 +234,7 @@ def update(request, pk):
         context = {
             "todoTitle": todo.title,
             "todoCont": todo.content,
+            "tagJson": tag_json,
         }
         return JsonResponse(context)
         # return redirect("todos:today")
@@ -227,6 +247,7 @@ def update(request, pk):
         return JsonResponse(context)
 
 
+@login_required
 def week(request):
     # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
     few_week = 0  # int(few_week)
@@ -255,6 +276,7 @@ def week(request):
     return render(request, "todos/complete/week_todos.html", context)
 
 
+@login_required
 def week_asyn(request, few_week):
     # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
     few_week = int(few_week)
@@ -302,6 +324,7 @@ def week_asyn(request, few_week):
 from dateutil.relativedelta import relativedelta
 
 
+@login_required
 def read_all(request):
     # 값 보내기 위한 알고리즘(past, present, future)
     # 현재 생각하는 문제
@@ -343,6 +366,7 @@ def read_all(request):
     return render(request, "todos/complete/all_todos.html", context)
 
 
+@login_required
 def stuty_list(request):
     today = str(datetime.now())[:10]
     # 로그인 유저의 today todos 찾기
@@ -371,6 +395,7 @@ def stuty_list(request):
 
 
 # checkbox 비동기
+@require_POST
 def is_completed(request):
     if request.method == "POST":
         # JSON 데이터 받음

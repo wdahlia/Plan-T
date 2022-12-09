@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from random import randrange
+from django.contrib.auth.decorators import login_required
 
 anonymous_list = dict.fromkeys(range(1, 101), False)
 
 # Create your views here.
+@login_required
 def index(request):
     return render(request, "chat/index.html")
 
 
+@login_required
 def room(request, room_name):
     if request.user.is_authenticated:
         nickname = request.user.username

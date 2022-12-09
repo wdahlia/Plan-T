@@ -3,13 +3,9 @@
 
 {% block body %}
   <div class="container" id="create-study-area">
-    <div class="box">
+    <div class="box study-create-box">
       <form action="" method="post" id="create-study-form">
         {% csrf_token %}
-        <!-- 주석처리 하면 디자인이 바뀌어서 href만 제거 -->
-        <a href="" class="update-direct-icon">
-          <span class="material-symbols-outlined">edit_note</span>
-        </a>
 
         <!-- 스터디 title -->
         <label for="create-study-name"># 스터디 이름</label>

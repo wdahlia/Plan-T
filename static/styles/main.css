@@ -15,6 +15,7 @@
 	--bg-dark: #393e46;
 	--wrn: #ff8b8b;
 	--gr-wrn: #ff8b8ba9;
+	--sub-wrn: #ff8b8b5d;
 }
 
 body {
@@ -23,6 +24,10 @@ body {
 	color: var(--txt);
 	font-size: 16px;
 	font-weight: 400;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-use-select: none;
+	user-select: none;
 }
 
 /* commons */
@@ -65,7 +70,7 @@ body {
 .task {
 	background: var(--sub);
 	border-radius: 30px;
-	padding: 0.6rem 1.2rem;
+	padding: 0.3rem 1.2rem;
 }
 .task.activate {
 	background: var(--bg);

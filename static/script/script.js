@@ -1,4 +1,80 @@
 try {
+
+    const slider = function () {
+        const slides = document.querySelectorAll('.slide');
+        const btnLeft = document.querySelector('.slider-btn-left');
+        const btnRight = document.querySelector('.slider-btn-right');
+        const dotContainer = document.querySelector('.dots');
+
+        let curSlide = 0;
+        const maxSlide = slides.length;
+
+        const createDots = function () {
+            slides.forEach(function (_, i) {
+                dotContainer.insertAdjacentHTML('beforeend', `<button class="dots-dot" data-slide="${i}"></button>`);
+            })
+        };
+        const activeDot = function (slide) {
+            document.querySelectorAll('.dots-dot').forEach(dot => dot.classList.remove('dots-dot-active'));
+            document.querySelector(`.dots-dot[data-slide="${slide}"]`).classList.add('dots-dot-active');
+        };
+
+        const goToSlide = function (slide) {
+            slides.forEach((s, i) => s.style.transform = `translateX(${100 * (i - slide)}%)`);
+        }
+
+        const nextSlide = function () {
+            if (curSlide === maxSlide - 1) {
+                curSlide = 0;
+            } else {
+                curSlide++;
+            }
+
+            goToSlide(curSlide);
+            activeDot(curSlide);
+        };
+
+        const prevSlide = function () {
+            if (curSlide === 0) {
+                curSlide = maxSlide - 1;
+            } else {
+                curSlide--;
+            }
+
+            goToSlide(curSlide);
+            activeDot(curSlide);
+        };
+        const init = function () {
+            createDots();
+            goToSlide(0);
+            activeDot(0);
+        };
+
+        init();
+
+        btnLeft.addEventListener('click', prevSlide);
+        btnRight.addEventListener('click', nextSlide);
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === "ArrowLeft") prevSlide();
+            e.key === "ArrowRight" && nextSlide();
+        });
+
+        dotContainer.addEventListener('click', function (e) {
+            if (e.target.classList.contains('dots-dot')) {
+                const { slide } = e.target.dataset;
+                goToSlide(slide);
+                activeDot(slide);
+            }
+        });
+        setInterval(nextSlide, 6000);
+    };
+
+    slider();
+
+} catch { }
+
+try {
     const inputBox = document.getElementsByTagName('input');
 
     const loginActivate = function (e) {
@@ -194,16 +270,57 @@ try {
             .then((res) => {
                 const data = res.data.resJson;
                 const data2 = res.data.resJson2;
-
+                const tagValues = [];
+                const tagPks = []
                 todoTasks = JSON.parse(data);
-                todoTags = JSON.parse(data2);
-                // console.log(todoTags);
+                // console.log(data2);
+                // tags = JSON.parse(data2[0])
+                // console.log(todoTasks);
+
+                // console.log(tagPks);
+
 
                 const nodes = [...tasks];
                 const idx = nodes.indexOf(this.parentElement);
+                detailBtnDel.setAttribute("data-idx", idx)
+                console.log(detailBtnDel.dataset.idx);
 
                 // todo 수정 업데이트 버튼 actions 속성 부여
                 const todoPK = todoTasks[idx].pk;
+
+                for (let i = 0; i < data2.length; i++) {
+                    if (data2[i] != "") {
+                        tags = JSON.parse(data2[i]);
+                        const tagValueList = [];
+                        for (let j = 0; j < tags.length; j++) {
+                            // tagValueList.push(tags[j].fields.content)
+                            // console.log(tags[j].fields.content);
+                            tagValueList.push(tags[j].fields.content);
+                            // tagValues[tags[j].fields.todo].push(tags[j].fields.content)
+                            // console.log(tagValues[tags[j].fields.todo]);
+
+                            if (!tagPks.includes(tags[j].fields.todo)) {
+                                tagPks.push(tags[j].fields.todo);
+                            }
+                        }
+                        tagValues.push(tagValueList)
+                    }
+                }
+                let tagStr = ''
+
+                if (tagPks.includes(todoPK)) {
+                    const tagIdx = tagPks.indexOf(todoPK);
+                    // console.log(todoPK);
+                    // console.log(tagValues);
+                    // console.log(tagValues[tagIdx])
+                    for (let tag of tagValues[tagIdx]) {
+                        tagStr += `${tag}, `
+                    }
+                }
+                else {
+                    console.log('no tags');
+                }
+
                 updateUrl += `${todoPK}`;
                 taskDetailForm.setAttribute('action', `${updateUrl}`);
 
@@ -216,6 +333,7 @@ try {
                 detailCont.value = todoTasks[idx].fields.content;
                 detailST.value = todoTasks[idx].fields.started_at;
                 detailET.value = todoTasks[idx].fields.expired_at;
+                detailTag.value = tagStr;
                 // detailTag.value = todoTags[idx]
             })
     };
@@ -243,7 +361,7 @@ try {
             data: new FormData(taskDetailForm),
         })
             .then((res) => {
-                console.log(res);
+                console.log(res.data.tagJson);
                 const data2 = res.data;
                 for (let i = 0; i < taskConts.length; i++) {
                     if (taskConts[i].parentElement.classList.contains('activate')) {
@@ -258,6 +376,7 @@ try {
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
         let urls = detailDelForm.getAttribute('action');
 
+
         axios({
             method: 'POST',
             url: `${urls}`,
@@ -268,38 +387,10 @@ try {
             .then((res) => {
                 const data = res.data.resJson;
                 const jsonParse = JSON.parse(data)
-                taskList.replaceChildren();
 
-                // 받아온 json에 데이터가 있으면 새 데이터로 채워넣기
-                if (jsonParse.length != 0) {
-                    for (let j = 0; j < jsonParse.length; j++) {
-                        if (jsonParse[j].fields.is_completed) {
-                            taskList.insertAdjacentHTML("beforeend", `
-                                <li class="task deactivate"  data-todo-pk="${jsonParse[j].pk}">
-                                <p class="task-cont">${jsonParse[j].fields.title}</p>
-                                <input type="checkbox" name="task-chb${jsonParse[j].pk}" id="task-chb${jsonParse[j].pk}" checked="checked">
-                                <label for="task-chb${jsonParse[j].pk}" class="task-chb"></label>
-                                </li>
-                                `)
-                        } else {
-                            taskList.insertAdjacentHTML("beforeend", `
-                                <li class="task" data-todo-pk="${jsonParse[j].pk}">
-                                <p class="task-cont">${jsonParse[j].fields.title}</p>
-                                <input type="checkbox" name="task-chb${jsonParse[j].pk}" id="task-chb${jsonParse[j].pk}" >
-                                <label for="task-chb${jsonParse[j].pk}" class="task-chb"></label>
-                                </li>
-                                `)
-                        }
+                const targetIdx = Number(e.target.dataset.idx);
+                tasks[targetIdx].remove();
 
-                    }
-                } else {
-                    // 받아오는 데이터 없으면 비어있는 표시 넣기
-                    taskList.insertAdjacentHTML("beforeend", `
-                        <li class="task-empty">
-                        <p class="task-cont"> 작성된 할일이 없어요 :(</p>
-                        </li>
-                        `)
-                }
                 taskView.classList.remove('activate');
 
                 taskConts = document.querySelectorAll('.today-task-list .task .task-cont');
@@ -351,7 +442,6 @@ try {
         arr = arr.split(', ')
         let startAt = Number(arr[0]);
         let minCnt = Number(arr[1]);
-        // console.log(minCnt);
 
         if (startAt > 54) {
             startAt -= 54;
@@ -361,7 +451,6 @@ try {
         } else {
             if (minCnt > 7) {
                 let minCntR = minCnt - 7;
-                console.log(minCntR);
                 for (let j = startAt; j < startAt + 6; j++) {
                     timetableAreaL.children[j].classList.add('activate');
                 }
