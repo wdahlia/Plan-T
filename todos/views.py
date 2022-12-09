@@ -39,7 +39,14 @@ def today(request):
             time_list[-1].append(start)
             time_list[-1].append(time)
 
-        # tag_list.append(Tag.objects.get(todo=todo.pk))
+        # print(Todos.objects.get(pk=todo.pk).tagged.all())
+        today_tag = Todos.objects.get(pk=todo.pk).tagged.all()
+        if today_tag:
+            # tag_list.append(today_tag)
+            tag_json = serializers.serialize("json", today_tag)
+            tag_list.append(tag_json)
+        else:
+            tag_list.append("")
 
     if len(today_todos) != 0:
         achievement_rate = round(100 * (achievement_cnt / len(today_todos)))
@@ -54,12 +61,11 @@ def today(request):
                 "started_at"
             ),
         )
-        res_json2 = serializers.serialize("json", tag_list)
-        return JsonResponse({"resJson": res_json, "resJson2": res_json2})
+        # res_json2 = serializers.serialize("json", tag_list)
+        return JsonResponse({"resJson": res_json, "resJson2": tag_list})
 
     context = {
         "time_list": time_list,
-        "tag_list": tag_list,
         "today_todos": today_todos,
         "todosForm": todosForm,
         "achievement_rate": achievement_rate,
@@ -149,6 +155,7 @@ def delete(request, todos_pk):
 
 def update(request, pk):
     todo = get_object_or_404(Todos, pk=pk)
+    todo_tags = Tag.objects.filter(todo=pk)
 
     if request.method == "POST":
         todoForm = TodosForm(request.POST, request.FILES, instance=todo)
@@ -188,6 +195,11 @@ def update(request, pk):
         #     messages.error(request, "시작 시간을 입력해주세요.")
         #     return redirect("todos:today")
 
+        # 해당 투두에 태그가 있을 때 json으로 보냄
+        if todo_tags:
+            tag_json = serializers.serialize("json", todo_tags.order_by("id"))
+        if not todo_tags:
+            tag_json = ""
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
             todo.user_id, todo.when, todo.started_at, todo.expired_at = (
@@ -209,6 +221,7 @@ def update(request, pk):
         context = {
             "todoTitle": todo.title,
             "todoCont": todo.content,
+            "tagJson": tag_json,
         }
         return JsonResponse(context)
         # return redirect("todos:today")

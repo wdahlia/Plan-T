@@ -194,16 +194,55 @@ try {
             .then((res) => {
                 const data = res.data.resJson;
                 const data2 = res.data.resJson2;
-
+                const tagValues = [];
+                const tagPks = []
                 todoTasks = JSON.parse(data);
-                todoTags = JSON.parse(data2);
-                // console.log(todoTags);
+                // console.log(data2);
+                // tags = JSON.parse(data2[0])
+                // console.log(todoTasks);
+
+                // console.log(tagPks);
+
 
                 const nodes = [...tasks];
                 const idx = nodes.indexOf(this.parentElement);
 
                 // todo 수정 업데이트 버튼 actions 속성 부여
                 const todoPK = todoTasks[idx].pk;
+
+                for (let i = 0; i < data2.length; i++) {
+                    if (data2[i] != "") {
+                        tags = JSON.parse(data2[i]);
+                        const tagValueList = [];
+                        for (let j = 0; j < tags.length; j++) {
+                            // tagValueList.push(tags[j].fields.content)
+                            // console.log(tags[j].fields.content);
+                            tagValueList.push(tags[j].fields.content);
+                            // tagValues[tags[j].fields.todo].push(tags[j].fields.content)
+                            // console.log(tagValues[tags[j].fields.todo]);
+
+                            if (!tagPks.includes(tags[j].fields.todo)) {
+                                tagPks.push(tags[j].fields.todo);
+                            }
+                        }
+                        tagValues.push(tagValueList)
+                    }
+                }
+                let tagStr = ''
+
+                if (tagPks.includes(todoPK)) {
+                    const tagIdx = tagPks.indexOf(todoPK);
+                    console.log(todoPK);
+                    console.log(tagValues);
+                    console.log(tagValues[tagIdx])
+                    for (let tag of tagValues[tagIdx]) {
+                        tagStr += `${tag}, `
+                    }
+                }
+                else {
+                    console.log('no tags');
+                }
+
                 updateUrl += `${todoPK}`;
                 taskDetailForm.setAttribute('action', `${updateUrl}`);
 
@@ -216,6 +255,7 @@ try {
                 detailCont.value = todoTasks[idx].fields.content;
                 detailST.value = todoTasks[idx].fields.started_at;
                 detailET.value = todoTasks[idx].fields.expired_at;
+                detailTag.value = tagStr;
                 // detailTag.value = todoTags[idx]
             })
     };
@@ -243,7 +283,7 @@ try {
             data: new FormData(taskDetailForm),
         })
             .then((res) => {
-                console.log(res);
+                console.log(res.data.tagJson);
                 const data2 = res.data;
                 for (let i = 0; i < taskConts.length; i++) {
                     if (taskConts[i].parentElement.classList.contains('activate')) {
@@ -351,7 +391,6 @@ try {
         arr = arr.split(', ')
         let startAt = Number(arr[0]);
         let minCnt = Number(arr[1]);
-        // console.log(minCnt);
 
         if (startAt > 54) {
             startAt -= 54;
@@ -361,7 +400,6 @@ try {
         } else {
             if (minCnt > 7) {
                 let minCntR = minCnt - 7;
-                console.log(minCntR);
                 for (let j = startAt; j < startAt + 6; j++) {
                     timetableAreaL.children[j].classList.add('activate');
                 }

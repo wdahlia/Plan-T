@@ -28,9 +28,11 @@
 }
 
 #today-form .keyword-box,
+#today-detail-form .keyword-box,
 #study-task-form .keyword-box,
 #study-todo-area .keyword-box {
-	width: 113px;
+	width: 20vw;
+	text-align: left;
 }
 
 #today-form .keyword-box,
@@ -42,18 +44,13 @@
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
 	border-radius: 20px;
 	background-color: var(--bg);
-	text-align: center;
 }
 
 #today-form .keyword-box input[type="text"],
-#today-detail-form .keyword-box span,
+#today-detail-form .keyword-box input[type="text"],
 #study-task-form .keyword-box input[type="text"],
 #study-todo-area .keyword-box input[type="text"] {
 	line-height: 34px;
-}
-#today-form .keyword-box input[type="text"],
-#study-task-form .keyword-box input[type="text"],
-#study-todo-area .keyword-box input[type="text"] {
 	padding: 0 1rem;
 }
 
