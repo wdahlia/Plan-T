@@ -206,6 +206,8 @@ try {
 
                 const nodes = [...tasks];
                 const idx = nodes.indexOf(this.parentElement);
+                detailBtnDel.setAttribute("data-idx", idx)
+                console.log(detailBtnDel.dataset.idx);
 
                 // todo 수정 업데이트 버튼 actions 속성 부여
                 const todoPK = todoTasks[idx].pk;
@@ -232,9 +234,9 @@ try {
 
                 if (tagPks.includes(todoPK)) {
                     const tagIdx = tagPks.indexOf(todoPK);
-                    console.log(todoPK);
-                    console.log(tagValues);
-                    console.log(tagValues[tagIdx])
+                    // console.log(todoPK);
+                    // console.log(tagValues);
+                    // console.log(tagValues[tagIdx])
                     for (let tag of tagValues[tagIdx]) {
                         tagStr += `${tag}, `
                     }
@@ -298,6 +300,7 @@ try {
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
         let urls = detailDelForm.getAttribute('action');
 
+
         axios({
             method: 'POST',
             url: `${urls}`,
@@ -308,38 +311,10 @@ try {
             .then((res) => {
                 const data = res.data.resJson;
                 const jsonParse = JSON.parse(data)
-                taskList.replaceChildren();
 
-                // 받아온 json에 데이터가 있으면 새 데이터로 채워넣기
-                if (jsonParse.length != 0) {
-                    for (let j = 0; j < jsonParse.length; j++) {
-                        if (jsonParse[j].fields.is_completed) {
-                            taskList.insertAdjacentHTML("beforeend", `
-                                <li class="task deactivate"  data-todo-pk="${jsonParse[j].pk}">
-                                <p class="task-cont">${jsonParse[j].fields.title}</p>
-                                <input type="checkbox" name="task-chb${jsonParse[j].pk}" id="task-chb${jsonParse[j].pk}" checked="checked">
-                                <label for="task-chb${jsonParse[j].pk}" class="task-chb"></label>
-                                </li>
-                                `)
-                        } else {
-                            taskList.insertAdjacentHTML("beforeend", `
-                                <li class="task" data-todo-pk="${jsonParse[j].pk}">
-                                <p class="task-cont">${jsonParse[j].fields.title}</p>
-                                <input type="checkbox" name="task-chb${jsonParse[j].pk}" id="task-chb${jsonParse[j].pk}" >
-                                <label for="task-chb${jsonParse[j].pk}" class="task-chb"></label>
-                                </li>
-                                `)
-                        }
+                const targetIdx = Number(e.target.dataset.idx);
+                tasks[targetIdx].remove();
 
-                    }
-                } else {
-                    // 받아오는 데이터 없으면 비어있는 표시 넣기
-                    taskList.insertAdjacentHTML("beforeend", `
-                        <li class="task-empty">
-                        <p class="task-cont"> 작성된 할일이 없어요 :(</p>
-                        </li>
-                        `)
-                }
                 taskView.classList.remove('activate');
 
                 taskConts = document.querySelectorAll('.today-task-list .task .task-cont');
