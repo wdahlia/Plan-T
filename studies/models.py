@@ -30,9 +30,14 @@ class Study(models.Model):
 
 class StudyTodos(models.Model):
     study_pk = models.ForeignKey("Study", on_delete=models.CASCADE)
+    management_pk = models.ForeignKey("StudyTodosManagement", on_delete=models.CASCADE)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
     content = models.TextField()
     start = models.DateField()
     end = models.DateField()
     is_completed = models.BooleanField(default=False)
+
+
+class StudyTodosManagement(models.Model):
+    pass

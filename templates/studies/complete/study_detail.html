@@ -104,6 +104,13 @@
               <p class="task-cont">{{todo.title}}</p>
               <input type="checkbox" name="task-chb1" id="task-chb1">
               <label for="task-chb1" class="task-chb"></label>
+              <!-- study todos 삭제하기 -->
+              {% if request.user == study.owner %}
+                <form action="{% url 'studies:delete_todos' study.pk todo.management_pk.pk%}" method="post">
+                  {% csrf_token %}
+                  <button type="submit">삭제</button>
+                </form>
+              {% endif %}
             </li>
           {% endfor %}
           <li class="task activate">
