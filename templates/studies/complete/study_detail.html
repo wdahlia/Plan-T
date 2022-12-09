@@ -7,7 +7,7 @@
       <section id="study-detail-area">
         <div class="study-detail-btn">
           <!-- 스터디 수정, 되돌아가기 버튼 -->
-          <a href="" class="edit-direct-btn">
+          <a href="{% url 'studies:update' study.pk %}" class="edit-direct-btn">
             <span class="edit-icon_img material-symbols-outlined">edit_note</span>
           </a>
           <a href="{% url 'studies:info' study.pk %}">
