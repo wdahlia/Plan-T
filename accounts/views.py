@@ -15,7 +15,6 @@ from .decorator import login_message_required
 
 # Create your views here.
 # 회원가입
-@login_message_required
 def signup(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
@@ -41,7 +40,6 @@ def signup(request):
 
 
 # 로그인
-@login_message_required
 def login(request):
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
@@ -89,7 +87,7 @@ def delete(request):
 
 
 # 회원정보 수정
-@require_POST
+@login_message_required
 def update(request):
     if request.method == "POST":
         form = CustomUserChangeForm(request.user, request.POST)
