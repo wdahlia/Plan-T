@@ -93,10 +93,20 @@
             {% if study in request.user.join_study.all %}
               <a href="{% url 'studies:detail' study.pk %}" class="detail-direct-btn">진입</a>
             {% else %}
-              <div class="enter-btn" id="join-study" data-study-id="{{ study.pk }}">가입신청중</div>
+              {% if study.max_people == study.member_number %}
+                <div class="enter-btn">가입신청불가</div>
+                <div id="join-study" style="display: none;">찾는 id가 없으면 오류걸리니까</div>
+              {% else %}
+                <div class="enter-btn" id="join-study" data-study-id="{{ study.pk }}">가입신청중</div>
+              {% endif %}
             {% endif %}
           {% else %}
-            <div class="enter-btn" id="join-study" data-study-id="{{ study.pk }}">가입</div>
+            {% if study.max_people == study.member_number %}
+              <div class="enter-btn">가입신청불가</div>
+              <div id="join-study" style="display: none;">찾는 id가 없으면 오류걸리니까</div>
+            {% else %}
+              <div class="enter-btn" id="join-study" data-study-id="{{ study.pk }}">가입</div>
+            {% endif %}
           {% endif %}
           <!-- 스터디 index로 다시 돌아가기 -->
           <a href="{% url 'studies:index' %}" class="study-cancel-btn">돌아가기</a>

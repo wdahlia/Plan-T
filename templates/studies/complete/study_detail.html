@@ -22,7 +22,11 @@
         <div class="study-content">
           <textarea name="" id="study-detail-text" cols="60" rows="10" disabled="disabled">{{study.desc}}</textarea>
           <div class="leader-profileimg">
-            <img src="https://scontent.cdnsnapwidget.com/vp/4aefafd3bee59d1d0fa2b29a59fc2bc5/5D7701C4/t51.2885-15/sh0.08/e35/s640x640/47690229_1430752333723397_2893005724802088960_n.jpg" alt="" width="55" height="55">
+            {% if study.owner.image %}
+              <img src="{{ study.owner.image.url }}" alt="" width="55" height="55">
+            {% else %}
+              <img src="https://scontent.cdnsnapwidget.com/vp/4aefafd3bee59d1d0fa2b29a59fc2bc5/5D7701C4/t51.2885-15/sh0.08/e35/s640x640/47690229_1430752333723397_2893005724802088960_n.jpg" alt="" width="55" height="55">
+            {% endif %}
           </div>
         </div>
         <!-- 스터디 인원 -->
@@ -49,7 +53,7 @@
                 </div>
                 <div class="detail-btn-group">
                   <!-- approval btn -->
-                  <form action="{% url 'studies:accept' study.pk user.pk%}">
+                  <form action="{% url 'studies:accept_and_drive_out' study.pk user.pk%}">
                     <input type="submit" value="승인" class="approval-btn">
                   </form>
                   <!-- reject btn -->
@@ -130,12 +134,13 @@
   <div class="study-footer-btn">
     {% if request.user == study.owner %}
       <!-- 스터디 삭제 (스터디 장에게만) -->
-      <form action="">
+      <form action="{% url 'studies:delete' study.pk %}" method="POST">
+        {% csrf_token %}
         <input type="submit" class="study-del-btn" value="삭제">
       </form>
     {% else %}
       <!-- 스터디 탈퇴 (스터디 원) -->
-      <form action="">
+      <form action="{% url 'studies:accept_and_drive_out' study.pk request.user.pk%}">
         <input type="submit" class="dropout-btn" value="탈퇴">
       </form>
     {% endif %}

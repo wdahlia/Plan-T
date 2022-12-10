@@ -155,41 +155,51 @@ def delete_todos(request, study_pk, management_pk):
 @login_required
 def detail(request, study_pk):
     study_ = get_object_or_404(Study, pk=study_pk)
-    a = StudyTodosManagement.objects.all()
-    for i in a:
-        print(i)
-    # 로그인 유저, 시작은 오늘 이하, 끝은 오늘 이상의 study todos
-    today = str(datetime.now())[:10]
-    study_todos = StudyTodos.objects.filter(
-        user_id=request.user,
-        start__lte=today,
-        end__gte=today,
-        study_pk=study_pk,
-    )
-    #
-    # 가입된 멤버
-    joined_member = []
-    # 가입 신청 멤버
-    application_member = []
-    for user in study_.participated.all():
-        for study in user.join_study.all():
-            if study.pk == study_pk:
-                joined_member.append(user)
-                break
-        else:
-            application_member.append(user)
-    #
-    for i in study_todos:
-        print(i)
-    context = {
-        "study": study_,
-        "study_todo_form": StudyTodosForm(),
-        "joined_member": joined_member,
-        "application_member": application_member,
-        "study_todos": study_todos,
-    }
+    # 인증
+    if request.user in study_.participated.all():
+        if study_ in request.user.join_study.all():
+            # 로그인 유저, 시작은 오늘 이하, 끝은 오늘 이상의 study todos
+            today = str(datetime.now())[:10]
+            study_todos = StudyTodos.objects.filter(
+                user_id=request.user,
+                start__lte=today,
+                end__gte=today,
+                study_pk=study_pk,
+            )
+            #
+            # 가입된 멤버
+            joined_member = []
+            # 가입 신청 멤버
+            application_member = []
+            for user in study_.participated.all():
+                for study in user.join_study.all():
+                    if study.pk == study_pk:
+                        joined_member.append(user)
+                        break
+                else:
+                    application_member.append(user)
+            #
 
-    return render(request, "studies/complete/study_detail.html", context)
+            context = {
+                "study": study_,
+                "study_todo_form": StudyTodosForm(),
+                "joined_member": joined_member,
+                "application_member": application_member,
+                "study_todos": study_todos,
+            }
+
+            return render(request, "studies/complete/study_detail.html", context)
+    return redirect("studies:index")
+
+
+@login_required
+def delete(request, study_pk):
+    if request.method == "POST":
+        study_ = get_object_or_404(Study, pk=study_pk)
+        study_.delete()
+        return redirect("studies:index")
+    # 잘못된 방식으로 보내면
+    return redirect("studies:detail", study_pk)
 
 
 # study.participated.all
@@ -237,20 +247,23 @@ def refusal(request, study_pk, user_pk):
 
 
 @login_required
-def accept(request, user_pk, study_pk):
-    print(user_pk, study_pk)
+def accept_and_drive_out(request, user_pk, study_pk):
     user = get_object_or_404(get_user_model(), pk=user_pk)
     study = get_object_or_404(Study, pk=study_pk)
 
-    # 강퇴
+    # 강퇴 & 탈퇴(수락 거절 + 가입 신청 거절)
     if user.join_study.filter(pk=study_pk).exists():
         user.join_study.remove(study)
-        is_accepted = False
+        study.participated.remove(user)
+        if study.owner == request.user:
+            owner__ = True
+        else:
+            owner__ = False
     # 수락 or 초대
     else:
         if study.max_people >= len(study.participated.all()):
             user.join_study.add(study)
-            is_accepted = True
+            owner__ = True
         else:
             messages.error(request, "최대 인원을 초과하였습니다.")
             return redirect("studies:detail", study_pk)
@@ -266,10 +279,7 @@ def accept(request, user_pk, study_pk):
     study.member_number = member_number
     study.save()
 
-    context = {
-        "is_accepted": is_accepted,
-        "studyCount": user.join_study.count(),
-    }
-    print(user_pk, study_pk)
-
-    return redirect("studies:detail", study_pk)  # 나중에 detail로
+    if owner__ == True:
+        return redirect("studies:detail", study_pk)
+    else:
+        return redirect("studies:index")
