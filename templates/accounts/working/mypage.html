@@ -1,64 +1,49 @@
-<!DOCTYPE html>
-<html lang="ko">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet" href="../../../static/styles/init.css">
-    <link rel="stylesheet" href="../../../static/styles/accounts.css">
-    <title>Document</title>
-    <style>
-        .count {
-            position: absolute;
-            background-color: red;
-            color: white;
-            font-size: 9px;
-            padding: 5px;
-            border-radius: 20px;
-            bottom: 22px;
-        }
-    </style>
-</head>
-
-
-<body>
-
-    <div class="container">
-        <div class="box" id="mypage">
-            <div class="user-info">
-                <div class="profile-img">
-                    <img src="https://dummyimage.com/150x150" alt="">
-                </div>
-                <h2 class="tit">username</h2>
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<div class="container">
+    <div class="box" id="mypage">
+        <div class="user-info">
+            <div class="profile-img shd">
+                {% if user.image %}
+                <img src="{{user.image.url}}" alt="프로필 이미지">
+                {% else %}
+                <img src="https://dummyimage.com/150x150" alt="프로필 이미지">
+                {% endif %}
             </div>
-            <div class="todo-achieve">
-                <h4 class="tit">TODO 달성률</h4>
-                <p class="achieve-bg"></p>
-                <p class="achieve-per"><span>45%</span></p>
-            </div>
-            <div class="user-log box">
-                <p>유저 그래프 https://pixe.la/</p>
-            </div>
-            <div class="user-tag box">
-                <h4 class="tit">많이 쓴 태그 top 10</h4>
+            <a href="{% url 'accounts:update' %}" class="update-btn"><span class="material-symbols-outlined">
+                    edit_square
+                </span></a>
+            <h2 class="tit">{{user.username}}</h2>
+            {% if user.nickname %}
+            <p class="nick">{{user.nickname}}</p>
+            {% else %}
+            <p class="nick">설정된 닉네임이 없습니다.</p>
+            {% endif %}
+        </div>
+        <div class="todo-achieve">
+            <h4 class="tit">TODO 달성률</h4>
+            <p class="achieve-bg"></p>
+            <p class="achieve-per">
+                <span>45%</span>
+            </p>
+        </div>
+        <div class="user-tag box">
+            <h4 class="tit">많이 쓴 태그</h4>
+            <div class="tag-area">
                 {% for tag in result %}
-                <a href="{% url 'accounts:sametag' tag.content %}">
-                    <span class="tag" style="position:relative">
-                        {{ tag.content }}
-                        <span class="count">{{ tag.count }}</span>
-                    </span>
+                <a href="{% url 'accounts:sametag' tag.content %}" class="tag">
+                    {{ tag.content }}
+                    <span class="tag-count">{{ tag.count }}</span>
                 </a>
                 {% endfor %}
+            </div>
 
-            </div>
-            <div class="user-log box">
-                <h4 class="tit">나의 스터디 현황</h4>
-            </div>
+        </div>
+        <div class="user-log box">
+            <h4 class="tit">나의 스터디 현황</h4>
         </div>
     </div>
-</body>
+</div>
 
-</html>
+{% endblock body %}
