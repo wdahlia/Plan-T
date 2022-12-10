@@ -16,27 +16,20 @@ def index(request):
     category = request.GET.get("tabmenu")
 
     # 입력 받은 카테고리 값에 따라서 조건을 건다.
-    if category is None or category == "on":
+    if category is None or category == "on" or category == "None":
         category_studies = Study.objects.all()
     else:
         category_studies = Study.objects.filter(category=category)
-
-    context = {"category_studies": category_studies}
-
-    return render(request, "studies/complete/study_index.html", context)
-
-
-# 스터디 목록 검색
-@login_required
-def search(request):
-    if request.method == "GET":
+    # 검색을 한다면
+    search = request.GET.get("search")
+    if search is not None:
         studies = Study.objects.all()
-        search = request.GET.get("search")
-        if search:
-            search_lists = studies.filter(
-                Q(title__icontains=search) | Q(desc__icontains=search)
-            )
-    context = {"category_studies": search_lists}
+        search_lists = studies.filter(
+            Q(title__icontains=search) | Q(desc__icontains=search)
+        )
+        category_studies = category_studies & search_lists
+
+    context = {"category_studies": category_studies, "category": category}
 
     return render(request, "studies/complete/study_index.html", context)
 

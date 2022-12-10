@@ -7,8 +7,10 @@
     <div class="box">
       <!-- search bar Area -->
       <article class="study-search">
-        <form action="{% url 'studies:search' %}" method="get" class="search-box">
+        <form action="" method="get" class="search-box">
           <input placeholder="" required="" class="input" name="search" type="text">
+          <!--숨겨야됨-->
+          <input type="text" name="tabmenu" id="tab1" class="tabs" value="{{category}}" style="display: none;">
           <button class="button" type="submit">
             <div class="icon">
               <svg viewbox="0 0 512 512" class="ionicon" xmlns="http://www.w3.org/2000/svg">
