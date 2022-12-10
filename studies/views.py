@@ -17,16 +17,13 @@ from django.db.models import Q
 def index(request):
     category = request.GET.get("tabmenu")
 
-    # 입력 받은 카테고리 값에 따라서 조건을 건다.
+    # 카테고리
     if category is None or category == "on" or category == "None":
         category_studies = Study.objects.all()
     else:
         category_studies = Study.objects.filter(category=category)
-    
-    page_number = request.GET.get("page")
-    paginator = Paginator(category_studies, 8)
-    page_list = paginator.get_page(page_number)
-    
+
+    # 검색
     search = request.GET.get("search")
     if search is not None:
         studies = Study.objects.all()
@@ -34,12 +31,16 @@ def index(request):
             Q(title__icontains=search) | Q(desc__icontains=search)
         )
         category_studies = category_studies & search_lists
+    # 페이지 네이션 코드
+    page_number = request.GET.get("page")
+    paginator = Paginator(category_studies, 8)
+    page_list = paginator.get_page(page_number)
 
     context = {
         "category_studies": category_studies,
         "page_list": page_list,
         "category": category,
-        }
+    }
 
     return render(request, "studies/complete/study_index.html", context)
 
