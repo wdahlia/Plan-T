@@ -5,6 +5,7 @@ app_name = "studies"
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("search", views.search, name="search"),
     path("create/", views.create, name="create"),
     path("create_todos/<int:study_pk>", views.create_todos, name="create_todos"),
     path(

@@ -7,6 +7,7 @@ from django.contrib import messages
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from accounts.decorator import login_message_required
+from django.db.models import Q
 
 # Create your views here.
 # 스터디 목록
@@ -21,6 +22,21 @@ def index(request):
         category_studies = Study.objects.filter(category=category)
 
     context = {"category_studies": category_studies}
+
+    return render(request, "studies/complete/study_index.html", context)
+
+
+# 스터디 목록 검색
+@login_required
+def search(request):
+    if request.method == "GET":
+        studies = Study.objects.all()
+        search = request.GET.get("search")
+        if search:
+            search_lists = studies.filter(
+                Q(title__icontains=search) | Q(desc__icontains=search)
+            )
+    context = {"category_studies": search_lists}
 
     return render(request, "studies/complete/study_index.html", context)
 
@@ -132,7 +148,6 @@ def delete_todos(request, study_pk, management_pk):
     return redirect("studies:detail", study_pk)
 
 
-
 @login_required
 def detail(request, study_pk):
     study_ = get_object_or_404(Study, pk=study_pk)
@@ -241,7 +256,7 @@ def accept(request, user_pk, study_pk):
             if study.pk == study_pk:
                 member_number += 1
                 break
-            
+
     study.member_number = member_number
     study.save()
 

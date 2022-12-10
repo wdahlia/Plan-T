@@ -7,16 +7,18 @@
     <div class="box">
       <!-- search bar Area -->
       <article class="study-search">
-        <div class="search-box">
-          <input placeholder="" required="" class="input" name="text" type="text">
-          <div class="icon">
-            <svg viewbox="0 0 512 512" class="ionicon" xmlns="http://www.w3.org/2000/svg">
-              <title>Search</title>
-              <path stroke-width="52" stroke-miterlimit="10" stroke="currentColor" fill="none" d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"></path>
-              <path d="M338.29 338.29L448 448" stroke-width="52" stroke-miterlimit="10" stroke-linecap="round" stroke="currentColor" fill="#3cddaa"></path>
-            </svg>
-          </div>
-        </div>
+        <form action="{% url 'studies:search' %}" method="get" class="search-box">
+          <input placeholder="" required="" class="input" name="search" type="text">
+          <button class="button" type="submit">
+            <div class="icon">
+              <svg viewbox="0 0 512 512" class="ionicon" xmlns="http://www.w3.org/2000/svg">
+                <title>Search</title>
+                <path stroke-width="52" stroke-miterlimit="10" stroke="currentColor" fill="none" d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"></path>
+                <path d="M338.29 338.29L448 448" stroke-width="52" stroke-miterlimit="10" stroke-linecap="round" stroke="currentColor" fill="#3cddaa"></path>
+              </svg>
+            </div>
+          </button>
+        </form>
         <a href="{% url 'studies:create' %}" class="create-box">
           <span class="study-add-icon material-symbols-outlined">add_circle</span>
           <span class="study-add-text">스터디 만들기</span>
@@ -95,7 +97,7 @@
       </section>
     </div>
   </div>
-  
+
   <script>
     const selectCategory = document.querySelector('#select-category');
     selectCategory.addEventListener('click', function (event) {
@@ -104,18 +106,17 @@
       selectCategory.method = 'GET';
       selectCategory.submit()
     })
-    
+
     const url = new URL(window.location.href);
     const urlParams = url.searchParams;
     const menu = urlParams.get('tabmenu');
-  
+
     const categories = selectCategory.querySelectorAll('.tabs');
-    for (let idx=0; idx < categories.length; idx++) {
+    for (let idx = 0; idx < categories.length; idx++) {
       if (categories[idx].value === menu) {
         categories[idx].checked = true;
       }
     }
   </script>
-    
 
 {% endblock body %}
