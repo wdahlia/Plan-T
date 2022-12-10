@@ -63,7 +63,7 @@ def login(request):
     }
 
     # 바꿔야 함!
-    return render(request, "accounts/working/login.html", context)
+    return render(request, "accounts/complete/login.html", context)
 
 
 # 로그아웃
@@ -110,7 +110,7 @@ def update(request):
     }
 
     # 바꿔야 함!
-    return render(request, "accounts/complete/accounts_form.html", context)
+    return render(request, "accounts/working/accounts_update.html", context)
 
 
 # 프로필
@@ -129,19 +129,15 @@ def profile(request):
             tag_count[t.content] += 1
         else:
             tag_count[t.content] = 1
-    
+
     sorted_tag = sorted(tag_count.items(), key=operator.itemgetter(1), reverse=True)
     sorted_tag = sorted_tag[:10]
-    
+
     result = []
     for tt in sorted_tag:
         result.append({"content": tt[0], "count": tt[1]})
-    
-    context = {
-        "user": user, 
-        "todos": todo, 
-        "result": result
-    }
+
+    context = {"user": user, "todos": todo, "result": result}
 
     return render(request, "accounts/working/mypage.html", context)
 
@@ -157,8 +153,6 @@ def same_tag(request, tag):
         todo__in=todo,
     )
 
-    context = {
-        "same_tags": same_tags
-    }
+    context = {"same_tags": same_tags, "tag": tag}
 
     return render(request, "accounts/working/same_tag.html", context)

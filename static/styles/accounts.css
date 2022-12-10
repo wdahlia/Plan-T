@@ -75,29 +75,47 @@
 	align-items: center;
 	align-content: center;
 }
+#gnr-login .box,
+#user-update .box {
+	width: 30vw;
+	margin: 5rem auto;
+}
 
-#main-login .login {
+#main-login .login,
+#gnr-login .login {
 	padding: 3rem;
 	width: 35%;
 }
 #main-login .login .logo,
-#signup .logo {
+#signup .logo,
+#gnr-login .logo,
+#user-update .logo {
 	width: 200px;
 	margin: 5rem auto 3rem;
 }
+#user-update .tit {
+	text-align: center;
+	margin-bottom: 2rem;
+}
 #main-login .login #login-form,
-#signup #signup-form {
+#signup #signup-form,
+#gnr-login #login-form,
+#user-update #user-update-form {
 	text-align: center;
 }
 #main-login .login #login-form .input-area,
-#signup #signup-form .input-area {
+#signup #signup-form .input-area,
+#gnr-login #login-form .input-area,
+#user-update #user-update-form .input-area {
 	position: relative;
 	max-width: 210px;
 	margin: 0 auto;
 }
 
 #main-login .login #login-form input,
-#signup #signup-form input {
+#signup #signup-form input,
+#gnr-login #login-form input,
+#user-update #user-update-form input {
 	border-radius: 15px;
 	border: 1px solid rgba(0, 0, 0, 0);
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
@@ -105,11 +123,14 @@
 	margin-bottom: 0.95rem;
 }
 #main-login .login #login-form input:last-child,
-#signup #signup-form input:last-child {
+#signup #signup-form input:last-child,
+#gnr-login #login-form input:last-child {
 	margin-bottom: 0;
 }
 #main-login .login #login-form label,
-#signup #signup-form label {
+#signup #signup-form label,
+#gnr-login #login-form label,
+#user-update #user-update-form label {
 	position: absolute;
 	left: 0px;
 	top: 0px;
@@ -122,41 +143,59 @@
 #main-login .login #login-form input:focus,
 #main-login .login #login-form .input-area.activate input,
 #signup #signup-form input:focus,
-#signup #signup-form .input-area.activate input {
+#signup #signup-form .input-area.activate input,
+#gnr-login #login-form input:focus,
+#gnr-login #login-form .input-area.activate input,
+#user-update #user-update-form input:focus,
+#user-update #user-update-form .input-area.activate input {
 	border: 1px solid var(--main);
 }
 #main-login .login #login-form input:focus + label,
 #main-login .login #login-form .input-area.activate label,
 #signup #signup-form input:focus + label,
-#signup #signup-form .input-area.activate label {
+#signup #signup-form .input-area.activate label,
+#gnr-login #login-form input:focus + label,
+#gnr-login #login-form .input-area.activate label,
+#user-update #user-update-form input:focus + label,
+#user-update #user-update-form .input-area.activate label {
 	color: var(--main);
 	transform: scale(0.8) translate(20px, -10px);
 	opacity: 1;
 }
-#main-login .login #login-form .btn {
+#main-login .login #login-form .btn,
+#gnr-login #login-form .btn,
+#user-update #user-update-form .btn {
 	margin: 1rem 0 1.8rem;
 }
-
-#main-login .login .link-area a {
+#gnr-login .link-area {
+	text-align: center;
+}
+#main-login .login .link-area a,
+#gnr-login .link-area a {
 	display: block;
-	margin-bottom: 1.2rem;
+	margin: 0 auto 1.2rem;
+	/* margin-bottom: 1.2rem; */
 	text-align: center;
 	transition: 0.2s;
 }
-#main-login .login .link-area a:hover {
+#main-login .login .link-area a:hover,
+#gnr-login .link-area a:hover {
 	color: var(--main);
 }
-#main-login .login .link-area .btn {
+#main-login .login .link-area .btn,
+#gnr-login .link-area .btn {
 	background: var(--bg);
 	border: 2px solid var(--main);
+	width: 10vw;
 }
-#main-login .login .link-area .btn:hover {
+#main-login .login .link-area .btn:hover,
+#gnr-login .link-area .btn:hover {
 	background: var(--main-hl);
 	border: 2px solid var(--main-hl);
+	color: var(--txt);
 }
 
 /* sign up */
-
 #signup {
 	width: 550px;
 	margin-top: 5rem;
@@ -173,19 +212,44 @@
 	margin: 8rem auto 0;
 }
 
+#mypage .box {
+	margin-top: 2.5rem;
+}
+
+#mypage .user-info {
+	display: grid;
+	justify-content: center;
+	justify-items: end;
+}
 #mypage .user-info .profile-img {
 	position: absolute;
-	left: 50px;
+	left: 80px;
 	top: -80px;
 	border-radius: 50%;
 	overflow: hidden;
-	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
 }
-
+#mypage .user-info .update-btn {
+	position: absolute;
+	top: 2vh;
+	right: 2vw;
+	color: var(--main);
+	border: 2px solid var(--main);
+	border-radius: 0.5rem;
+	padding: 0.6rem;
+	transition: 0.3s ease;
+}
+#mypage .user-info .update-btn:hover {
+	color: var(--bg);
+	background: var(--main);
+}
 #mypage .user-info .tit {
 	font-size: 2rem;
 	font-weight: 700;
-	margin-left: 15rem;
+	/* margin-left: 15rem; */
+}
+#mypage .user-info .nick {
+	margin-top: 0.5rem;
+	color: var(--txtgr);
 }
 
 #mypage .todo-achieve {
@@ -216,14 +280,24 @@
 	font-weight: 700;
 }
 
-#mypage .box {
-	margin-top: 2rem;
-}
 #mypage .user-tag .tit {
 	margin-bottom: 1.5rem;
 }
+#mypage .user-tag .tag-area {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+}
+
 #mypage .user-tag .tag {
 	border-radius: 20px;
 	padding: 0.5rem 1rem;
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+#mypage .user-tag .tag-count {
+	display: inline-block;
+	background: var(--main-hl);
+	padding: 0.3rem 0.5rem;
+	border-radius: 50%;
+	margin-left: 0.7rem;
 }
