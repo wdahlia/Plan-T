@@ -267,7 +267,7 @@ def week(request):
         temp = week + timedelta(days=i)
         # RuntimeWarning: 이 나온다.
         temp_time = temp.strftime("%Y-%m-%d")
-        time_list.append(Todos.objects.filter(when=temp_time))
+        time_list.append(Todos.objects.filter(when=temp_time, user_id=request.user))
     todos = TodosForm()
     context = {
         "todos": todos,
@@ -297,7 +297,7 @@ def week_asyn(request, few_week):
         temp = week + timedelta(days=i)
         # RuntimeWarning: 이 나온다.
         temp_time = temp.strftime("%Y-%m-%d")
-        time_list.append(Todos.objects.filter(when=temp_time))
+        time_list.append(Todos.objects.filter(when=temp_time, user_id=request.user))
         res_json = serializers.serialize("json", Todos.objects.filter(when=temp_time))
         # print(res_json)
         res.append(res_json)
