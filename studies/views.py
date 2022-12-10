@@ -222,9 +222,8 @@ def join(request, study_pk):
         is_participated = True
     context = {
         "is_participated": is_participated,
-        "studyCount": study.participated.count(),
     }
-    return redirect("studies:info", study_pk)
+    return JsonResponse(context)
 
 
 @login_required

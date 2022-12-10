@@ -8,8 +8,8 @@
       <article id="study-info-area">
         <!-- 스터디 title -->
         <label for="study-info-name"># 스터디 이름</label>
-        <input type="text" name="{{study.title}}" value="Plan-T" class="study-info-title" id="study-info-name" disabled> 
-      
+        <input type="text" name="title" value="{{study.title}}" class="study-info-title" id="study-info-name" disabled="disabled">
+
         <!-- 스터디 category -->
         <fieldset class="study-info-categories">
           <legend># 카테고리</legend>
@@ -33,70 +33,74 @@
           </div>
         </fieldset>
 
-          <label for="study-members-num"># 스터디 인원</label>
-          <div class="members-area" id="study-members-num">
-            <div class="study-membernum">{{study.member_number}}명</div>
-            <span>/</span>
-            <div class="study-totalnum">{{study.max_people}}명</div>
-          </div>
+        <label for="study-members-num"># 스터디 인원</label>
+        <div class="members-area" id="study-members-num">
+          <div class="study-membernum">{{study.member_number}}명</div>
+          <span>/</span>
+          <div class="study-totalnum">{{study.max_people}}명</div>
+        </div>
 
-          <!-- 스터디 장의 경우, 스터디 승인 받아주는 창 보여짐 -->
-          <!--추후 디테일 페이지로 옮겨야됨 담당자: 성인-->
-          {% if request.user == study.owner%}
-            <ul class="approve-members">
-              <h6></h6>
-              {% for user in application_member%}
-                <li>
-                  <div class="approve-user-info">
-                    <!-- user profile img -->
-                    {% if user.image %}
-                      <img src="user.image.url" alt="" class="study-detail-userimg">
-                    {% else %}
-                      <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" alt="" class="study-detail-userimg">
-                    {% endif %}
-                    <!-- username -->
-                    <h6>{{user.username}}</h6>
-                  </div>
-                  <div class="detail-btn-group">
-                    <!-- approval btn -->
-                    <form action="{% url 'studies:accept' study.pk user.pk%}">
-                      <input type="submit" value="승인" class="approval-btn">
-                    </form>
-                    <!-- reject btn -->
-                    <form action="{% url 'studies:refusal' study.pk user.pk%}">
-                      <input type="submit" value="거절" class="reject-btn">
-                    </form>
-                  </div>
-                </li>
-              {% endfor %}
-            </ul>
-          {% endif %}
+        <!-- 스터디 장의 경우, 스터디 승인 받아주는 창 보여짐 -->
+        <!--추후 디테일 페이지로 옮겨야됨 담당자: 성인-->
+        {% if request.user == study.owner%}
+          <ul class="approve-members">
+            <h6></h6>
+            {% for user in application_member%}
+              <li>
+                <div class="approve-user-info">
+                  <!-- user profile img -->
+                  {% if user.image %}
+                    <img src="user.image.url" alt="" class="study-detail-userimg">
+                  {% else %}
+                    <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" alt="" class="study-detail-userimg">
+                  {% endif %}
+                  <!-- username -->
+                  <h6>{{user.username}}</h6>
+                </div>
+                <div class="detail-btn-group">
+                  <!-- approval btn -->
+                  <form action="{% url 'studies:accept' study.pk user.pk%}">
+                    <input type="submit" value="승인" class="approval-btn">
+                  </form>
+                  <!-- reject btn -->
+                  <form action="{% url 'studies:refusal' study.pk user.pk%}">
+                    <input type="submit" value="거절" class="reject-btn">
+                  </form>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
 
-          <!-- 스터디 소개 -->
-          <label for="study-info-text"># 스터디 소개</label>
-          <textarea name="" id="study-info-text" cols="30" rows="10" disabled="disabled">{{study.desc}}</textarea>
-          <!-- 시작일, 종료일-->
-          <div class="study-info-datepicker">
-            <fieldset class="study-start-picker">
-              <legend># 시작일</legend>
-              <input type="date" name="" value="{{start}}" id="study-start-date" disabled="disabled">
-            </fieldset>
-            <fieldset class="study-end-picker">
-              <legend># 종료일</legend>
-              <input type="date" name="" value="{{end}}" id="study-end-date" disabled="disabled">
-            </fieldset>
-          </div>
+        <!-- 스터디 소개 -->
+        <label for="study-info-text"># 스터디 소개</label>
+        <textarea name="" id="study-info-text" cols="30" rows="10" disabled="disabled">{{study.desc}}</textarea>
+        <!-- 시작일, 종료일-->
+        <div class="study-info-datepicker">
+          <fieldset class="study-start-picker">
+            <legend># 시작일</legend>
+            <input type="date" name="" value="{{start}}" id="study-start-date" disabled="disabled">
+          </fieldset>
+          <fieldset class="study-end-picker">
+            <legend># 종료일</legend>
+            <input type="date" name="" value="{{end}}" id="study-end-date" disabled="disabled">
+          </fieldset>
+        </div>
 
-          <div class="info-btn-li">
-            <!-- 스터디 디테일 페이지 이동 (승인받은 회원만) -->
+        <div class="info-btn-li">
+          <!-- 스터디 디테일 페이지 이동 (승인받은 회원만) -->
+          {% if request.user in study.participated.all %}
+            {% if study in request.user.join_study.all %}
               <a href="{% url 'studies:detail' study.pk %}" class="detail-direct-btn">진입</a>
-            <!-- 스터디 가입 -->
-            {% if request.user != study.owner %}
-              <a href="{% url 'studies:join' study.pk %}" class="enter-btn">가입</a>
+            {% else %}
+              <div class="enter-btn" id="join-study" data-study-id="{{ study.pk }}">가입신청중</div>
             {% endif %}
-            <!-- 스터디 index로 다시 돌아가기 -->
-              <a href="{% url 'studies:index' %}" class="study-cancel-btn">돌아가기</a>
-          </div>
+          {% else %}
+            <div class="enter-btn" id="join-study" data-study-id="{{ study.pk }}">가입</div>
+          {% endif %}
+          <!-- 스터디 index로 다시 돌아가기 -->
+          <a href="{% url 'studies:index' %}" class="study-cancel-btn">돌아가기</a>
+        </div>
       </article>
     </div>
   </div>
@@ -106,7 +110,7 @@
     const tabs = categoryField.childNodes;
     const check = "{{ study.category }}";
 
-    for (let l=0; l < tabs.length; l++) { 
+    for (let l = 0; l < tabs.length; l++) {
       if (tabs[l].value === check) {
         console.log(tabs[l].value)
         tabs[l].checked = true;
@@ -114,6 +118,21 @@
         tabs[l].disabled = true;
       }
     };
-    
+  </script>
+  <script>
+    const joinStudy = document.querySelector("#join-study");
+    joinStudy.addEventListener('click', function (event) {
+      axios({method: 'get', url: `/studies/detail/${event.target.dataset.studyId}/join`}).then(response => {
+        console.log(response)
+        console.log(response.data)
+
+        if (response.data.is_participated === true) {
+          event.target.innerText = "가입신청중"
+
+        } else {
+          event.target.innerText = "가입"
+        }
+      })
+    })
   </script>
 {% endblock body %}
