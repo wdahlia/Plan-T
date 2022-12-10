@@ -8,13 +8,6 @@ class Todos(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
     content = models.TextField()
-    image = ProcessedImageField(
-        upload_to="images/",
-        blank=True,
-        processors=[ResizeToFill(1200, 960)],
-        format="JPEG",
-        options={"quality": 80},
-    )
     when = models.DateField()
     started_at = models.CharField(max_length=5, null=True)
     expired_at = models.CharField(max_length=5, null=True)

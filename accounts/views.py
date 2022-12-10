@@ -138,7 +138,6 @@ def profile(request):
         result.append({"content": tt[0], "count": tt[1]})
 
     context = {"user": user, "todos": todo, "result": result}
-
     return render(request, "accounts/working/mypage.html", context)
 
 

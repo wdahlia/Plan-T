@@ -91,7 +91,7 @@ def create(request):
             request.POST.get("expired_at"),
             request.POST.get("tags"),
         )
-        todoForm = TodosForm(request.POST, request.FILES)
+        todoForm = TodosForm(request.POST)
 
         # timetable 체크 및 중복되면 저장 x
         user = request.user
@@ -172,18 +172,17 @@ def delete(request, todos_pk):
 def update(request, pk):
     todo = get_object_or_404(Todos, pk=pk)
     todo_tags = Tag.objects.filter(todo=pk)
+    today = str(datetime.now())[:10]
 
     if request.method == "POST":
-        todoForm = TodosForm(request.POST, request.FILES, instance=todo)
-        start, end, when, tags = (
+        todoForm = TodosForm(request.POST, instance=todo)
+        start, end, tags = (
             request.POST.get("started_at"),
             request.POST.get("expired_at"),
-            request.POST.get("when"),
             request.POST.get("tags"),
         )
 
         user = request.user
-        today = str(datetime.now())[:10]
 
         # 시간은 수정 기능 막아둬서 주석 처리함
 
@@ -227,13 +226,12 @@ def update(request, pk):
             )
             todo.save()
             # 태그 업데이트
-            for todo_tag in todo_tags:
-                todo_tag.delete()
             if tags != "":
                 if "," in tags:
                     taglist = set(tags.replace(" ", "").split(","))
                     for t in taglist:
-                        Tag.objects.create(todo=todo, content=t)
+                        if t != "":
+                            Tag.objects.create(todo=todo, content=t)
                 else:
                     Tag.objects.create(todo=todo, content=tags)
 
