@@ -53,7 +53,7 @@
       </article>
       <!-- study index body -->
       <section class="study-list">
-        {% for study in category_studies %}
+        {% for study in page_list %}
           <div class="study-room">
             <div class="study-header">
               <div class="study-category">
@@ -97,14 +97,49 @@
           </div>
         {% endfor %}
       </section>
+
+      <!-- 페이지네이션 -->
+      <ul class="pagination">
+        {% if page_list.has_previous %}
+          <li class="page__btn">
+            <a class="page-link" href="?page={{ page_list.previous_page_number }}"><span class="material-symbols-outlined">chevron_left</span></a>
+          </li>
+        {% else %}
+          <li class="page__btn disabled">
+            <a class="page-link" href="#"><span class="material-symbols-outlined">chevron_left</span></a>
+          </li>
+        {% endif %}
+        {% for page_number in page_list.paginator.page_range %}
+          {% if page_number >= page_list.number|add:-5 and page_number <= page_list.number|add:5 %}
+            {% if page_number == page_list.number %}
+              <li class="page__numbers active">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+              </li>
+            {% else %}
+              <li class="page__numbers">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+              </li>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        {% if page_list.has_next %}
+          <li class="page__btn">
+            <a class="page-link" href="?page={{ page_list.next_page_number }}"><span class="material-symbols-outlined">chevron_right</span></a>
+          </li>
+        {% else %}
+          <li class="page__btn disabled">
+            <a class="page-link" href="#"><span class="material-symbols-outlined">chevron_right</span></a>
+          </li>
+        {% endif %}
+      </ul>
     </div>
   </div>
 
   <script>
     const selectCategory = document.querySelector('#select-category');
     selectCategory.addEventListener('click', function (event) {
-      //selectCategory.action = 'http://localhost:8000/studies';
-      selectCategory.action = 'http://plan-t.site/studies/'
+      selectCategory.action = 'http://localhost:8000/studies';
+      //selectCategory.action = 'http://plan-t.site/studies'
       selectCategory.method = 'GET';
       selectCategory.submit()
     })

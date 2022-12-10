@@ -7,7 +7,9 @@ from django.contrib import messages
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from accounts.decorator import login_message_required
+from django.core.paginator import Paginator
 from django.db.models import Q
+
 
 # Create your views here.
 # 스터디 목록
@@ -20,7 +22,11 @@ def index(request):
         category_studies = Study.objects.all()
     else:
         category_studies = Study.objects.filter(category=category)
-    # 검색을 한다면
+    
+    page_number = request.GET.get("page")
+    paginator = Paginator(category_studies, 8)
+    page_list = paginator.get_page(page_number)
+    
     search = request.GET.get("search")
     if search is not None:
         studies = Study.objects.all()
@@ -29,7 +35,11 @@ def index(request):
         )
         category_studies = category_studies & search_lists
 
-    context = {"category_studies": category_studies, "category": category}
+    context = {
+        "category_studies": category_studies,
+        "page_list": page_list,
+        "category": category,
+        }
 
     return render(request, "studies/complete/study_index.html", context)
 

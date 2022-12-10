@@ -281,7 +281,7 @@
 #study-info-area .study-cancel-btn,
 #study-info-area .detail-direct-btn,
 #study-info-area .enter-btn,
-#study-info-area .study-del-btn {
+.study-footer-btn .study-del-btn {
   padding: 0.8rem 1.5rem;
   border-radius: 10px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
@@ -377,11 +377,13 @@
 }
 
 #study-detail-area .detail-btn-group .reject-btn,
-#study-info-area .study-del-btn {
+.study-footer-btn .study-del-btn,
+.stduy-footer-btn .dropout-btn {
   background-color: var(--gr-wrn);
 }
 
-#study-info-area .study-del-btn:hover {
+.study-footer-btn .study-del-btn:hover,
+.study-footer-btn .dropout-btn:hover {
   background-color: var(--wrn);
 }
 

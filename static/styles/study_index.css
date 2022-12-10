@@ -204,16 +204,6 @@
   margin-bottom: 7rem;
 }
 
-#study-index-area .study-header .leader-img img{
-  position: absolute;
-  border-radius: 50px;
-  right: 10px;
-  top: 15px;
-  width: 50px;
-  height: 50px;
-  background-color: var(--bg-dark);
-  
-}
 
 #study-index-area .study-body {
   /* word-wrap: break-word; */
@@ -230,7 +220,7 @@
 #study-index-area .study-body .study-date {
   padding: 0.8rem 2rem;
   background-color: var(--bg);
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.045);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
   border-radius: 18px;
   margin: 10px 0;
   word-break: break-all;
@@ -318,4 +308,73 @@
 #study-index-area .join-btn:hover,
 #study-index-area .create-box:hover{
   background-color: var(--main-hl);
+}
+
+
+/* pagination */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25vw;
+  height: 3rem;
+  border-radius: 0.8rem;
+  background: var(--bg);
+  margin: 0 auto;
+  font-weight: 700;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.04);
+  padding: 10px 0;
+}
+.page__numbers, .page__btn, .page__dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.3rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.page__dots {
+  width: 2.6vw;
+  height: 2.6vh;
+  color: var(--gr-dark);
+  cursor: initial;
+}
+.page__numbers {
+  width: 2.6vw;
+  height: 2.6vh;
+  border-radius: 1.8rem;
+  padding: 1.2rem;
+  background-color: var(--bg);
+  /* box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.08),
+  inset 5px 5px 15px rgba(0, 0, 0, 0.03); */
+}
+.page__numbers:hover {
+  color: var(--bg);
+  background-color: var(--main);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+}
+.page__numbers.active {
+  color: var(--bg);
+  background: var(--main);
+  font-weight: 600;
+  padding: 1.2rem;
+  border-radius: 2rem;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.04);
+}
+.page__btn {
+  color: var(--main);
+  /* pointer-events: none; */
+}
+.page__btn:hover {
+  color: var(--sub);
+}
+
+.page__btn.active {
+  color: var(--gr-dark);
+  pointer-events: initial;
+}
+.page__btn.active:hover {
+  color: var(--sub);
 }

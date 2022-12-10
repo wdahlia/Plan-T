@@ -46,12 +46,23 @@
   }
   #study-index-area .search-box input[type="text"]:focus,
   #study-index-area .search-box input[type="text"]:not(:invalid) {
-    width: 340px;
+    width: 270px;
   }
   #study-index-area .create-box {
-    text-align: center;
-    margin: 2rem 6rem 0 8rem;
-    vertical-align: center;
+    line-height: 100px;
+    margin-left: 60px;
+  }
+  #study-index-area .st {
+    margin: 0;
+  }
+  #study-index-area .st .tab {
+    font-size: 0.6rem;
+  }
+  #study-index-area .create-box .study-add-icon {
+    vertical-align: text-bottom;
+  }
+  #study-index-area .create-box .study-add-text {
+    vertical-align: top;
   }
 }
 

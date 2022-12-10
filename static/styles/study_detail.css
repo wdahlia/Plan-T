@@ -346,3 +346,8 @@
 	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
 	border: 3px solid #f9f9f95b;
 }
+
+.study-footer-btn {
+	text-align: end;
+	margin: 2rem 0;
+}
