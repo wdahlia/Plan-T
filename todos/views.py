@@ -129,11 +129,14 @@ def create(request):
                 end,
             )
             todo.save()
+
+            # tag create
             if tags != "":
                 if "," in tags:
                     taglist = set(tags.replace(" ", "").split(","))
                     for t in taglist:
-                        Tag.objects.create(todo=todo, content=t)
+                        if t != "":
+                            Tag.objects.create(todo=todo, content=t)
                 else:
                     Tag.objects.create(todo=todo, content=tags)
 
