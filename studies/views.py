@@ -150,7 +150,10 @@ def detail(request, study_pk):
     # 로그인 유저, 시작은 오늘 이하, 끝은 오늘 이상의 study todos
     today = str(datetime.now())[:10]
     study_todos = StudyTodos.objects.filter(
-        user_id=request.user, start__lte=today, end__gte=today
+        user_id=request.user,
+        start__lte=today,
+        end__gte=today,
+        study_pk=study_pk,
     )
     #
     # 가입된 멤버
