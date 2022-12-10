@@ -146,7 +146,8 @@ body {
 }
 #header .navi .user-area a {
 	vertical-align: middle;
-	margin-left: 0.6rem;
+	margin-left: 0.2rem;
+	margin-right: 0.6rem;
 }
 #header .navi .user-area .logout-btn span {
 	font-size: 1.5rem;
