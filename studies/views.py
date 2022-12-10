@@ -50,25 +50,48 @@ def index(request):
 def create(request):
     if request.method == "POST":
         studyform = StudyForm(request.POST)
-        if studyform.is_valid():
-            form = studyform.save(commit=False)
-            # 시간저장(선택)
-            start, end = (
-                request.POST.get("start_at"),
-                request.POST.get("end_at"),
-            )
-            if start != "":
-                form.start_at = start
-            if end != "":
-                form.end_at = end
-            #
-            form.owner = request.user
-            form.save()
+        # 시간저장(선택)
+        start, end = (
+            request.POST.get("start_at"),
+            request.POST.get("end_at"),
+        )
 
-            form.participated.add(request.user)
-            request.user.join_study.add(form)
+        context = {"studyform": studyform}
+        # 시작기간만 입력하거나 종료기간만 입력했을 때
+        if start != "" and end == "":
+            messages.warning(request, "종료기간을 입력하세요")
+            return render(request, "studies/complete/create_study.html", context)
+        elif start == "" and end != "":
+            messages.warning(request, "시작시간을 입력하세요")
+            return render(request, "studies/complete/create_study.html", context)
 
-            return redirect("studies:index")
+        # 시작시점, 종료시점 둘다 값이 있거나 없거나
+        else:
+            # 시작시점이 종료시점보다 먼저 있을 때
+            if start <= end:
+                if studyform.is_valid():
+                    form = studyform.save(commit=False)
+                    # 시간저장(선택)
+                    start, end = (
+                        request.POST.get("start_at"),
+                        request.POST.get("end_at"),
+                    )
+                    if start != "":
+                        form.start_at = start
+                    if end != "":
+                        form.end_at = end
+                    #
+                    form.owner = request.user
+                    form.save()
+
+                    form.participated.add(request.user)
+                    request.user.join_study.add(form)
+                return redirect("studies:index")
+            # 종료시점이 시작시점보다 먼저 있을 때
+            else:
+                messages.warning(request, "시작시점과 종료시점을 바르게 입력하세요")
+                return render(request, "studies/complete/create_study.html", context)
+
     else:
         studyform = StudyForm()
 
@@ -125,7 +148,7 @@ def create_todos(request, study_pk):
                 if studyy.pk == study_pk:
                     joined_member.append(user)
                     break
-        #
+
         # 가입된 멤버 각각 생성
         for userr in joined_member:
             todoForm = StudyTodosForm(request.POST)
