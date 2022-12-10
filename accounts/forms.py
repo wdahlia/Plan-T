@@ -45,4 +45,5 @@ class CustomUserChangeForm(PasswordChangeForm, UserChangeForm):
             "new_password2",
             "nickname",
             "email",
+            "image",
         ]

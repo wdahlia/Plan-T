@@ -1,17 +1,22 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block body %}
 
-{% for tag in same_tags %}
-<div>
-  <div>{{ tag.todo.title }}</div>
-  <div>{{ tag.todo.content }}</div>
-  <div>{{ tag.todo.when }}</div>
-  <div>{{ tag.todo.is_completed }}</div>
+<div class="box" id="tag-list">
+  <h3 class="tit">#{{tag}} 태그의 할일</h3>
+  <p></p>
+  {% for tag in same_tags %}
+  <div class="box">
+    <p>할일: {{ tag.todo.title }}</p>
+    <p>할일 상세: {{ tag.todo.content }}</p>
+    <p>할일 날짜: {{ tag.todo.when }}</p>
+    <p>완료 :{{ tag.todo.is_completed }}</p>
+  </div>
+  {% endfor %}
+
+  <!-- {% for tag in tags %}
+  <div>{{ tag.content }}</div>
+  {% endfor %} -->
 </div>
-<hr>
-{% endfor %}
-{% for tag in tags %}
-<div>{{ tag.content }}</div>
-{% endfor %}
 
 {% endblock body %}
