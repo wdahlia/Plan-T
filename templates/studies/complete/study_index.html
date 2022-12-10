@@ -10,7 +10,7 @@
         <form action="" method="get" class="search-box">
           <input placeholder="" required="" class="input" name="search" type="text">
           <!--숨겨야됨-->
-          <input type="text" name="tabmenu" id="tab1" class="tabs" value="{{category}}" style="display: none;">
+          <input type="text" name="tabmenu" value="{{category}}" style="display: none;">
           <button class="button" type="submit">
             <div class="icon">
               <svg viewbox="0 0 512 512" class="ionicon" xmlns="http://www.w3.org/2000/svg">
@@ -88,15 +88,21 @@
             </div>
             <!-- 진입하기 or 가입하기 -->
             <div class="study-footer">
-              {% if request.user in study.participated.all%}
-                <a href="{% url 'studies:detail' study.pk %}" class="join-btn">진입하기</a>
-              {% else %}
-                <a href="{% url 'studies:info' study.pk %}" class="join-btn">가입하기</a>
-              {% endif %}
+                {% if request.user in study.participated.all %}
+                    {% if study in request.user.join_study.all %}
+                        <a href="{% url 'studies:detail' study.pk %}" class="join-btn">진입하기</a>
+                    {% else %}
+                        <a href="{% url 'studies:info' study.pk %}" class="join-btn">가입하기</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'studies:info' study.pk %}" class="join-btn">가입하기</a>
+                {% endif %}
             </div>
-          </div>
+        </div>
         {% endfor %}
-      </section>
+    </section>
+    <!-- comment가 있어야 아래쪽 자동 정렬을 멈출 수 있어서 임시로 만듬. 삭제해도 됨 -->
+      {% comment %} <div></div> {% endcomment %}
 
       <!-- 페이지네이션 -->
       <ul class="pagination">
