@@ -127,6 +127,19 @@
       </div>
     </div>
   </div>
+  <div class="study-footer-btn">
+    {% if request.user == study.owner %}
+      <!-- 스터디 삭제 (스터디 장에게만) -->
+      <form action="">
+        <input type="submit" class="study-del-btn" value="삭제">
+      </form>
+    {% else %}
+      <!-- 스터디 탈퇴 (스터디 원) -->
+      <form action="">
+        <input type="submit" class="dropout-btn" value="탈퇴">
+      </form>
+    {% endif %}
+  </div>
 </div>
 
 <script>

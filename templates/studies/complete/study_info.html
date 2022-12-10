@@ -94,12 +94,6 @@
             {% if request.user != study.owner %}
               <a href="{% url 'studies:join' study.pk %}" class="enter-btn">가입</a>
             {% endif %}
-            {% if request.user == study.owner %}
-              <!-- 스터디 삭제 (스터디 장에게만) -->
-              <form action="">
-                <input type="submit" class="study-del-btn" value="삭제">
-              </form>
-            {% endif %}
             <!-- 스터디 index로 다시 돌아가기 -->
               <a href="{% url 'studies:index' %}" class="study-cancel-btn">돌아가기</a>
           </div>
