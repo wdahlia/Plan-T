@@ -1,0 +1,57 @@
+@import url(./init.css);
+@import url(./fontall.css);
+@import url(./main.css);
+@import url(./accounts.css);
+@import url(./today.css);
+@import url(./alltask.css);
+@import url(./create_today.css);
+@import url(./study_detail.css);
+@import url(./study_form.css);
+@import url(./study_index.css);
+
+/* base.html */
+@media all and (max-width: 575px) {
+  /* navbar */
+  #header {
+    padding: 1rem 0.5rem;
+  }
+  #header .logo {
+    width: 60px;
+    margin-right: 2rem;
+  }
+  #header .navi .gnb-area .gnb li {
+    font-size: 15px;
+  }
+  #header .navi .user-area .user-prof {
+    margin-right: 0.4rem;
+  }
+  #header .navi .user-area .user-prof img {
+    display: none;
+  }
+  #header .navi .user-area a {
+    margin-right: 0;
+  }
+}
+
+/* accounts App Responsive */
+
+
+/* todo App Responsive */
+
+/* studies App Responsive */
+ /* study index */
+@media all and (max-width: 575px) {
+  #study-index-area .study-search{
+    display: block;
+  }
+  #study-index-area .search-box input[type="text"]:focus,
+  #study-index-area .search-box input[type="text"]:not(:invalid) {
+    width: 340px;
+  }
+  #study-index-area .create-box {
+    text-align: center;
+    margin: 2rem 6rem 0 8rem;
+    vertical-align: center;
+  }
+}
+
