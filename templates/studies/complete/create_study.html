@@ -64,3 +64,16 @@
   </div>
 
 {% endblock body %}
+{% block js %}
+  <!-- html에서 시작일 종료일 잘못입력 방지 -->
+  <script>
+    const startDate = document.querySelector("#study-start-date")
+    const endDate = document.querySelector("#study-end-date")
+    startDate.addEventListener("input", function (event) {
+      endDate.min = startDate.value
+    })
+    endDate.addEventListener("input", function (event) {
+      startDate.max = endDate.value
+    })
+  </script>
+{% endblock js %}

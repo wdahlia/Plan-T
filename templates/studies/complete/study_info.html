@@ -130,11 +130,10 @@
     };
   </script>
   <script>
+    // 가입 신청 비동기
     const joinStudy = document.querySelector("#join-study");
     joinStudy.addEventListener('click', function (event) {
       axios({method: 'get', url: `/studies/detail/${event.target.dataset.studyId}/join`}).then(response => {
-        console.log(response)
-        console.log(response.data)
 
         if (response.data.is_participated === true) {
           event.target.innerText = "가입신청중"

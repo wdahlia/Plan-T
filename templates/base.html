@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +15,7 @@
     <meta name="msapplication-TileImage" content="{% static 'styles/favicon/ms-icon-144x144.png' %}">
     <meta name="theme-color" content="#3cddaa">
     <!-- google font icon -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
     <link rel="stylesheet" href="{% static 'styles/init.css' %}">
     <link rel="stylesheet" href="{% static 'styles/main.css' %}">
     <link rel="stylesheet" href="{% static 'styles/accounts.css' %}">
@@ -28,61 +27,61 @@
     <link rel="stylesheet" href="{% static 'styles/study_detail.css' %}">
     <link rel="stylesheet" href="{% static 'styles/mediaquery.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="{% static 'script/script.js' %}" defer></script>
+    <script src="{% static 'script/script.js' %}" defer="defer"></script>
     <title>Plan-T</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <header id="header">
-        <div class="container">
-            <nav class="navi">
-                <div class="logo">
-                    <img src="{% static 'img/planT_logo.svg' %}" alt="Plant_logo">
-                </div>
-                <div class="gnb-area">
-                    <ul class="gnb tit">
-                        <li class="activate">
-                            <a href="{% url 'todos:today' %}">PLANNER</a>
-                        </li>
-                        <li><span>/</span></li>
-                        <li>
-                            <a href="{% url 'studies:index' %}">STUDY</a>
-                        </li>
-                    </ul>
-                </div>
-                {% if request.user.is_authenticated %}
-                <div class="user-area">
-                    <div class="user-prof">
-                        <img src="https://dummyimage.com/30x30" alt="">
-                    </div>
-                    <a href="{% url 'accounts:profile' %}" class="username">
-                        {{request.user}}
-                    </a>
-                    <a href="{% url 'accounts:logout' %}" class="logout-btn">
-                        <span class="material-symbols-outlined">
-                            logout
-                        </span></a>
-                </div>
-                {% endif %}
-            </nav>
-        </div>
+      <div class="container">
+        <nav class="navi">
+          <div class="logo">
+            <img src="{% static 'img/planT_logo.svg' %}" alt="Plant_logo">
+          </div>
+          <div class="gnb-area">
+            <ul class="gnb tit">
+              <li class="activate">
+                <a href="{% url 'todos:today' %}">PLANNER</a>
+              </li>
+              <li>
+                <span>/</span></li>
+              <li>
+                <a href="{% url 'studies:index' %}">STUDY</a>
+              </li>
+            </ul>
+          </div>
+          {% if request.user.is_authenticated %}
+            <div class="user-area">
+              <div class="user-prof">
+                <img src="https://dummyimage.com/30x30" alt="">
+              </div>
+              <a href="{% url 'accounts:profile' %}" class="username">
+                {{request.user}}
+              </a>
+              <a href="{% url 'accounts:logout' %}" class="logout-btn">
+                <span class="material-symbols-outlined">
+                  logout
+                </span>
+              </a>
+            </div>
+          {% endif %}
+        </nav>
+      </div>
     </header>
     <main id="main">
-        <div class="container">
-            {% block body %}
-            {% endblock body %}
-        </div>
+      <div class="container">
+        {% block body %}{% endblock body %}
+      </div>
     </main>
     <footer>
-        <div class="cpr">
-            <p>
-                &copy; Plan-T 2022
-            </p>
-        </div>
+      <div class="cpr">
+        <p>
+          &copy; Plan-T 2022
+        </p>
+      </div>
     </footer>
-    <div class="toggle">
-
-    </div>
-</body>
+    <div class="toggle"></div>
+    {% block js %}{% endblock js %}
+  </body>
 
 </html>
