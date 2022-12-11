@@ -8,5 +8,4 @@ class TodosForm(forms.ModelForm):
         fields = [
             "title",
             "content",
-            "image",
         ]
