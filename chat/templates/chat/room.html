@@ -25,7 +25,7 @@
             let chatLog = document.querySelector('#chat-log');
 
             // Line Feed check
-            chatLog.value += (data.message.includes('\n')) ? '' : '\n';
+            chatLog.value += (data.message.includes('\n')) ? data.message : (data.message + '\n');
 
             // scrolling
             chatLog.scrollTop = chatLog.scrollHeight;
