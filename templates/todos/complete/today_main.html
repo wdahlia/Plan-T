@@ -353,13 +353,21 @@
 
   // <!-- study todo div -->
 
-  const studyArea = document.querySelector('.today-study-area')
-  const openStudyArea = document.querySelector('.study-tasklist-area')
-  const openIcon = document.querySelector('.open-icon')
-  const taskArea = document.querySelector('.today-task-area')
+  const studyArea = document.querySelector('.today-study-area');
+  const openStudyArea = document.querySelector('.study-tasklist-area');
+  const openIcon = document.querySelector('.open-icon');
+  const taskArea = document.querySelector('.today-task-area');
+  const studyText = document.querySelector('.today-study-area .tit');
+  
 
   studyArea.addEventListener('click', () => {
-    if (openStudyArea.style.display === "none") {
+    studyArea.classList.toggle('activate');
+    openStudyArea.classList.toggle('activate');
+    taskArea.classList.toggle('activate');
+    openIcon.classList.toggle('activate');
+    studyText.classList.toggle('activate');
+
+    /* if (openStudyArea.style.display === "none") {
       studyArea.style.width = "30%";
       studyArea.style.justifyContent = "space-between";
       openStudyArea.style.display = "block";
@@ -376,7 +384,7 @@
       studyArea.style.justifyContent = "center";
       studyArea.style.width = "5%";
       studyArea.style.display = "flex";
-    }
+    } */
   });
 </script>
 

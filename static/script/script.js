@@ -624,7 +624,7 @@ try {
                     } else {
                         // 받아오는 데이터 없으면 비어있는 표시 넣기
                         tasklist[i].insertAdjacentHTML("beforeend", `
-                        <li class="task-empty">
+                        <li class="task task-empty">
                         <p class="task-cont"> 작성된 할일이 없어요 :(</p>
                         </li>
                         `)
