@@ -134,7 +134,7 @@ def create(request):
             if tags != "":
                 if "," in tags:
                     taglist = set(tags.replace(" ", "").split(","))
-                    for t in taglist:
+                    for t in taglist[:5]:
                         if t != "":
                             Tag.objects.create(todo=todo, content=t)
                 else:
@@ -229,7 +229,7 @@ def update(request, pk):
             if tags != "":
                 if "," in tags:
                     taglist = set(tags.replace(" ", "").split(","))
-                    for t in taglist:
+                    for t in taglist[:5]:
                         if t != "":
                             Tag.objects.create(todo=todo, content=t)
                 else:
