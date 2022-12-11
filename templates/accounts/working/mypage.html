@@ -42,7 +42,17 @@
         </div>
         <div class="user-log box">
             <h4 class="tit">나의 스터디 현황</h4>
+            <div>
+                {% for study in joined_studies %}
+                <div>
+                    {{ study.title }}
+                    {{ study.content }}
+                    <hr>
+                </div>
+                {% endfor %}
+            </div>
         </div>
+
     </div>
 </div>
 

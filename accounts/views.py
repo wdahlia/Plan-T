@@ -81,7 +81,7 @@ def logout(request):
 def delete(request):
     if request.user.is_authenticated:
         request.user.delete()
-
+        auth_logout(request)
     # 바꿔야 함!
     return redirect("accounts:login")
 
@@ -137,7 +137,18 @@ def profile(request):
     for tt in sorted_tag:
         result.append({"content": tt[0], "count": tt[1]})
 
-    context = {"user": user, "todos": todo, "result": result}
+    joined_studies = []
+    studies = user.join_study.all()
+    for study in studies:
+        if user in study.participated.all():
+            joined_studies.append(study)
+
+    context = {
+        "user": user,
+        "todos": todo,
+        "result": result,
+        "joined_studies": joined_studies,
+    }
     return render(request, "accounts/working/mypage.html", context)
 
 
