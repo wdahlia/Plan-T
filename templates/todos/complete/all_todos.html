@@ -10,9 +10,13 @@
                 <a href="{% url 'todos:week' %}">WEEK</a>
             </label>
             <input type="radio" name="tabmenu" id="tab2" class="tabs">
-            <label for="tab2" class="tab">TODAY</label>
-            <input type="radio" name="tabmenu" id="tab3" class="tabs" checked="checked">
-            <label for="tab3" class="tab">ALL</label>
+            <label for="tab2" class="tab">
+                <a href="{% url 'todos:today' %}">TODAY</a>
+            </label>
+            <input type="radio" name="tabmenu" id="tab3" class="tabs" checked>
+            <label for="tab3" class="tab">
+                <a href="{% url 'todos:read_all' %}">ALL</a>
+            </label>
             <span class="glider"></span>
         </div>
     </div>
@@ -39,7 +43,7 @@
                                     {{pastTodo.when}}
                                 </button>
                             </div>
-                            <ul class="past-task_list">
+                            <ul class="task_listup">
                                 <li class="task-li-content">
                                     <span> {{pastTodo.title}} </span>
                                     <input type="checkbox" name="" id="past-check">
@@ -54,37 +58,30 @@
                         </div>
                         {% endfor %}
                     </div>
-                    <div class="past-timeline">
+                    <div class="today-timeline">
                         <div class="timeline-box">
                             <span class="arrow-icon">
                                 <img src="{% static 'img/arrow_forward.svg' %}" alt="">
                             </span>
-                            <button class="time-point">
+                            <button class="times">
                                 오늘
                             </button>
                         </div>
-
-                        <div class="past-date_all">
-                            <div class="past-date">
-                                <span class="arrow-icon">
-                                    <img src="{% static 'img/arrow_forward.svg' %}" alt="">
-                                </span>
-                                <button class="datetime">
-                                    12-01
-                                </button>
-                            </div>
-                            <ul class="past-task_list">
-                                {% for today in present %}
-                                <li class="task-li-content">
-                                    <span> {{today.title}} </span>
-                                    <input type="checkbox" name="" id="past-check">
-                                    <label for="past-check"></label>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+                        <ul class="task_listup">
+                            {% for today in present %}
+                            <li class="task-li-content">
+                                <span> {{today.title}} </span>
+                                <input type="checkbox" name="" id="past-check">
+                                <label for="past-check"></label>
+                            </li>
+                            {% empty %}
+                            <li class="task-li-content">
+                                <span>아직 작성된 할일이 없어요 :(</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
                     </div>
-                    <div class="past-timeline">
+                    <div class="tomorrow-timeline">
                         <div class="timeline-box">
                             <span class="arrow-icon">
                                 <img src="{% static 'img/arrow_forward.svg' %}" alt="">
@@ -102,7 +99,7 @@
                             <span>keyword</span>
                         </div>
                         <textarea name="today_task-textarea" class="today_task-textarea" cols="30" rows="10"></textarea>
-                        <fieldset class="today-task-fileadd">
+                        <!-- <fieldset class="today-task-fileadd">
                             <legend>Image/File</legend>
                             <label for="today-task-imgfile">
                                 <div class="loaded-file"></div>
@@ -112,7 +109,7 @@
                                 </div>
                             </label>
                             <input type="file" name="today_task-img" class="today_task-img" id="today-task-imgfile">
-                        </fieldset>
+                        </fieldset> -->
                     </form>
                 </div>
             </div>
@@ -129,12 +126,8 @@
     const taskTimelineToggle = function (e) {
         e.preventDefault();
         console.log(e)
-        timeDetailForm
-            .classList
-            .toggle('activate');
-        timeBoxArea
-            .classList
-            .toggle('activate');
+        timeDetailForm.classList.toggle('activate');
+        timeBoxArea.classList.toggle('activate');
 
     }
 
@@ -142,6 +135,11 @@
         tasklist.addEventListener('click', taskTimelineToggle);
     });
 
+
+
+</script>
+
+<script>
     let uploadFile = document.getElementById("today-task-imgfile");
     let loadedFile = document.querySelector(".loaded-file")
     const noneFile = document.querySelector(".upload-none")
@@ -151,40 +149,52 @@
     uploadFile.onchange = () => {
         noneFile.style.display = "none";
         loadedFile.style.display = "block";
-        let uploadFileName = uploadFile
-            .files[0]
-            .name;
+        let uploadFileName = uploadFile.files[0].name;
         loadedFile.innerText = `${uploadFileName}`;
     }
 
-    const timelineBtn = document.querySelectorAll('.time-point');
-    timelineBtn.forEach(el => {
-        el.addEventListener('click', function (el) {
-            const parentDiv = el.target.parentElement.parentElement;
-            const dateList = parentDiv.querySelectorAll('.past-date_all');
-            for (let i = 0; i < dateList.length; i++) {
-                if (dateList[i].style.display === "none") {
-                    dateList[i].style.display = "block";
-                } else {
-                    dateList[i].style.display = "none";
-                }
-            }
-        });
-    })
+</script>
+<!-- 과거, 오늘, 내일 토글 -->
+<script>
+    // 과거 토글
+    const timelineBtn = document.querySelector('.time-point');
+    timelineBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const parentDiv = e.target.parentElement.parentElement;
+        let timePoint = parentDiv.classList.value;
+        const dateList = parentDiv.querySelectorAll('.past-date_all');
+        for (let i = 0; i < dateList.length; i++) {
+            dateList[i].classList.toggle('activate');
+        };
 
-    const timeBtn = document.querySelectorAll('.datetime')
-    timeBtn.forEach(e => {
-        e.addEventListener('click', function (e) {
+        const ymdBtn = parentDiv.querySelector('.datetime');
+        ymdBtn.addEventListener('click', function (e) {
+            e.preventDefault();
             const parentElem = e.target.parentElement.parentElement
             const timeList = parentElem.querySelectorAll('.task-li-content');
             for (let j = 0; j < timeList.length; j++) {
-                if (timeList[j].style.display === "none") {
-                    timeList[j].style.display = "flex";
-                } else {
-                    timeList[j].style.display = "none";
-                }
+                timeList[j].classList.toggle('activate');
             }
-        });
+        })
     });
+
+    // 오늘, 내일 토글 - 클래스 이름 변경
+    const times = document.querySelectorAll('.times');
+    times.forEach(time => {
+        time.addEventListener('click', (e) => {
+            e.preventDefault();
+            const parenDiv = e.target.parentElement.parentElement;
+            console.log(parenDiv)
+            const taskList = parenDiv.querySelectorAll('.task-li-content');
+            console.log(taskList)
+            for (let k = 0; k < taskList.length; k++) {
+                taskList[k].classList.toggle('activate');
+            }
+
+        })
+    })
+
+
+
 </script>
 {% endblock %}
