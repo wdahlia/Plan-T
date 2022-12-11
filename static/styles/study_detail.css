@@ -229,10 +229,29 @@
 	align-items: center;
 	margin-bottom: 0.5rem;
 	transition: 0.15s ease-in-out;
-}
-#study-todo-area .study-task-list .task {
 	cursor: pointer;
 }
+#study-todo-area .study-task-list .task .chec-del {
+	display: flex;
+	align-items: center;
+}
+
+#study-todo-area .chec-del .comdel-icon {
+	vertical-align: text-bottom;
+	margin-left: 0.6rem;
+	font-size: 20px;
+	color: var(--gr-wrn);
+	background-color: var(--bg);
+	padding: 0.2rem;
+	border-radius: 1rem;
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+#study-todo-area .chec-del .comdel-icon:hover {
+	color: var(--bg);
+	background-color: var(--wrn);
+}
+
 #study-todo-area .study-task-list .task-btn-area {
 	position: absolute;
 	left: 50%;

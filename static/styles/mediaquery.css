@@ -37,6 +37,64 @@
 
 
 /* todo App Responsive */
+@media all and (max-width: 575px) {
+  /* today_main.html */
+  #today .box-area {
+    display: block;
+    width: 95vw;
+  }
+  #today .today-task-list {
+    margin-right: 0;
+  }
+  #today .today-task-list .task {
+    width: 60vw;
+  }
+  #today .today-timetable {
+    display: none;
+  }
+  #today #task-detail.activate {
+    margin-top: 3rem;
+    width: 90vw;
+  }
+  #today .box .today-section .today-task-add-spec {
+    max-width: 80vw;
+  }
+  #today #task-detail {
+    opacity: none;
+    height: 0;
+  }
+  #today #task-detail.activate {
+    height: 100%;
+  }
+  #today .today-study-area {
+    margin-left: 0;
+    margin-top: 2rem;
+  }
+  #today .today-study-area.activate {
+    width: 90vw;
+  }
+
+  /* week_todos.html */
+  #week .week-area {
+    padding: 0;
+  }
+  #week .week-area .box {
+    margin: 1rem;
+  }
+  #week .week-area .task {
+    width: 60vw;
+  }
+  #week .week-btn-area .week-btn-prev{
+    padding-left: 0.3rem;
+  }
+  #week .week-btn-area .week-btn-prev,
+  #week .week-btn-area .week-btn-next {
+    font-size: 2rem;
+    padding-top: 0.3rem;
+  }
+}
+
+
 
 /* studies App Responsive */
  /* study index */
@@ -64,5 +122,61 @@
   #study-index-area .create-box .study-add-text {
     vertical-align: top;
   }
+
+  /* study info */
+  #study-info-area .info-btn-li .detail-direct-btn,
+  #study-info-area .info-btn-li .enter-btn,
+  #study-info-area .info-btn-li .study-cancel-btn {
+    padding: 0.6rem 0.7rem;
+    margin: 0 0.4rem;
+  }
+
+  /* study detail */
+  #study-task-form {
+    width: 100%;
+  }
+  #study-task-form .datepicker-area {
+    display: block;
+    margin: 2rem auto;
+  }
+  #study-task-form .studytask-startpick {
+    margin-bottom: 1rem;
+  }
+  #study-todo-area .study-todo-section .btn-area .btn {
+    width: 7rem;
+  }
+
+  /* date-picker */
+  .study-datepicker .study-start-picker,
+  .study-datepicker .study-end-picker,
+  .study-info-datepicker .study-start-picker,
+  .study-info-datepicker .study-end-picker,
+  .study-update-datepicker .study-start-picker,
+  .study-update-datepicker .study-end-picker {
+    margin-left: 1.8rem;
+  }
+
+  .study-datepicker .study-end-picker,
+  .study-info-datepicker .study-end-picker,
+  .study-update-datepicker .study-end-picker {
+    margin-top: 1.5rem;
+  }
+
+  #create-study-area .study-datepicker,
+  #study-info-area .study-info-datepicker,
+  #update-study-form .study-update-datepicker {
+    display: block;
+    justify-self: center;
+  }
+
+  #update-study-form input[id="study-start-date"],
+  #update-study-form input[id="study-end-date"],
+  #create-study-form input[id="study-start-date"],
+  #create-study-form input[id="study-end-date"],
+  #study-info-area input[id="study-start-date"],
+  #study-info-area input[id="study-end-date"] {
+    text-align: center;
+  }
+  
 }
 

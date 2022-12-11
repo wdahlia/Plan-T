@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>study_detail</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <link rel="stylesheet" href="../../../static/styles/init.css">
   <link rel="stylesheet" href="../../../static/styles/study_detail.css">
 </head>
+
 <body>
 
   <div class="container" id="study-todo-area">
@@ -21,12 +24,14 @@
         <!-- 스터디 title -->
         <label for="study-detail-name"># 스터디 이름</label>
         <input type="text" name="" value="Plan-T" class="study-detail-title" id="study-detail-name" disabled>
-        <!-- 스터디 소개 --> 
+        <!-- 스터디 소개 -->
         <label for="study-detail-text"># 스터디 소개</label>
         <div class="study-content">
           <textarea name="" id="study-detail-text" cols="30" rows="10" disabled>스터디 장</textarea>
           <div class="leader-profileimg">
-            <img src="https://scontent.cdnsnapwidget.com/vp/4aefafd3bee59d1d0fa2b29a59fc2bc5/5D7701C4/t51.2885-15/sh0.08/e35/s640x640/47690229_1430752333723397_2893005724802088960_n.jpg" alt="" width="55" height="55">
+            <img
+              src="https://scontent.cdnsnapwidget.com/vp/4aefafd3bee59d1d0fa2b29a59fc2bc5/5D7701C4/t51.2885-15/sh0.08/e35/s640x640/47690229_1430752333723397_2893005724802088960_n.jpg"
+              alt="" width="55" height="55">
           </div>
         </div>
         <!-- 스터디 인원 -->
@@ -81,7 +86,7 @@
             </div>
             <input type="text" name="title" placeholder="할일 추가하기" class="study_task-title">
             <textarea name="content" class="study_task-textarea" id="id_content" cols="30" rows="10"
-            placeholder="할 일 상세"></textarea>
+              placeholder="할 일 상세"></textarea>
             <fieldset class="study-task-fileadd">
               <legend>Image/File</legend>
               <label for="study-task-imgfile">
@@ -122,53 +127,44 @@
             <label for="task-chb3" class="task-chb"></label>
           </li>
         </ul>
-        </div>
       </div>
     </div>
   </div>
-
+  </div>
   <script>
-
-
     let studyUploadFile = document.getElementById("study-task-imgfile");
     let studyLoadedFile = document.querySelector(".study-loaded-file")
     const studyNoneFile = document.querySelector(".study-upload-none")
-    
+
     studyLoadedFile.style.display = "none";
 
     studyUploadFile.onchange = () => {
-        studyNoneFile.style.display = "none";
-        studyLoadedFile.style.display = "block";
-        let uploadFileName = studyUploadFile.files[0].name;
-        studyLoadedFile.innerText = `${uploadFileName}`;
+      studyNoneFile.style.display = "none";
+      studyLoadedFile.style.display = "block";
+      let uploadFileName = studyUploadFile.files[0].name;
+      studyLoadedFile.innerText = `${uploadFileName}`;
     }
-       
-
   </script>
-
   <script>
     try {
-    const inputBox = document.getElementsByTagName('input');
+      const inputBox = document.getElementsByTagName('input');
 
-    const loginActivate = function (e) {
+      const loginActivate = function (e) {
         inputArea = e.target.closest('.input-area');
         if (!e.target.value == "") {
-            inputArea.classList.add("activate");
+          inputArea.classList.add("activate");
         }
         else {
-            inputArea.classList.remove("activate");
+          inputArea.classList.remove("activate");
         }
-    };
-    for (let i = 0; i < inputBox.length; i++) {
+      };
+      for (let i = 0; i < inputBox.length; i++) {
         inputBox[i].addEventListener('keyup', loginActivate);
-    }
+      }
+    } catch { }
 
-
-} catch { }
-
-try {
-
-    let slideUp = (target, duration = 500) => {
+    try {
+      let slideUp = (target, duration = 500) => {
         target.style.transitionProperty = "height, margin, padding";
         target.style.transitionDuration = duration + "ms";
         target.style.boxSizing = "border-box";
@@ -181,19 +177,20 @@ try {
         target.style.marginTop = 0;
         target.style.marginBottom = 0;
         window.setTimeout(() => {
-            target.style.display = "none";
-            target.style.removeProperty("height");
-            target.style.removeProperty("padding-top");
-            target.style.removeProperty("padding-bottom");
-            target.style.removeProperty("margin-top");
-            target.style.removeProperty("margin-bottom");
-            target.style.removeProperty("overflow");
-            target.style.removeProperty("transition-duration");
-            target.style.removeProperty("transition-property");
-            //alert("!");
+          target.style.display = "none";
+          target.style.removeProperty("height");
+          target.style.removeProperty("padding-top");
+          target.style.removeProperty("padding-bottom");
+          target.style.removeProperty("margin-top");
+          target.style.removeProperty("margin-bottom");
+          target.style.removeProperty("overflow");
+          target.style.removeProperty("transition-duration");
+          target.style.removeProperty("transition-property");
+          //alert("!");
         }, duration);
-    };
-    let slideDown = (target, duration = 500) => {
+      };
+
+      let slideDown = (target, duration = 500) => {
         target.style.removeProperty("display");
         let display = window.getComputedStyle(target).display;
 
@@ -217,35 +214,34 @@ try {
         target.style.removeProperty("margin-top");
         target.style.removeProperty("margin-bottom");
         window.setTimeout(() => {
-            target.style.removeProperty("height");
-            target.style.removeProperty("overflow");
-            target.style.removeProperty("transition-duration");
-            target.style.removeProperty("transition-property");
+          target.style.removeProperty("height");
+          target.style.removeProperty("overflow");
+          target.style.removeProperty("transition-duration");
+          target.style.removeProperty("transition-property");
         }, duration);
-    };
-    let slideToggle = (target, duration = 500) => {
+      };
+
+      let slideToggle = (target, duration = 500) => {
         if (window.getComputedStyle(target).display === "none") {
-            return slideDown(target, duration);
+          return slideDown(target, duration);
         } else {
-            return slideUp(target, duration);
+          return slideUp(target, duration);
         }
-    };
+      };
 
-    // ====
+      // =====
 
-    let speedAnimation = 400;
-    let target = document.querySelector('.study-todo-section');
+      let speedAnimation = 400;
+      let target = document.querySelector('.study-todo-section');
 
-    let slideBtnClick = (cl, sl) =>
+      let slideBtnClick = (cl, sl) =>
         document
-            .querySelector(cl)
-            .addEventListener("click", () => sl(target, speedAnimation));
+          .querySelector(cl)
+          .addEventListener("click", () => sl(target, speedAnimation));
 
-    slideBtnClick(".add-btn", slideToggle);
-
-
-} catch { }
+      slideBtnClick(".add-btn", slideToggle);
+    } catch { }
   </script>
-  
 </body>
+
 </html>

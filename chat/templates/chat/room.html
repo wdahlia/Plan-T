@@ -24,8 +24,7 @@
             const data = JSON.parse(e.data);
             let chatLog = document.querySelector('#chat-log');
 
-            // Line Feed check and add nickname to message
-            chatLog.value += "{{ nickname }}" + " : " +  data.message;
+            // Line Feed check
             chatLog.value += (data.message.includes('\n')) ? '' : '\n';
 
             // scrolling
@@ -47,7 +46,7 @@
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': "{{ nickname }}" + " : " +  message
             }));
             messageInputDom.value = '';
         };

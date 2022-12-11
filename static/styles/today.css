@@ -462,7 +462,15 @@
 	color: var(--main);
 	margin-left: 1rem;
 	cursor: pointer;
+	transition: 0.8s ease;
 }
+
+#today .today-study-area.activate {
+	width: 30%;
+	justify-content: space-between;
+	transition: 0.8s ease;
+}
+
 #today .today-study-area.hide {
 	width: 0;
 	opacity: 0;
@@ -475,10 +483,35 @@
 	color: var(--txt);
 }
 
+#today .study-tasklist-area.activate {
+	display: block;
+	width: 380px;
+	align-self: start;
+}
+
+#today .study-tasklist-area .study-task-list .task {
+	padding: 0.8rem 1.4rem;
+	margin-bottom: 0.5rem;
+}
+
 #today .today-study-area .tit {
 	font-weight: 700;
 	margin-bottom: 1rem;
 	text-align: center;
+	opacity: 0;
+}
+
+#today .today-study-area .tit.activate {
+	opacity: 1;
+}
+
+
+#today .today-study-area .open-icon {
+	transform: rotate(180deg);
+}
+
+#today .today-study-area .open-icon.activate {
+	transform: rotate(-360deg);
 }
 
 /*  week */
