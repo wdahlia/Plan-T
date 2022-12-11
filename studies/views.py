@@ -126,6 +126,7 @@ def create_todos(request, study_pk):
     if request.method == "POST":
         study = Study.objects.get(pk=study_pk)
         study_todos_management = StudyTodosManagement.objects.create()
+        start, end = request.POST.get("start"), request.POST.get("end")
 
         # 가입된 멤버
         joined_member = []
@@ -135,18 +136,22 @@ def create_todos(request, study_pk):
                     joined_member.append(user)
                     break
 
-        # 가입된 멤버 각각 생성
-        for userr in joined_member:
-            todoForm = StudyTodosForm(request.POST)
-            if todoForm.is_valid() and study.owner == request.user:
-                todo = todoForm.save(commit=False)
-                todo.study_pk = study
-                todo.user_id = userr
-                todo.management_pk = study_todos_management
-                todo.save()
+        if start <= end:
+            # 가입된 멤버 각각 생성
+            for userr in joined_member:
+                todoForm = StudyTodosForm(request.POST)
+
+                if todoForm.is_valid() and study.owner == request.user:
+                    todo = todoForm.save(commit=False)
+                    todo.study_pk = study
+                    todo.user_id = userr
+                    todo.management_pk = study_todos_management
+                    todo.save()
+            else:
+                return redirect("studies:detail", study_pk)
         else:
+            messages.error(request, "올바른 기간을 입력해주세요")
             return redirect("studies:detail", study_pk)
-        #
 
     messages.error(request, "저장 실패.")  # 이거 왜 작동안하지?
     return redirect("studies:detail", study_pk)
