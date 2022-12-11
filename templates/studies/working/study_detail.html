@@ -132,17 +132,6 @@
   </div>
   </div>
   <script>
-    // 시작일 종료일 잘못 입력 방지
-    const startDate = document.querySelector("#studytask-start")
-    const endDate = document.querySelector("studytask-end")
-    startDate.addEventListener("input", function (event) {
-      endDate.min = startDate.value
-    })
-    endDate.addEventListener("input", function (event) {
-      startDate.max = endDate.value
-    })
-  </script>
-  <script>
     let studyUploadFile = document.getElementById("study-task-imgfile");
     let studyLoadedFile = document.querySelector(".study-loaded-file")
     const studyNoneFile = document.querySelector(".study-upload-none")
@@ -240,7 +229,7 @@
         }
       };
 
-      // ====
+      // =====
 
       let speedAnimation = 400;
       let target = document.querySelector('.study-todo-section');
