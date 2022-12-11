@@ -3,13 +3,25 @@ from django.contrib.auth.models import AbstractUser
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 from studies.models import Study
+from django.contrib.auth.validators import UnicodeUsernameValidator
 
 # Create your models here.
 class User(AbstractUser):
     first_name = None
     last_name = None
 
-    nickname = models.CharField(max_length=500, null=True, blank=True)
+    username_validator = UnicodeUsernameValidator()
+    username = models.CharField(
+        ('username'),
+        max_length=14,
+        unique=True,
+        help_text= ('Required. 14 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+        validators=[username_validator],
+        error_messages={
+            'unique': ("A user with that username already exists."),
+        },
+    )
+    nickname = models.CharField(max_length=14, null=True, blank=True)
     image = ProcessedImageField(
         upload_to="images/",
         null=True,
