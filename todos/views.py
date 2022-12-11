@@ -132,15 +132,13 @@ def create(request):
 
             # tag create
             if tags != "":
-                if "," in tags:
-                    taglist = set(tags.replace(" ", "").split(","))
-                    for t in taglist[:5]:
-                        if t != "":
-                            Tag.objects.create(todo=todo, content=t)
-                else:
-                    Tag.objects.create(todo=todo, content=tags)
+                taglist = []
+                for tag in tags.split(","):
+                    taglist.append(tag.replace(" ", ""))
+                for t in taglist[:5]:
+                    Tag.objects.create(todo=todo, content=t)
 
-        return redirect("todos:today")  # 추후에 비동기로 반드시 바꾸어 줘야 함.
+        return redirect("todos:today")
     else:
         messages.warning(request, "잘 못 된 접근입니다.")
         return redirect("todos:today")
@@ -171,7 +169,6 @@ def delete(request, todos_pk):
 @login_message_required
 def update(request, pk):
     todo = get_object_or_404(Todos, pk=pk)
-    todo_tags = Tag.objects.filter(todo=pk)
     today = str(datetime.now())[:10]
 
     if request.method == "POST":
@@ -211,10 +208,6 @@ def update(request, pk):
         #     return redirect("todos:today")
 
         # 해당 투두에 태그가 있을 때 json으로 보냄
-        if todo_tags:
-            tag_json = serializers.serialize("json", todo_tags.order_by("id"))
-        else:
-            tag_json = ""
 
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
@@ -225,15 +218,23 @@ def update(request, pk):
                 end,
             )
             todo.save()
+
             # 태그 업데이트
+            todo_tags = Tag.objects.filter(todo=pk)
+            for todo_tag in todo_tags:
+                todo_tag.delete()
             if tags != "":
-                if "," in tags:
-                    taglist = set(tags.replace(" ", "").split(","))
-                    for t in taglist[:5]:
-                        if t != "":
-                            Tag.objects.create(todo=todo, content=t)
-                else:
-                    Tag.objects.create(todo=todo, content=tags)
+                taglist = []
+                for tag in tags.split(","):
+                    taglist.append(tag.replace(" ", ""))
+                for t in taglist[:5]:
+                    Tag.objects.create(todo=todo, content=t)
+
+        todo_tags = Tag.objects.filter(todo=pk)
+        if todo_tags:
+            tag_json = serializers.serialize("json", todo_tags.order_by("id"))
+        else:
+            tag_json = ""
 
         context = {
             "todoTitle": todo.title,
