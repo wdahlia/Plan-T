@@ -36,23 +36,27 @@
                     {{ tag.content }}
                     <span class="tag-count">{{ tag.count }}</span>
                 </a>
+                {% empty%}
+                <span>아직 작성된 태그가 없어요 :( </span>
                 {% endfor %}
             </div>
 
         </div>
         <div class="user-log box">
             <h4 class="tit">나의 스터디 현황</h4>
-            <div>
+            <div class="user-study-area">
                 {% for study in joined_studies %}
-                <div>
-                    {{ study.title }}
-                    {{ study.content }}
-                    <hr>
+                <div class="box">
+                    <p class="tit">{{ study.title }}</p>
+                    <p>{{ study.desc }}</p>
                 </div>
+                {% empty%}
+                <span>가입한 스터디가 없어요 :( </span>
                 {% endfor %}
             </div>
         </div>
 
+        <a href="{% url 'accounts:delete' %}" class="user-del-btn">탈퇴하기</a>
     </div>
 </div>
 

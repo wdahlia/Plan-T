@@ -63,7 +63,7 @@ def login(request):
     }
 
     # 바꿔야 함!
-    return render(request, "accounts/complete/login.html", context)
+    return render(request, "main_index.html", context)
 
 
 # 로그아웃
@@ -73,7 +73,7 @@ def logout(request):
         auth_logout(request)
 
     # 바꿔야 함!
-    return redirect("accounts:login")
+    return redirect("index")
 
 
 # 회원탈퇴
@@ -83,7 +83,7 @@ def delete(request):
         request.user.delete()
         auth_logout(request)
     # 바꿔야 함!
-    return redirect("accounts:login")
+    return redirect("index")
 
 
 # 회원정보 수정

@@ -364,6 +364,7 @@
 	padding: 0.5rem 0;
 	width: 95%;
 	height: 100%;
+	line-height: 1.5rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: -webkit-inline-box;

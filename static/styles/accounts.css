@@ -301,3 +301,22 @@
 	border-radius: 50%;
 	margin-left: 0.7rem;
 }
+
+#mypage .user-study-area {
+	display: flex;
+}
+#mypage .user-study-area .tit {
+	padding: 0.5rem;
+	background: var(--sub);
+	border-radius: 1rem;
+	margin-bottom: 1rem;
+}
+
+#mypage .user-del-btn {
+	display: inline-block;
+	margin-top: 2rem;
+	color: var(--txtgr);
+}
+#mypage .user-del-btn:hover {
+	color: var(--wrn);
+}

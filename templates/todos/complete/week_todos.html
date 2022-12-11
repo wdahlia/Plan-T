@@ -4,18 +4,18 @@
 <div class="container" id="week">
   <div class="lnb-area">
     <div class="lnb">
-      <input type="radio" name="tabmenu" id="tab1" class="tabs" checked="checked">
+      <input type="radio" name="tabmenu" id="tab1" class="tabs" checked>
       <label for="tab1" class="tab">
-        <a href="{% url 'todos:week' %}">
-          WEEK
-        </a>
+        <a href="{% url 'todos:week' %}">WEEK</a>
       </label>
       <input type="radio" name="tabmenu" id="tab2" class="tabs">
       <label for="tab2" class="tab">
         <a href="{% url 'todos:today' %}">TODAY</a>
       </label>
       <input type="radio" name="tabmenu" id="tab3" class="tabs">
-      <label for="tab3" class="tab">ALL</label>
+      <label for="tab3" class="tab">
+        <a href="{% url 'todos:read_all' %}">ALL</a>
+      </label>
       <span class="glider"></span>
     </div>
     <div class="week-btn-area">
