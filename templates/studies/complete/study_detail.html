@@ -6,6 +6,7 @@
     <div class="box detail-box">
       <section id="study-detail-area">
         <div class="study-detail-btn">
+
           <!-- 스터디 수정, 되돌아가기 버튼 -->
           <a href="{% url 'studies:update' study.pk %}" class="edit-direct-btn">
             <span class="edit-icon_img material-symbols-outlined">edit_note</span>
@@ -14,9 +15,11 @@
             <span class="goback-icon_img material-symbols-outlined">undo</span>
           </a>
         </div>
+
         <!-- 스터디 title -->
         <label for="study-detail-name"># 스터디 이름</label>
         <input type="text" name="" value="{{study.title}}" class="study-detail-title" id="study-detail-name" disabled="disabled">
+
         <!-- 스터디 소개 -->
         <label for="study-detail-text"># 스터디 소개</label>
         <div class="study-content">
@@ -29,6 +32,7 @@
             {% endif %}
           </div>
         </div>
+
         <!-- 스터디 인원 -->
         <label for="study-members-num"># 스터디 인원</label>
         <div class="members-area" id="study-members-num">
@@ -36,35 +40,39 @@
           <span>/</span>
           <div class="study-totalnum">{{study.max_people}}명</div>
         </div>
-        <!-- 승이-->
-        {% if request.user == study.owner %}
-          <ul class="approve-members">
-            {% for user in application_member%}
-              <li>
-                <div class="approve-user-info">
-                  <!-- user profile img -->
-                  {% if user.image %}
-                    <img src="user.image.url" alt="" class="study-detail-userimg">
-                  {% else %}
-                    <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" alt="" class="study-detail-userimg">
-                  {% endif %}
-                  <!-- username -->
-                  <h6>{{user.username}}</h6>
-                </div>
-                <div class="detail-btn-group">
-                  <!-- approval btn -->
-                  <form action="{% url 'studies:accept_and_drive_out' study.pk user.pk%}">
-                    <input type="submit" value="승인" class="approval-btn">
-                  </form>
-                  <!-- reject btn -->
-                  <form action="{% url 'studies:refusal' study.pk user.pk%}">
-                    <input type="submit" value="거절" class="reject-btn">
-                  </form>
-                </div>
-              </li>
-            {% endfor %}
-          </ul>
-        {% endif %}
+
+        <!-- 스터디 신청 목록 -->
+        <div class="box approve-area">
+          {% if request.user == study.owner %}
+            <ul class="approve-members">
+              {% for user in application_member%}
+                <li>
+                  <div class="approve-user-info">
+                    <!-- user profile img -->
+                    {% if user.image %}
+                      <img src="user.image.url" alt="" class="study-detail-userimg">
+                    {% else %}
+                      <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" alt="" class="study-detail-userimg">
+                    {% endif %}
+                    <!-- username -->
+                    <h6>{{user.username}}</h6>
+                  </div>
+                  <div class="detail-btn-group">
+                    <!-- approval btn -->
+                    <form action="{% url 'studies:accept_and_drive_out' study.pk user.pk%}">
+                      <input type="submit" value="승인" class="approval-btn">
+                    </form>
+                    <!-- reject btn -->
+                    <form action="{% url 'studies:refusal' study.pk user.pk%}">
+                      <input type="submit" value="거절" class="reject-btn">
+                    </form>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+
       </section>
       <!-- 할일은 반장만 할 수 있게 -->
       {% if request.user == study.owner %}
@@ -141,20 +149,13 @@
 </div>
 
 <script>
-  let studyUploadFile = document.getElementById("study-task-imgfile");
-  let studyLoadedFile = document.querySelector(".study-loaded-file")
-  const studyNoneFile = document.querySelector(".study-upload-none")
+  const approveSection = document.querySelector(".approve-area");
+  const approvalList = document.querySelector(".approve-members");
+  approveSection.addEventListener('click', () => {
+    approvalList.classList.toggle('activate');
+    approveSection.classList.toggle('activate');
+  });
 
-  studyLoadedFile.style.display = "none";
-
-  studyUploadFile.onchange = () => {
-    studyNoneFile.style.display = "none";
-    studyLoadedFile.style.display = "block";
-    let uploadFileName = studyUploadFile
-      .files[0]
-      .name;
-    studyLoadedFile.innerText = `${uploadFileName}`;
-  }
 </script>
 
 <script>

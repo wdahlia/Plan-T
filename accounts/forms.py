@@ -32,6 +32,7 @@ class CustomUserChangeForm(PasswordChangeForm, UserChangeForm):
         # MRO 에 따라서 해결되지 않은 필드는 수작업으로 저장한다.
         user.nickname = self.cleaned_data["nickname"]
         user.email = self.cleaned_data["email"]
+        user.image = self.cleaned_data["image"]
 
         user.save()
 
