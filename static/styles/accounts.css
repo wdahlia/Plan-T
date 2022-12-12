@@ -368,3 +368,34 @@
 #mypage .user-del-btn:hover {
 	color: var(--wrn);
 }
+
+#tag-list {
+	width: 50vw;
+	margin: 4rem auto;
+}
+#tag-list .tit {
+	margin-bottom: 1rem;
+}
+#tag-list .tit span {
+	background: var(--main);
+	padding: 0 0.3rem;
+}
+#tag-list .tag-box {
+	margin-bottom: 1rem;
+}
+#tag-list .tag-box p {
+	padding: 0.5rem;
+}
+#tag-list .tag-box .tag-tit {
+	background: var(--sub);
+	border-radius: 0.8rem;
+	margin-bottom: 0.8rem;
+}
+#tag-list .tag-box .tag-cont {
+	line-height: 1.5rem;
+}
+#tag-list .tag-box .tag-date {
+	text-align: right;
+	color: var(--txtgr);
+	font-size: 0.85rem;
+}
