@@ -320,4 +320,12 @@
     })
   })
 </script>
+<script>
+  const startTaskDate = document.querySelector("#studytask-start");
+  const endTaskDate = document.querySelector('#studytask-end');
+  startTaskDate.addEventListener("input", function (event) {
+      console.log(event.target);
+      endTaskDate.min = event.target.value;
+  });
+</script>
 {% endblock body %}
