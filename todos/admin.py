@@ -1,3 +1,4 @@
+from .models import Todos
 from django.contrib import admin
 
 
