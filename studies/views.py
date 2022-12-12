@@ -129,13 +129,13 @@ def create_todos(request, study_pk):
         study_todos_management = StudyTodosManagement.objects.create()
         start, end = request.POST.get("start"), request.POST.get("end")
         if start == "" and end != "":
-            messages.error(request, "시작시점을 입력하세요")
+            messages.error(request, "시작시점을 입력하세요.")
             return redirect("studies:detail", study_pk)
         elif start != "" and end == "":
-            messages.error(request, "종료시점을 입력하세요")
+            messages.error(request, "종료시점을 입력하세요.")
             return redirect("studies:detail", study_pk)
         elif start == "" and end == "":
-            messages.error(request, "시작시점과 종료시점을 입력하세요")
+            messages.error(request, "시작시점과 종료시점을 입력하세요.")
             return redirect("studies:detail", study_pk)
         else:
             pass
@@ -161,7 +161,7 @@ def create_todos(request, study_pk):
             else:
                 return redirect("studies:detail", study_pk)
         else:
-            messages.error(request, "올바른 기간을 입력해주세요")
+            messages.error(request, "올바른 기간을 입력해주세요.")
             return redirect("studies:detail", study_pk)
 
     messages.error(request, "저장 실패")
