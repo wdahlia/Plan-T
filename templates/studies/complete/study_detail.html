@@ -2,150 +2,164 @@
 {% load static %}
 
 {% block body %}
-  <div class="container" id="study-todo-area">
-    <div class="box detail-box">
-      <section id="study-detail-area">
-        <div class="study-detail-btn">
+<div class="container" id="study-todo-area">
+  <!-- 메세지 -->
+  {% if messages %}
+  {% for message in messages %}
+  <div>
+    <h1 class="message">{{ message.message }}</h1>
+    <button class="message-button">ok</button>
+  </div>
+  {% endfor %}
+  {% endif %}
+  <!-- 메세지 -->
+  <div class="box detail-box">
+    <section id="study-detail-area">
+      <div class="study-detail-btn">
 
-          <!-- 스터디 수정, 되돌아가기 버튼 -->
-          <a href="{% url 'studies:update' study.pk %}" class="edit-direct-btn">
-            <span class="edit-icon_img material-symbols-outlined">edit_note</span>
-          </a>
-          <a href="{% url 'studies:info' study.pk %}">
-            <span class="goback-icon_img material-symbols-outlined">undo</span>
-          </a>
-        </div>
+        <!-- 스터디 수정, 되돌아가기 버튼 -->
+        <a href="{% url 'studies:update' study.pk %}" class="edit-direct-btn">
+          <span class="edit-icon_img material-symbols-outlined">edit_note</span>
+        </a>
+        <a href="{% url 'studies:info' study.pk %}">
+          <span class="goback-icon_img material-symbols-outlined">undo</span>
+        </a>
+      </div>
 
-        <!-- 스터디 title -->
-        <label for="study-detail-name"># 스터디 이름</label>
-        <input type="text" name="" value="{{study.title}}" class="study-detail-title" id="study-detail-name" disabled="disabled">
+      <!-- 스터디 title -->
+      <label for="study-detail-name"># 스터디 이름</label>
+      <input type="text" name="" value="{{study.title}}" class="study-detail-title" id="study-detail-name"
+        disabled="disabled">
 
-        <!-- 스터디 소개 -->
-        <label for="study-detail-text"># 스터디 소개</label>
-        <div class="study-content">
-          <textarea name="" id="study-detail-text" cols="60" rows="10" disabled="disabled">{{study.desc}}</textarea>
-          <div class="leader-profileimg">
-            {% if study.owner.image %}
-              <img src="{{ study.owner.image.url }}" alt="" width="55" height="55">
-            {% else %}
-              <img src="https://scontent.cdnsnapwidget.com/vp/4aefafd3bee59d1d0fa2b29a59fc2bc5/5D7701C4/t51.2885-15/sh0.08/e35/s640x640/47690229_1430752333723397_2893005724802088960_n.jpg" alt="" width="55" height="55">
-            {% endif %}
-          </div>
-        </div>
-
-        <!-- 스터디 인원 -->
-        <label for="study-members-num"># 스터디 인원</label>
-        <div class="members-area" id="study-members-num">
-          <div class="study-membernum">{{study.member_number}}명</div>
-          <span>/</span>
-          <div class="study-totalnum">{{study.max_people}}명</div>
-        </div>
-
-        <!-- 스터디 신청 목록 -->
-        <div class="box approve-area">
-          {% if request.user == study.owner %}
-            <ul class="approve-members">
-              {% for user in application_member%}
-                <li>
-                  <div class="approve-user-info">
-                    <!-- user profile img -->
-                    {% if user.image %}
-                      <img src="user.image.url" alt="" class="study-detail-userimg">
-                    {% else %}
-                      <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" alt="" class="study-detail-userimg">
-                    {% endif %}
-                    <!-- username -->
-                    <h6>{{user.username}}</h6>
-                  </div>
-                  <div class="detail-btn-group">
-                    <!-- approval btn -->
-                    <form action="{% url 'studies:accept_and_drive_out' study.pk user.pk%}">
-                      <input type="submit" value="승인" class="approval-btn">
-                    </form>
-                    <!-- reject btn -->
-                    <form action="{% url 'studies:refusal' study.pk user.pk%}">
-                      <input type="submit" value="거절" class="reject-btn">
-                    </form>
-                  </div>
-                </li>
-              {% endfor %}
-            </ul>
+      <!-- 스터디 소개 -->
+      <label for="study-detail-text"># 스터디 소개</label>
+      <div class="study-content">
+        <textarea name="" id="study-detail-text" cols="60" rows="10" disabled="disabled">{{study.desc}}</textarea>
+        <div class="leader-profileimg">
+          {% if study.owner.image %}
+          <img src="{{ study.owner.image.url }}" alt="" width="55" height="55">
+          {% else %}
+          <img
+            src="https://scontent.cdnsnapwidget.com/vp/4aefafd3bee59d1d0fa2b29a59fc2bc5/5D7701C4/t51.2885-15/sh0.08/e35/s640x640/47690229_1430752333723397_2893005724802088960_n.jpg"
+            alt="" width="55" height="55">
           {% endif %}
         </div>
-
-      </section>
-      <!-- 할일은 반장만 할 수 있게 -->
-      {% if request.user == study.owner %}
-        <div class="study-task-add">
-          <button class="icon-btn add-btn">
-            <div class="add-icon"></div>
-            <div class="btn-txt">할 일 추가하기</div>
-          </button>
-        </div>
-        <section class="study-todo-section">
-          <div class="study-task-add-spec">
-            <!-- today todo Form -->
-            <form id="study-task-form" method="POST" action="{% url 'studies:create_todos' study.pk %}">
-              {% csrf_token %}
-              <!-- 시작일, 종료일-->
-              <div class="datepicker-area">
-                <div class="studytask-startpick">
-                  <input type="date" name="start" id="studytask-start">
-                </div>
-                <div class="studytask-endpick">
-                  <input type="date" name="end" id="studytask-end">
-                </div>
-              </div>
-              <!-- title, content-->
-              <input type="text" name="title" placeholder="할일 추가하기" class="study_task-title">
-              <textarea name="content" class="study_task-textarea" id="id_content" cols="30" rows="10" placeholder="할 일 상세"></textarea>
-
-              <div class="btn-area">
-                <button type="submit" class="btn">할일 추가</button>
-              </div>
-            </form>
-          </div>
-        </section>
-      {% endif %}
-    </div>
-    <div class="box-area">
-      <div class="box study-task-area">
-        <ul class="study-task-list">
-          {% for todo in study_todos %}
-            <li class="task">
-              <p class="task-cont">{{todo.title}}</p>
-              <div class="chec-del">
-                <input type="checkbox" name="task-chb1" id="task-chb1">
-                <label for="task-chb1" class="task-chb"></label>
-                
-                <!-- study todos 삭제하기 -->
-                {% if request.user == study.owner %}
-                  <form action="{% url 'studies:delete_todos' study.pk todo.management_pk.pk%}" method="post">
-                    {% csrf_token %}
-                    <button type="submit"><span class="comdel-icon material-symbols-outlined">delete</span></button>
-                  </form>
-                {% endif %}
-              </div>
-            </li>
-          {% endfor %}         
-        </ul>
       </div>
-    </div>
-  </div>
-  <div class="study-footer-btn">
+
+      <!-- 스터디 인원 -->
+      <label for="study-members-num"># 스터디 인원</label>
+      <div class="members-area" id="study-members-num">
+        <div class="study-membernum">{{study.member_number}}명</div>
+        <span>/</span>
+        <div class="study-totalnum">{{study.max_people}}명</div>
+      </div>
+
+      <!-- 스터디 신청 목록 -->
+      <div class="box approve-area">
+        {% if request.user == study.owner %}
+        <ul class="approve-members">
+          {% for user in application_member%}
+          <li>
+            <div class="approve-user-info">
+              <!-- user profile img -->
+              {% if user.image %}
+              <img src="user.image.url" alt="" class="study-detail-userimg">
+              {% else %}
+              <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" alt="" class="study-detail-userimg">
+              {% endif %}
+              <!-- username -->
+              <h6>{{user.username}}</h6>
+            </div>
+            <div class="detail-btn-group">
+              <!-- approval btn -->
+              <form action="{% url 'studies:accept_and_drive_out' study.pk user.pk%}">
+                <input type="submit" value="승인" class="approval-btn">
+              </form>
+              <!-- reject btn -->
+              <form action="{% url 'studies:refusal' study.pk user.pk%}">
+                <input type="submit" value="거절" class="reject-btn">
+              </form>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+    </section>
+    <!-- 할일은 반장만 할 수 있게 -->
     {% if request.user == study.owner %}
-      <!-- 스터디 삭제 (스터디 장에게만) -->
-      <form action="{% url 'studies:delete' study.pk %}" method="POST">
-        {% csrf_token %}
-        <input type="submit" class="study-del-btn" value="삭제">
-      </form>
-    {% else %}
-      <!-- 스터디 탈퇴 (스터디 원) -->
-      <form action="{% url 'studies:accept_and_drive_out' study.pk request.user.pk%}">
-        <input type="submit" class="dropout-btn" value="탈퇴">
-      </form>
+    <div class="study-task-add">
+      <button class="icon-btn add-btn">
+        <div class="add-icon"></div>
+        <div class="btn-txt">할 일 추가하기</div>
+      </button>
+    </div>
+    <section class="study-todo-section">
+      <div class="study-task-add-spec">
+        <!-- today todo Form -->
+        <form id="study-task-form" method="POST" action="{% url 'studies:create_todos' study.pk %}">
+          {% csrf_token %}
+          <!-- 시작일, 종료일-->
+          <div class="datepicker-area">
+            <div class="studytask-startpick">
+              <input type="date" name="start" id="studytask-start">
+            </div>
+            <div class="studytask-endpick">
+              <input type="date" name="end" id="studytask-end">
+            </div>
+          </div>
+          <!-- title, content-->
+          <input type="text" name="title" placeholder="할일 추가하기" class="study_task-title">
+          <textarea name="content" class="study_task-textarea" id="id_content" cols="30" rows="10"
+            placeholder="할 일 상세"></textarea>
+
+          <div class="btn-area">
+            <button type="submit" class="btn">할일 추가</button>
+          </div>
+        </form>
+      </div>
+    </section>
     {% endif %}
   </div>
+  <div class="box-area">
+    <div class="box study-task-area">
+      <ul class="study-task-list">
+        {% for todo in study_todos %}
+        <li class="task">
+          <p class="task-cont">{{todo.title}}</p>
+          <div class="chec-del">
+            <input type="checkbox" name="task-chb1" id="task-chb1">
+            <label for="task-chb1" class="task-chb"></label>
+
+            <!-- study todos 삭제하기 -->
+            {% if request.user == study.owner %}
+            <form action="{% url 'studies:delete_todos' study.pk todo.management_pk.pk%}" method="post">
+              {% csrf_token %}
+              <button type="submit"><span class="comdel-icon material-symbols-outlined">delete</span></button>
+            </form>
+            {% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="study-footer-btn">
+  {% if request.user == study.owner %}
+  <!-- 스터디 삭제 (스터디 장에게만) -->
+  <form action="{% url 'studies:delete' study.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" class="study-del-btn" value="삭제">
+  </form>
+  {% else %}
+  <!-- 스터디 탈퇴 (스터디 원) -->
+  <form action="{% url 'studies:accept_and_drive_out' study.pk request.user.pk%}">
+    <input type="submit" class="dropout-btn" value="탈퇴">
+  </form>
+  {% endif %}
+</div>
 </div>
 
 <script>
@@ -180,7 +194,7 @@
       inputBox[i].addEventListener('keyup', loginActivate);
     }
 
-  } catch  {}
+  } catch { }
 
   try {
 
@@ -233,9 +247,9 @@
         .getComputedStyle(target)
         .display;
 
-      if (display === "none") 
+      if (display === "none")
         display = "block";
-      
+
       target.style.display = display;
       let height = target.offsetHeight;
       target.style.overflow = "hidden";
@@ -295,6 +309,15 @@
 
     slideBtnClick(".add-btn", slideToggle);
 
-  } catch  {}
+  } catch { }
+</script>
+<script>
+  message = document.querySelectorAll('.message-button')
+  console.log(message)
+  message.forEach(function (v, i, o) {
+    v.addEventListener('click', event => {
+      v.parentElement.remove()
+    })
+  })
 </script>
 {% endblock body %}

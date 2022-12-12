@@ -2,78 +2,98 @@
 {% load static %}
 
 {% block body %}
-  <div class="container" id="create-study-area">
-    <div class="box study-create-box">
-      <form action="" method="post" id="create-study-form">
-        {% csrf_token %}
-
-        <!-- 스터디 title -->
-        <label for="create-study-name"># 스터디 이름</label>
-        <input type="text" name="title" value="" placeholder="" class="create-study-title" id="create-study-name" maxlength="50">
-
-        <!-- 스터디 category -->
-        <fieldset class="study-create-categories">
-          <legend># 카테고리</legend>
-          <div class="categories-area">
-            <input type="radio" name="category" id="ct0" value="생활">
-            <label for="ct0">생활</label>
-            <input type="radio" name="category" id="ct1" value="IT/개발">
-            <label for="ct1">IT/개발</label>
-            <input type="radio" name="category" id="ct2" value="외국어">
-            <label for="ct2">외국어</label>
-            <input type="radio" name="category" id="ct3" value="인문">
-            <label for="ct3">인문</label>
-            <input type="radio" name="category" id="ct4" value="수능">
-            <label for="ct4">수능</label>
-            <input type="radio" name="category" id="ct5" value="취업">
-            <label for="ct5">취업</label>
-            <input type="radio" name="category" id="ct6" value="면접">
-            <label for="ct6">면접</label>
-            <input type="radio" name="category" id="ct7" value="기타">
-            <label for="ct7">기타</label>
-          </div>
-        </fieldset>
-
-        <!-- 스터디 인원 -->
-        <label for="study-members-num"># 스터디 인원</label>
-        <input type="number" name="max_people" value="2" min="2" max="" id="study-members-num">
-
-        <!-- 스터디 소개 -->
-        <label for="study-info-text"># 스터디 소개</label>
-        <textarea name="desc" id="study-info-text" cols="30" rows="10"></textarea>
-
-        <!-- 시작일, 종료일-->
-        <div class="study-datepicker">
-          <fieldset class="study-start-picker">
-            <legend># 시작일</legend>
-            <input type="date" name="start_at" id="study-start-date">
-          </fieldset>
-          <fieldset class="study-end-picker">
-            <legend># 종료일</legend>
-            <input type="date" name="end_at" id="study-end-date">
-          </fieldset>
-        </div>
-
-        <!-- 생성, 취소 버튼 -->
-        <div class="study-btn-area">
-          <input type="submit" value="생성" class="study-create-btn">
-          <a href="./study_index.html" class="study-cancel-btn">취소</a>
-        </div>
-      </form>
-    </div>
+<div class="container" id="create-study-area">
+  <!-- 메세지 -->
+  {% if messages %}
+  {% for message in messages %}
+  <div>
+    <h1 class="message">{{ message.message }}</h1>
+    <button class="message-button">ok</button>
   </div>
+  {% endfor %}
+  {% endif %}
+  <!-- 메세지 -->
+  <div class="box study-create-box">
+    <form action="" method="post" id="create-study-form">
+      {% csrf_token %}
+
+      <!-- 스터디 title -->
+      <label for="create-study-name"># 스터디 이름</label>
+      <input type="text" name="title" value="" placeholder="" class="create-study-title" id="create-study-name"
+        maxlength="50">
+
+      <!-- 스터디 category -->
+      <fieldset class="study-create-categories">
+        <legend># 카테고리</legend>
+        <div class="categories-area">
+          <input type="radio" name="category" id="ct0" value="생활">
+          <label for="ct0">생활</label>
+          <input type="radio" name="category" id="ct1" value="IT/개발">
+          <label for="ct1">IT/개발</label>
+          <input type="radio" name="category" id="ct2" value="외국어">
+          <label for="ct2">외국어</label>
+          <input type="radio" name="category" id="ct3" value="인문">
+          <label for="ct3">인문</label>
+          <input type="radio" name="category" id="ct4" value="수능">
+          <label for="ct4">수능</label>
+          <input type="radio" name="category" id="ct5" value="취업">
+          <label for="ct5">취업</label>
+          <input type="radio" name="category" id="ct6" value="면접">
+          <label for="ct6">면접</label>
+          <input type="radio" name="category" id="ct7" value="기타">
+          <label for="ct7">기타</label>
+        </div>
+      </fieldset>
+
+      <!-- 스터디 인원 -->
+      <label for="study-members-num"># 스터디 인원</label>
+      <input type="number" name="max_people" value="2" min="2" max="" id="study-members-num">
+
+      <!-- 스터디 소개 -->
+      <label for="study-info-text"># 스터디 소개</label>
+      <textarea name="desc" id="study-info-text" cols="30" rows="10"></textarea>
+
+      <!-- 시작일, 종료일-->
+      <div class="study-datepicker">
+        <fieldset class="study-start-picker">
+          <legend># 시작일</legend>
+          <input type="date" name="start_at" id="study-start-date">
+        </fieldset>
+        <fieldset class="study-end-picker">
+          <legend># 종료일</legend>
+          <input type="date" name="end_at" id="study-end-date">
+        </fieldset>
+      </div>
+
+      <!-- 생성, 취소 버튼 -->
+      <div class="study-btn-area">
+        <input type="submit" value="생성" class="study-create-btn">
+        <a href="./study_index.html" class="study-cancel-btn">취소</a>
+      </div>
+    </form>
+  </div>
+</div>
 
 {% endblock body %}
 {% block js %}
-  <!-- html에서 시작일 종료일 잘못입력 방지 -->
-  <script>
-    const startDate = document.querySelector("#study-start-date")
-    const endDate = document.querySelector("#study-end-date")
-    startDate.addEventListener("input", function (event) {
-      endDate.min = startDate.value
+<!-- html에서 시작일 종료일 잘못입력 방지 -->
+<script>
+  const startDate = document.querySelector("#study-start-date")
+  const endDate = document.querySelector("#study-end-date")
+  startDate.addEventListener("input", function (event) {
+    endDate.min = startDate.value
+  })
+  endDate.addEventListener("input", function (event) {
+    startDate.max = endDate.value
+  })
+</script>
+<script>
+  message = document.querySelectorAll('.message-button')
+  console.log(message)
+  message.forEach(function (v, i, o) {
+    v.addEventListener('click', event => {
+      v.parentElement.remove()
     })
-    endDate.addEventListener("input", function (event) {
-      startDate.max = endDate.value
-    })
-  </script>
+  })
+</script>
 {% endblock js %}

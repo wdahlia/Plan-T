@@ -127,7 +127,17 @@ def create_todos(request, study_pk):
         study = Study.objects.get(pk=study_pk)
         study_todos_management = StudyTodosManagement.objects.create()
         start, end = request.POST.get("start"), request.POST.get("end")
-
+        if start == "" and end != "":
+            messages.error(request, "시작시점을 입력하세요")
+            return redirect("studies:detail", study_pk)
+        elif start != "" and end == "":
+            messages.error(request, "종료시점을 입력하세요")
+            return redirect("studies:detail", study_pk)
+        elif start == "" and end == "":
+            messages.error(request, "시작시점과 종료시점을 입력하세요")
+            return redirect("studies:detail", study_pk)
+        else:
+            pass
         # 가입된 멤버
         joined_member = []
         for user in study.participated.all():
@@ -153,7 +163,7 @@ def create_todos(request, study_pk):
             messages.error(request, "올바른 기간을 입력해주세요")
             return redirect("studies:detail", study_pk)
 
-    messages.error(request, "저장 실패.")  # 이거 왜 작동안하지?
+    messages.error(request, "저장 실패")
     return redirect("studies:detail", study_pk)
 
 
