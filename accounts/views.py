@@ -90,7 +90,7 @@ def delete(request):
 @login_message_required
 def update(request):
     if request.method == "POST":
-        form = CustomUserChangeForm(request.user, request.POST)
+        form = CustomUserChangeForm(request.user, request.POST, request.FILES)
 
         if form.is_valid():
             form.save()
