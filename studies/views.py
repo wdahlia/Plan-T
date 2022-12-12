@@ -19,9 +19,9 @@ def index(request):
 
     # 카테고리
     if category is None or category == "on" or category == "None":
-        category_studies = Study.objects.all()
+        category_studies = Study.objects.all().order_by("-pk")
     else:
-        category_studies = Study.objects.filter(category=category)
+        category_studies = Study.objects.filter(category=category).order_by("-pk")
 
     # 검색
     search = request.GET.get("search")

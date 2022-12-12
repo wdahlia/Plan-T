@@ -3,16 +3,6 @@
 {% block body %}
 
 <div class="container" id="today">
-  <!-- 메세지 -->
-  {% if messages %}
-  {% for message in messages %}
-  <div>
-    <h1 class="message">{{ message.message }}</h1>
-    <button class="message-button">ok</button>
-  </div>
-  {% endfor %}
-  {% endif %}
-  <!-- 메세지 -->
   <div class="lnb-area">
     <div class="lnb">
       <input type="radio" name="tabmenu" id="tab1" class="tabs">
@@ -40,8 +30,11 @@
         <p class="today-date-day">D</p>
       </div>
       <div class="today-progress">
-        <canvas id="today-progress-crc" width="100" height="100"></canvas>
+        <div class="mkCharts" data-percent="{{achievement_rate}}" data-color="#3cddaa" data-size="100" data-stroke="3">
+        </div>
+        <!-- <canvas id="today-progress-crc" width="100" height="100"></canvas>
         <div id="progress-per" data-ach-rate="{{achievement_rate}}">0%</div>
+       -->
       </div>
     </div>
     <div class="today-task-add">

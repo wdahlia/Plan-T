@@ -383,3 +383,23 @@
 .page__btn.active:hover {
   color: var(--sub);
 }
+
+
+/* top btn */
+
+.topbtn {
+  position: fixed;
+  bottom: 20px;
+  right: 10px;
+  border-radius: 50%;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  background-color: var(--main);
+  padding: 0.6rem;
+  color: var(--bg);
+  display: none;
+}
+
+.topbtn .topbtn-icon {
+  font-weight: 700;
+  font-size: 25px;
+}

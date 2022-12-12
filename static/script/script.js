@@ -1,5 +1,4 @@
 try {
-
     const slider = function () {
         const slides = document.querySelectorAll('.slide');
         const btnLeft = document.querySelector('.slider-btn-left');
@@ -74,6 +73,19 @@ try {
 
 } catch { }
 
+// try {
+//     const gnb = document.querySelector('.gnb');
+//     const gnbMenu = document.querySelectorAll('.gnb-tab');
+//     gnbMenu.forEach(tab => {
+//         tab.addEventListener('click', function (e) {
+//             // e.preventDefault();
+//             // console.log(e.target.closest('.gnb-tab'));
+//             e.target.closest('.gnb-tab').classList.add('activate');
+//         })
+//     })
+
+// } catch { }
+
 try {
     //  로그인, 회원가입 인풋 효과
     const inputBox = document.getElementsByTagName('input');
@@ -94,50 +106,48 @@ try {
 
 } catch { }
 
-try {
-    //  today 할일 달성도 그래프 생성
-    var ctx = document.getElementById('today-progress-crc').getContext("2d");
+// try {
+//     //  today 할일 달성도 그래프 생성
+//     var ctx = document.getElementById('today-progress-crc').getContext("2d");
 
-    // 부채꼴 넓이 구해서 대입
-    var $r1 = (270 * Math.PI / 180) - Math.PI / 2;
-    var r1 = -Math.PI / 2;
-    function graph() {
-        // console.log($r1);
-        r1 = r1 + ($r1 - r1) * 0.66;
-        // console.log((r1 * 180 / Math.PI + 90));
-        // r1 = r1 + ($r1 - r1);
-        // const i = 0.0133;
-        // r1 = r1 + ($r1 - r1) * 1.33;
-        // console.log(Math.round((r1 * 180 / Math.PI + 90) / 360 * 100));
-        const rateArea = document.querySelector('#progress-per');
-        let achRate = Number(rateArea.dataset.achRate);
-        console.log(achRate);
-
-
-        ctx.clearRect(0, 0, 100, 100);
-        ctx.strokeStyle = "#3cddaa";
-        ctx.lineWidth = 10;
-        ctx.lineCap = "round";
-        ctx.beginPath();
-        // ctx.arc(50, 50, 40, -Math.PI / 2, r1, false);
-        ctx.arc(50, 50, 40, Math.PI * 3 / 2, Math.PI * 1 / 2 + Math.PI);
-        ctx.stroke();
-
-        // console.log(Math.PI * 1 / 2 + Math.PI);
-
-        // rateArea.innerText = `${achRate}%`;
+//     // 부채꼴 넓이 구해서 대입
+//     var $r1 = (270 * Math.PI / 180) - Math.PI / 2;
+//     var r1 = -Math.PI / 2;
+//     function graph() {
+//         // console.log($r1);
+//         r1 = r1 + ($r1 - r1) * 0.66;
+//         // console.log((r1 * 180 / Math.PI + 90));
+//         // r1 = r1 + ($r1 - r1);
+//         // const i = 0.0133;
+//         // r1 = r1 + ($r1 - r1) * 1.33;
+//         // console.log(Math.round((r1 * 180 / Math.PI + 90) / 360 * 100));
+//         const rateArea = document.querySelector('#progress-per');
+//         let achRate = Number(rateArea.dataset.achRate);
+//         console.log(achRate);
 
 
+//         ctx.clearRect(0, 0, 100, 100);
+//         ctx.strokeStyle = "#3cddaa";
+//         ctx.lineWidth = 10;
+//         ctx.lineCap = "round";
+//         ctx.beginPath();
+//         // ctx.arc(50, 50, 40, -Math.PI / 2, r1, false);
+//         ctx.arc(50, 50, 40, Math.PI * 3 / 2, Math.PI * 1 / 2 + Math.PI);
+//         ctx.stroke();
 
-        document.getElementById('progress-per').innerHTML = Math.round((r1 * 180 / Math.PI + 90) / 360 * 100) + "%";
-    }
-    graph();
-    // const progress = setInterval(graph, 40);
-    // setTimeout(function () {
-    //     clearInterval(progress)
-    // }, 6000);
+//         // console.log(Math.PI * 1 / 2 + Math.PI);
 
-} catch { }
+//         // rateArea.innerText = `${achRate}%`;
+
+//         document.getElementById('progress-per').innerHTML = Math.round((r1 * 180 / Math.PI + 90) / 360 * 100) + "%";
+//     }
+//     graph();
+//     // const progress = setInterval(graph, 40);
+//     // setTimeout(function () {
+//     //     clearInterval(progress)
+//     // }, 6000);
+
+// } catch { }
 
 try {
     //  today 할일 등록 토글 
@@ -767,3 +777,13 @@ try {
     achievePer.style.width = `${achievePer.dataset.achievePer}%`;
 
 } catch { }
+
+
+try {
+    const startDate = document.querySelector("#study-start-date");
+    const endDate = document.querySelector("#study-end-date");
+    startDate.addEventListener("input", function (event) {
+        endDate.min = event.target.value;
+    });
+} catch { }
+

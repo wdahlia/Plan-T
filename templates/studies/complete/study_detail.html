@@ -3,16 +3,6 @@
 
 {% block body %}
   <div class="container" id="study-todo-area">
-    <!-- 메세지 -->
-    {% if messages %}
-      {% for message in messages %}
-        <div>
-          <h1 class="message">{{ message.message }}</h1>
-          <button class="message-button">ok</button>
-        </div>
-      {% endfor %}
-    {% endif %}
-    <!-- 메세지 -->
     <div class="box detail-box">
       <section id="study-detail-area">
         <div class="study-detail-btn">
@@ -162,6 +152,9 @@
         <input type="submit" class="dropout-btn" value="탈퇴">
       </form>
     {% endif %}
+    <form action="{% url 'chat:room' study.pk %}">
+      <input type="submit" class="dropout-btn" value="채팅">
+    </form>
   </div>
 </div>
 
@@ -328,7 +321,6 @@
     })
   })
 </script>
-
 <script>
   // 승인 비동기
   const detailAccepts = document.querySelectorAll(`.detail-accept`)
@@ -395,5 +387,13 @@
       })
     })
   };
+</script>
+<script>
+  const startTaskDate = document.querySelector("#studytask-start");
+  const endTaskDate = document.querySelector('#studytask-end');
+  startTaskDate.addEventListener("input", function (event) {
+      console.log(event.target);
+      endTaskDate.min = event.target.value;
+  });
 </script>
 {% endblock body %}

@@ -3,16 +3,6 @@
 
 {% block body %}
 <div class="container" id="create-study-area">
-  <!-- 메세지 -->
-  {% if messages %}
-  {% for message in messages %}
-  <div>
-    <h1 class="message">{{ message.message }}</h1>
-    <button class="message-button">ok</button>
-  </div>
-  {% endfor %}
-  {% endif %}
-  <!-- 메세지 -->
   <div class="box study-create-box">
     <form action="" method="post" id="create-study-form">
       {% csrf_token %}
@@ -77,16 +67,6 @@
 {% endblock body %}
 {% block js %}
 <!-- html에서 시작일 종료일 잘못입력 방지 -->
-<script>
-  const startDate = document.querySelector("#study-start-date")
-  const endDate = document.querySelector("#study-end-date")
-  startDate.addEventListener("input", function (event) {
-    endDate.min = startDate.value
-  })
-  endDate.addEventListener("input", function (event) {
-    startDate.max = endDate.value
-  })
-</script>
 <script>
   message = document.querySelectorAll('.message-button')
   console.log(message)

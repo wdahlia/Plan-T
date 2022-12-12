@@ -2,90 +2,93 @@
 <!DOCTYPE html>
 <html lang="ko">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'styles/favicon/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'styles/favicon/favicon-32x32.png'%}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'styles/favicon/favicon-16x16.png'%}">
-    <link rel="manifest" href="{% static 'styles/favicon/site.webmanifest' %}">
-    <meta name="msapplication-TileColor" content="#3cddaa">
-    <meta name="msapplication-TileImage" content="{% static 'styles/favicon/ms-icon-144x144.png' %}">
-    <meta name="theme-color" content="#3cddaa">
-    <!-- google font icon -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
-    <link rel="stylesheet" href="{% static 'styles/init.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/accounts.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/today.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/create_today.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/alltask.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/study_form.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/study_index.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/study_detail.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/mediaquery.css' %}">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="{% static 'script/script.js' %}" defer="defer"></script>
-    <title>Plan-T</title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'styles/favicon/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'styles/favicon/favicon-32x32.png'%}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'styles/favicon/favicon-16x16.png'%}">
+  <link rel="manifest" href="{% static 'styles/favicon/site.webmanifest' %}">
+  <meta name="msapplication-TileColor" content="#3cddaa">
+  <meta name="msapplication-TileImage" content="{% static 'styles/favicon/ms-icon-144x144.png' %}">
+  <meta name="theme-color" content="#3cddaa">
+  <!-- google font icon -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="{% static 'styles/mk_charts.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/init.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/accounts.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/today.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/create_today.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/alltask.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/study_form.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/study_index.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/study_detail.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/mediaquery.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="{% static 'script/mk_charts.js' %}" defer></script>
+  <script src="{% static 'script/script.js' %}" defer></script>
+  <title>Plan-T</title>
+</head>
 
-  <body>
-    <header id="header">
-      <div class="container">
-        <nav class="navi">
-          <a href="{% url 'todos:today' %}" class="logo">
-            <img src="{% static 'img/planT_logo.svg' %}" alt="Plant_logo">
-          </a>
-          <div class="gnb-area">
-            <ul class="gnb tit">
-              <li class="activate">
-                <a href="{% url 'todos:today' %}">PLANNER</a>
-              </li>
-              <li>
-                <span>/</span></li>
-              <li>
-                <a href="{% url 'studies:index' %}">STUDY</a>
-              </li>
-            </ul>
+<body>
+  <header id="header">
+    <div class="container">
+      <nav class="navi">
+        <a href="{% url 'todos:today' %}" class="logo">
+          <img src="{% static 'img/planT_logo.svg' %}" alt="Plant_logo">
+        </a>
+        <div class="gnb-area">
+          <ul class="gnb tit">
+            <li class="gnb-tab">
+              <a href="{% url 'todos:today' %}">PLANNER</a>
+            </li>
+            <li>
+              <span>/</span>
+            </li>
+            <li class="gnb-tab">
+              <a href="{% url 'studies:index' %}">STUDY</a>
+            </li>
+          </ul>
+        </div>
+        {% if request.user.is_authenticated %}
+        <div class="user-area">
+          <div class="user-prof">
+            {% if request.user.image %}
+            <img src="{{ request.user.image.url }}" width="30" height="30" alt="">
+            {% else %}
+            <img src="https://dummyimage.com/30x30" alt="">
+            {% endif %}
           </div>
-          {% if request.user.is_authenticated %}
-            <div class="user-area">
-              <div class="user-prof">
-                {% if request.user.image %}
-                  <img src="{{ request.user.image.url }}" width="30" height="30" alt="">
-                {% else %}
-                  <img src="https://dummyimage.com/30x30" alt="">
-                {% endif %}
-              </div>
-              <a href="{% url 'accounts:profile' %}" class="username">
-                {{request.user}}
-              </a>
-              <a href="{% url 'accounts:logout' %}" class="logout-btn">
-                <span class="material-symbols-outlined">
-                  logout
-                </span>
-              </a>
-            </div>
-          {% endif %}
-        </nav>
-      </div>
-    </header>
-    <main id="main">
-      <div class="container">
-        {% block body %}{% endblock body %}
-      </div>
-    </main>
-    <footer>
-      <div class="cpr">
-        <p>
-          &copy; Plan-T 2022
-        </p>
-      </div>
-    </footer>
-    <div class="toggle"></div>
-    {% block js %}{% endblock js %}
-  </body>
+          <a href="{% url 'accounts:profile' %}" class="username">
+            {{request.user}}
+          </a>
+          <a href="{% url 'accounts:logout' %}" class="logout-btn">
+            <span class="material-symbols-outlined">
+              logout
+            </span>
+          </a>
+        </div>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <div class="container">
+      {% block body %}{% endblock body %}
+    </div>
+  </main>
+  <footer>
+    <div class="cpr">
+      <p>
+        &copy; Plan-T 2022
+      </p>
+    </div>
+  </footer>
+  {% block js %}{% endblock js %}
+</body>
 
 </html>
