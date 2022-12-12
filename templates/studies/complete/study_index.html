@@ -163,16 +163,18 @@
 
     // study desc 부분 글자수 제한 30자
     // link : https://stackoverflow.com/questions/21447269/how-to-limit-the-length-of-text-in-a-paragraph
-    function truncateText(selector, maxLength) {
-        var element = document.querySelector(selector),
-            truncated = element.innerText;
+    function truncateText(node, maxLength) {
+        let truncated = node.innerText;
     
         if (truncated.length > maxLength) {
             truncated = truncated.substr(0,maxLength) + '...';
         }
-        return truncated;
+        
+        return truncated
     }
-    document.querySelector('.study-desc').innerText = truncateText('.study-desc', 30);
+    document.querySelectorAll('.study-desc').forEach(function(v, i, o){
+        v.innerText = truncateText(v, 30);
+    })
 
   </script>
 
