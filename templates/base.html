@@ -88,7 +88,27 @@
       </p>
     </div>
   </footer>
+  
+  {% if messages %}
+  {% for message in messages %}
+    <div class="box" id="message-card">
+      <h6 class="message-header"><span class="noti-icon material-symbols-outlined">notifications_active</span>오류 알림</h6>
+      <h1 class="message-text">{{ message.message }}</h1>
+      <button class="message-button" type="button">확인</button>
+    </div>
+  {% endfor %}
+  {% endif %}
   {% block js %}{% endblock js %}
+
+  <script>
+    message = document.querySelectorAll('.message-button')
+    console.log(message)
+    message.forEach(function (v, i, o) {
+      v.addEventListener('click', event => {
+        v.parentElement.remove()
+      })
+    })
+  </script>
 </body>
 
 </html>
