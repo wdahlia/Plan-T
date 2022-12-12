@@ -33,28 +33,25 @@
                                 과거
                             </button>
                         </div>
-                        {% for pastTodo in past %}
+                        {% for date, todos in past.items %}
                         <div class="past-date_all">
                             <div class="past-date">
                                 <span class="arrow-icon">
                                     <img src="{% static 'img/arrow_forward.svg' %}" alt="">
                                 </span>
                                 <button class="datetime">
-                                    {{pastTodo.when}}
+                                    {{ date }}
                                 </button>
                             </div>
+                            {% for todo in todos %}
                             <ul class="task_listup">
-                                <li class="task-li-content">
-                                    <span> {{pastTodo.title}} </span>
-                                    <input type="checkbox" name="" id="past-check">
-                                    <label for="past-check"></label>
-                                </li>
-                                <li class="task-li-content">
-                                    <span>task</span>
+                                <li class="task-li-content" id="task-li-content{{ todo.pk }}">
+                                    <span> {{ todo.title }} </span>
                                     <input type="checkbox" name="" id="past-check">
                                     <label for="past-check"></label>
                                 </li>
                             </ul>
+                            {% endfor %}
                         </div>
                         {% empty %}
                         <div class="past-date_all">
@@ -81,7 +78,7 @@
                         </div>
                         <ul class="task_listup">
                             {% for today in present %}
-                            <li class="task-li-content">
+                            <li class="task-li-content" id="task-li-content{{ today.pk }}">
                                 <span> {{today.title}} </span>
                                 <input type="checkbox" name="" id="past-check">
                                 <label for="past-check"></label>
@@ -125,16 +122,40 @@
     const timeDetailForm = document.querySelector(".timedetail-form")
     const timeBoxArea = document.querySelector(".time-box-area")
 
-    const taskTimelineToggle = function (e) {
-        e.preventDefault();
-        console.log(e)
-        timeDetailForm.classList.toggle('activate');
-        timeBoxArea.classList.toggle('activate');
+    // 과거 todo 를 눌렀을 때, 디테일에서 내용이 보이게 함
+    taskContents.forEach(function(v, i, o){
+        v.addEventListener("click", function(e){
+            e.preventDefault();
 
-    }
+            timeDetailForm.classList.toggle('activate');
+            timeBoxArea.classList.toggle('activate');
+    
+            // detail form 에 값이 들어갈 tag 들 지정
+            let taskTitle = timeDetailForm.children[0].children[0];
+            let taskDesc = timeDetailForm.children[0].children[1];
+            let taskTag = timeDetailForm.children[0].children[2];
+    
+            // todo pk 값을 id 값에 심은 부분을 추출한다.
+            const todoIdValue = Number(v.id.split("task-li-content")[1]);
+            let todoLoopId = null;
 
-    taskContents.forEach(tasklist => {
-        tasklist.addEventListener('click', taskTimelineToggle);
+            // 송신을 위한 필요 데이터들
+            const url = "/todos/detail_asyn/";
+            const params = {
+                todoIdValue
+            };
+
+            axios.get(
+                url, 
+                { params: params}
+            ).then((res) => {
+                // parsing 후 값을 가져온다.
+                let todo = JSON.parse(res.data.todo)[0];
+                
+                taskTitle.value = todo.fields["title"];
+                taskDesc.value = todo.fields["content"];
+            });
+        })
     });
 
 
@@ -169,14 +190,16 @@
             dateList[i].classList.toggle('activate');
         };
 
-        const ymdBtn = parentDiv.querySelector('.datetime');
-        ymdBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            const parentElem = e.target.parentElement.parentElement
-            const timeList = parentElem.querySelectorAll('.task-li-content');
-            for (let j = 0; j < timeList.length; j++) {
-                timeList[j].classList.toggle('activate');
-            }
+        const ymdBtn = parentDiv.querySelectorAll('.datetime');
+        ymdBtn.forEach(function(v, i, o){
+            v.addEventListener('click', function (e) {
+                e.preventDefault();
+                const parentElem = e.target.parentElement.parentElement
+                const timeList = parentElem.querySelectorAll('.task-li-content');
+                for (let j = 0; j < timeList.length; j++) {
+                    timeList[j].classList.toggle('activate');
+                }
+            })
         })
     });
 
@@ -186,9 +209,9 @@
         time.addEventListener('click', (e) => {
             e.preventDefault();
             const parenDiv = e.target.parentElement.parentElement;
-            console.log(parenDiv)
+            // console.log(parenDiv)
             const taskList = parenDiv.querySelectorAll('.task-li-content');
-            console.log(taskList)
+            // console.log(taskList)
             for (let k = 0; k < taskList.length; k++) {
                 taskList[k].classList.toggle('activate');
             }
