@@ -27,13 +27,10 @@ def today(request):
     )
 
     # timetable 넘겨주기 위해 & 달성율 체크
-    achievement_cnt = 0
     time_list = []
     tag_list = []
 
     for todo in today_todos:
-        if todo.is_completed == True:
-            achievement_cnt += 1
         if (
             todo.started_at is not None  # 나중에 지워야됨
             and todo.expired_at is not None  # 나중에 지워야됨
@@ -58,7 +55,9 @@ def today(request):
             tag_list.append("")
 
     if len(today_todos) != 0:
-        achievement_rate = round(100 * (achievement_cnt / len(today_todos)))
+        achievement_rate = round(
+            100 * (today_todos.filter(is_completed=True).count() / len(today_todos))
+        )
     else:
         achievement_rate = 0
     todosForm = TodosForm()
