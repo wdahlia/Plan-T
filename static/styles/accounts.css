@@ -167,6 +167,33 @@
 #user-update #user-update-form .btn {
 	margin: 1rem 0 1.8rem;
 }
+
+#user-update #user-update-form input[id="image"] {
+	width: 0;
+	height: 0;
+	visibility: hidden;
+}
+
+#user-update #user-update-form label[for="image"] {
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+	border: 1px solid var(--main);
+	padding: 0.8rem;
+	width: 150px;
+	text-align: center;
+	border-radius: 15px;
+	margin-left: 0.5rem;
+	font-weight: 700;
+}
+
+#user-update #user-update-form .img-prev {
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+	border-radius: 50px;
+	border: 2px solid var(--gr);
+	margin: 4rem 2rem 0 2.5rem;
+}
+/* #user-update #user-update-form input {
+	margin-top: 1rem;
+} */
 #gnr-login .link-area {
 	text-align: center;
 }

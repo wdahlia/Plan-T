@@ -9,6 +9,23 @@
 @import url(./study_form.css);
 @import url(./study_index.css);
 
+
+/* main_index.html */
+@media all and (max-width: 575px) {
+  #main-login .container {
+    display: block;
+  }
+  .slide-area {
+    display: none;
+  }
+  #main-login .login {
+    width: 100%;
+    margin: 7rem auto;
+  }
+  #main-login .login .link-area .btn {
+    width: 35vw;
+  }
+}
 /* base.html */
 @media all and (max-width: 575px) {
   /* navbar */
@@ -34,6 +51,17 @@
 }
 
 /* accounts App Responsive */
+@media all and (max-width: 575px) {
+  #user-update .box {
+    width: 90vw;
+  }
+  #user-update #user-update-form input[id="image"]:focus + label {
+    border: 1px solid var(--main);
+    color: var(--main);
+    transform: scale(0.8) translate(20px, -10px);
+    opacity: 1;
+  }
+}
 
 
 /* todo App Responsive */
@@ -104,17 +132,24 @@
   }
   #study-index-area .search-box input[type="text"]:focus,
   #study-index-area .search-box input[type="text"]:not(:invalid) {
-    width: 270px;
+    width: 340px;
   }
   #study-index-area .create-box {
     line-height: 100px;
-    margin-left: 60px;
+    margin: 0 6.25rem;
   }
   #study-index-area .st {
     margin: 0;
+    width: 80vw;
   }
   #study-index-area .st .tab {
-    font-size: 0.6rem;
+    font-size: 0.64rem;
+  }
+  #study-index-area .st .glider {
+    display: none;
+  }
+  #study-index-area .study-room {
+    margin: 2rem;
   }
   #study-index-area .create-box .study-add-icon {
     vertical-align: text-bottom;
@@ -176,6 +211,9 @@
   #study-info-area input[id="study-start-date"],
   #study-info-area input[id="study-end-date"] {
     text-align: center;
+  }
+  .pagination {
+    width: 55vw;
   }
   
 }
