@@ -156,6 +156,9 @@
         <input type="submit" class="dropout-btn" value="탈퇴">
       </form>
     {% endif %}
+    <form action="{% url 'chat:room' study.pk %}">
+      <input type="submit" class="dropout-btn" value="채팅">
+    </form>
   </div>
 </div>
 
