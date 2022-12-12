@@ -1,5 +1,5 @@
-from django.contrib import admin
 from .models import Todos
+from django.contrib import admin
 
 
 # Register your models here.
