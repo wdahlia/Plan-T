@@ -760,6 +760,15 @@ try {
 } catch { }
 
 try {
+    const achievePer = document.querySelector(".achieve-per");
+    const achieveNum = document.querySelector('.achiever-num');
+
+    achieveNum.innerText = `${achievePer.dataset.achievePer}%`;
+    achievePer.style.width = `${achievePer.dataset.achievePer}%`;
+
+} catch { }
+
+try {
     const startDate = document.querySelector("#study-start-date");
     const endDate = document.querySelector("#study-end-date");
     startDate.addEventListener("input", function (event) {

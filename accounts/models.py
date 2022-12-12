@@ -26,7 +26,7 @@ class User(AbstractUser):
         upload_to="images/",
         null=True,
         blank=True,
-        processors=[ResizeToFill(1200, 960)],
+        processors=[ResizeToFill(150, 150)],
         format="JPEG",
         options={"quality": 80},
     )
