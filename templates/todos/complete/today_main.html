@@ -3,7 +3,16 @@
 {% block body %}
 
 <div class="container" id="today">
-
+  <!-- 메세지 -->
+  {% if messages %}
+  {% for message in messages %}
+  <div>
+    <h1 class="message">{{ message.message }}</h1>
+    <button class="message-button">ok</button>
+  </div>
+  {% endfor %}
+  {% endif %}
+  <!-- 메세지 -->
   <div class="lnb-area">
     <div class="lnb">
       <input type="radio" name="tabmenu" id="tab1" class="tabs">
@@ -362,7 +371,7 @@
   const openIcon = document.querySelector('.open-icon');
   const taskArea = document.querySelector('.today-task-area');
   const studyText = document.querySelector('.today-study-area .tit');
-  
+
 
   studyArea.addEventListener('click', () => {
     studyArea.classList.toggle('activate');
@@ -391,5 +400,13 @@
     } */
   });
 </script>
-
+<script>
+  message = document.querySelectorAll('.message-button')
+  console.log(message)
+  message.forEach(function (v, i, o) {
+    v.addEventListener('click', event => {
+      v.parentElement.remove()
+    })
+  })
+</script>
 {% endblock body %}

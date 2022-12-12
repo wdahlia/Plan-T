@@ -142,6 +142,8 @@ def profile(request):
     for study in studies:
         if user in study.participated.all():
             joined_studies.append(study)
+    # 전체 나의 투두 달성률
+    todo
 
     context = {
         "user": user,
