@@ -24,8 +24,8 @@
         <div class="todo-achieve">
             <h4 class="tit">TODO 달성률</h4>
             <p class="achieve-bg"></p>
-            <p class="achieve-per">
-                <span>45%</span>
+            <p class="achieve-per" data-achieve-per="{{percent}}">
+                <span class="achiever-num">0%</span>
             </p>
         </div>
         <div class="user-tag box">
@@ -46,9 +46,9 @@
             <h4 class="tit">나의 스터디 현황</h4>
             <div class="user-study-area">
                 {% for study in joined_studies %}
-                <div class="box">
+                <div class="box study-box">
                     <p class="tit">{{ study.title }}</p>
-                    <p>{{ study.desc }}</p>
+                    <p class="desc">{{ study.desc }}</p>
                 </div>
                 {% empty%}
                 <span>가입한 스터디가 없어요 :( </span>

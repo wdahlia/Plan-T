@@ -245,8 +245,9 @@
 
 #mypage .user-info {
 	display: grid;
-	justify-content: center;
-	justify-items: start;
+	justify-content: end;
+	justify-items: end;
+	margin-right: 4rem;
 }
 #mypage .user-info .profile-img {
 	position: absolute;
@@ -267,7 +268,7 @@
 	color: var(--main);
 	border: 2px solid var(--main);
 	border-radius: 0.5rem;
-	padding: 0.6rem;
+	padding: 0.3rem;
 	transition: 0.3s ease;
 }
 #mypage .user-info .update-btn:hover {
@@ -302,9 +303,10 @@
 	position: absolute;
 	left: 0;
 	bottom: 0;
-	width: 45%;
+	width: 0%;
+	transition: 0.8s ease;
 }
-#mypage .todo-achieve .achieve-per span {
+#mypage .todo-achieve .achieve-per .achiever-num {
 	position: absolute;
 	left: 80%;
 	bottom: 30%;
@@ -318,12 +320,13 @@
 #mypage .user-tag .tag-area {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-evenly;
+	/* justify-content: space-evenly; */
 }
 
 #mypage .user-tag .tag {
 	border-radius: 20px;
 	padding: 0.5rem 1rem;
+	margin-right: 0.5rem;
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
 }
 #mypage .user-tag .tag-count {
@@ -333,15 +336,28 @@
 	border-radius: 50%;
 	margin-left: 0.7rem;
 }
+#mypage .user-tag .tag:hover {
+	background: var(--sub);
+}
 
 #mypage .user-study-area {
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
+/* #mypage .user-study-area .study-box{} */
 #mypage .user-study-area .tit {
 	padding: 0.5rem;
 	background: var(--sub);
 	border-radius: 1rem;
 	margin-bottom: 1rem;
+}
+#mypage .user-study-area .desc {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-inline-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
 }
 
 #mypage .user-del-btn {

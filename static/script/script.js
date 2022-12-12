@@ -758,3 +758,12 @@ try {
     });
 
 } catch { }
+
+try {
+    const achievePer = document.querySelector(".achieve-per");
+    const achieveNum = document.querySelector('.achiever-num');
+
+    achieveNum.innerText = `${achievePer.dataset.achievePer}%`;
+    achievePer.style.width = `${achievePer.dataset.achievePer}%`;
+
+} catch { }
