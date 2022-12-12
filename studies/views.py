@@ -189,7 +189,7 @@ def detail(request, study_pk):
                 user_id=request.user,
                 start__lte=today,
                 end__gte=today,
-                study_pk=study_pk,
+                study_pk=study_,
             )
             #
             # 가입된 멤버
@@ -247,11 +247,11 @@ def info(request, study_pk):
 @login_required
 def join(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
-    # 탈퇴
+    # 신청 취소
     if study.participated.filter(pk=request.user.pk).exists():
         study.participated.remove(request.user)
         is_participated = False
-    # 가입신청 or 초대 수락
+    # 가입신청
     else:
         study.participated.add(request.user)
         is_participated = True
@@ -261,6 +261,7 @@ def join(request, study_pk):
     return JsonResponse(context)
 
 
+# 반장이 가입신청 인원 수락 거절(가입 신청기록 삭제)
 @login_required
 def refusal(request, study_pk, user_pk):
     study = get_object_or_404(Study, pk=study_pk)
@@ -280,10 +281,20 @@ def accept_and_drive_out(request, user_pk, study_pk):
     if user.join_study.filter(pk=study_pk).exists():
         user.join_study.remove(study)
         study.participated.remove(user)
+        # 스터디 관련 todos 삭제
+        delete_studies_todos = StudyTodos.objects.filter(
+            user_id=user,
+            study_pk=study,
+        )
+        for delete_studies_todo in delete_studies_todos:
+            delete_studies_todo.delete()
+        #
+        # 반장이 하면 강퇴(화면 유지), 멤버가 하면 탈퇴(index페이지로 이동)
         if study.owner == request.user:
             owner__ = True
         else:
             owner__ = False
+        #
     # 수락 or 초대
     else:
         if study.max_people > study.member_number:
