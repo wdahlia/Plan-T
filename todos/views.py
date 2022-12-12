@@ -343,9 +343,28 @@ def read_all(request):
     # 과거
     # months=1을 통하여 월별 관리, 모든 과거: lte
     few_month_ago = str(now - relativedelta(months=1))[:10]
-    past = Todos.objects.filter(
-        user_id=request.user, when__range=(few_month_ago, yesterday)
+    past_data = Todos.objects.filter(
+        user_id=request.user, 
+        when__range=(few_month_ago, yesterday)
     ).order_by("-when")
+
+    # 각 데이터에서 when 필드를 문자열로 추출해서 중복을 제거함
+    # 각 날짜를 키를 하는 딕셔너리를 생성
+    past_date = set(map(lambda x : x.when.strftime("%Y-%m-%d"), past_data))
+    past = dict.fromkeys(past_date)
+
+    # 각 데이터의 날짜를 문자열로 만들고
+    # 해당 날짜를 키로써 접근한 것이 None 이면 빈 리스트 생성
+    # 생성 후 해당 리스트에 날짜에 맞는 데이터가 쌓임
+    for i in past_data:
+        date = i.when.strftime("%Y-%m-%d")
+        
+        if not past[date]:
+            past[date] = []
+
+        temp = past[date]
+        temp.append(i)
+
     # 현재
     present = Todos.objects.filter(user_id=request.user, when=today)
     # 미래
@@ -353,16 +372,7 @@ def read_all(request):
     future = Todos.objects.filter(user_id=request.user, when__gte=tomorrow).order_by(
         "when"
     )
-    #
-
-    # test
-    # for p in past:
-    #     print(p.when, "past")
-    # for p in present:
-    #     print(p.when, "present")
-    # for p in future:
-    #     print(p.when, "future")
-    #
+    
     context = {
         "past": past,
         "present": present,
@@ -421,3 +431,16 @@ def is_completed(request):
         context = {"is_completed": is_completed}
 
         return JsonResponse(context)
+
+
+@login_required
+def detail_asyn(request):
+    pk = request.GET.get("todoIdValue")
+
+    todo = Todos.objects.filter(id=pk)
+
+    context = {
+        "todo": serializers.serialize("json", todo)
+    }
+
+    return JsonResponse(context)
