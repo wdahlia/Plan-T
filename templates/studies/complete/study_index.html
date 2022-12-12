@@ -92,10 +92,18 @@
                     {% if study in request.user.join_study.all %}
                         <a href="{% url 'studies:detail' study.pk %}" class="join-btn">진입하기</a>
                     {% else %}
-                        <a href="{% url 'studies:info' study.pk %}" class="join-btn">가입하기</a>
+                        {% if study.max_people == study.member_number %}
+                            <a href="{% url 'studies:info' study.pk %}" class="join-btn">자리가 없어요</a>
+                        {% else %}
+                            <a href="{% url 'studies:info' study.pk %}" class="join-btn">가입신청중</a>
+                        {% endif %}
                     {% endif %}
                 {% else %}
-                    <a href="{% url 'studies:info' study.pk %}" class="join-btn">가입하기</a>
+                    {% if study.max_people == study.member_number %}
+                        <a href="{% url 'studies:info' study.pk %}" class="join-btn">자리가 없어요</a>
+                    {% else %}
+                        <a href="{% url 'studies:info' study.pk %}" class="join-btn">가입하기</a>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
