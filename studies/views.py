@@ -276,21 +276,26 @@ def accept_and_drive_out(request, user_pk, study_pk):
             owner__ = False
     # 수락 or 초대
     else:
-        if study.max_people >= len(study.participated.all()):
+        if study.max_people > study.member_number:
             user.join_study.add(study)
             owner__ = True
         else:
             messages.error(request, "최대 인원을 초과하였습니다.")
             return redirect("studies:detail", study_pk)
 
-    # 가입된 멤버 수
+    # 가입된 멤버 수 최신화
     member_number = 0
-    for user in study.participated.all():
-        for study in user.join_study.all():
-            if study.pk == study_pk:
+    member = []
+    for user_application in study.participated.all():
+        for study_joined in user_application.join_study.all():
+            if study_joined.pk == study_pk:
                 member_number += 1
+                member.append(user_application)
                 break
-
+    # # test
+    # print(member)
+    # print(len(member))
+    # print(member_number)
     study.member_number = member_number
     study.save()
 
