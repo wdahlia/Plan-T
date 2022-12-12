@@ -12,6 +12,7 @@ from todos.models import Todos, Tag
 from accounts.models import User
 import operator
 from .decorator import login_message_required
+from django.contrib import messages
 
 # Create your views here.
 # 회원가입
@@ -54,14 +55,12 @@ def login(request):
             )
 
             return redirect("todos:today")
-
     else:
         form = AuthenticationForm(request)
 
     context = {
         "form": form,
     }
-
     # 바꿔야 함!
     return render(request, "main_index.html", context)
 
@@ -92,6 +91,10 @@ def update(request):
     if request.method == "POST":
         form = CustomUserChangeForm(request.user, request.POST, request.FILES)
 
+        if request.POST.get("new_password1") != request.POST.get("new_password2"):
+            messages.warning(request, "새로운 비밀번호가 일치하지 않습니다")
+            return redirect("accounts:update")
+
         if form.is_valid():
             form.save()
             # 비밀번호가 변경되면 기존 세션과 회원 인증 정보가
@@ -101,10 +104,11 @@ def update(request):
 
             # 바꿔야 함!
             return redirect("accounts:profile")
-
+        else:
+            messages.warning(request, "기존의 비밀번호가 맞지 않습니다")
+            return redirect("accounts:update")
     else:
         form = CustomUserChangeForm(request.user)
-
     context = {
         "form": form,
     }
