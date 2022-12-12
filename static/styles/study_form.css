@@ -205,8 +205,9 @@
   width: 100%;
 }
 
-#study-todo-area text-area[id="study-detail-text"] {
-  width: 100%;
+#study-todo-area textarea[id="study-detail-text"] {
+  padding: 2rem;
+
 }
 
 /* date 생성 */
@@ -324,9 +325,29 @@
 
 
 /* study detail 승인, 거절 Area */
-#study-detail-area .approve-members {
+#study-detail-area .approve-area {
+  margin-top: 1rem;
+  width: 350px;
   align-self: center;
+  transition: all 0.8s;
+  height: 30px;
+}
+
+#study-detail-area .approve-area.activate {
+  height: 100%;
+  transition: 0.8s ease-out;
+}
+
+#study-detail-area .approve-members {
+  margin: 0 auto;
   width: 300px;
+  opacity: 0;
+}
+
+#study-detail-area .approve-members.activate {
+  margin: 0 auto;
+  width: 300px;
+  opacity: 1;
 }
 
 #study-detail-area .approve-members li {

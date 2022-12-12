@@ -25,7 +25,7 @@ def index(request):
 
     # 검색
     search = request.GET.get("search")
-    if search is not None:
+    if search is not None and search != "None":
         studies = Study.objects.all()
         search_lists = studies.filter(
             Q(title__icontains=search) | Q(desc__icontains=search)
@@ -40,6 +40,7 @@ def index(request):
         "category_studies": category_studies,
         "page_list": page_list,
         "category": category,
+        "search": search,
     }
 
     return render(request, "studies/complete/study_index.html", context)
@@ -127,7 +128,17 @@ def create_todos(request, study_pk):
         study = Study.objects.get(pk=study_pk)
         study_todos_management = StudyTodosManagement.objects.create()
         start, end = request.POST.get("start"), request.POST.get("end")
-
+        if start == "" and end != "":
+            messages.error(request, "시작시점을 입력하세요")
+            return redirect("studies:detail", study_pk)
+        elif start != "" and end == "":
+            messages.error(request, "종료시점을 입력하세요")
+            return redirect("studies:detail", study_pk)
+        elif start == "" and end == "":
+            messages.error(request, "시작시점과 종료시점을 입력하세요")
+            return redirect("studies:detail", study_pk)
+        else:
+            pass
         # 가입된 멤버
         joined_member = []
         for user in study.participated.all():
@@ -153,7 +164,7 @@ def create_todos(request, study_pk):
             messages.error(request, "올바른 기간을 입력해주세요")
             return redirect("studies:detail", study_pk)
 
-    messages.error(request, "저장 실패.")  # 이거 왜 작동안하지?
+    messages.error(request, "저장 실패")
     return redirect("studies:detail", study_pk)
 
 
@@ -178,7 +189,7 @@ def detail(request, study_pk):
                 user_id=request.user,
                 start__lte=today,
                 end__gte=today,
-                study_pk=study_pk,
+                study_pk=study_,
             )
             #
             # 가입된 멤버
@@ -236,11 +247,11 @@ def info(request, study_pk):
 @login_required
 def join(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
-    # 탈퇴
+    # 신청 취소
     if study.participated.filter(pk=request.user.pk).exists():
         study.participated.remove(request.user)
         is_participated = False
-    # 가입신청 or 초대 수락
+    # 가입신청
     else:
         study.participated.add(request.user)
         is_participated = True
@@ -250,6 +261,7 @@ def join(request, study_pk):
     return JsonResponse(context)
 
 
+# 반장이 가입신청 인원 수락 거절(가입 신청기록 삭제)
 @login_required
 def refusal(request, study_pk, user_pk):
     study = get_object_or_404(Study, pk=study_pk)
@@ -269,27 +281,42 @@ def accept_and_drive_out(request, user_pk, study_pk):
     if user.join_study.filter(pk=study_pk).exists():
         user.join_study.remove(study)
         study.participated.remove(user)
+        # 스터디 관련 todos 삭제
+        delete_studies_todos = StudyTodos.objects.filter(
+            user_id=user,
+            study_pk=study,
+        )
+        for delete_studies_todo in delete_studies_todos:
+            delete_studies_todo.delete()
+        #
+        # 반장이 하면 강퇴(화면 유지), 멤버가 하면 탈퇴(index페이지로 이동)
         if study.owner == request.user:
             owner__ = True
         else:
             owner__ = False
+        #
     # 수락 or 초대
     else:
-        if study.max_people >= len(study.participated.all()):
+        if study.max_people > study.member_number:
             user.join_study.add(study)
             owner__ = True
         else:
             messages.error(request, "최대 인원을 초과하였습니다.")
             return redirect("studies:detail", study_pk)
 
-    # 가입된 멤버 수
+    # 가입된 멤버 수 최신화
     member_number = 0
-    for user in study.participated.all():
-        for study in user.join_study.all():
-            if study.pk == study_pk:
+    member = []
+    for user_application in study.participated.all():
+        for study_joined in user_application.join_study.all():
+            if study_joined.pk == study_pk:
                 member_number += 1
+                member.append(user_application)
                 break
-
+    # # test
+    # print(member)
+    # print(len(member))
+    # print(member_number)
     study.member_number = member_number
     study.save()
 

@@ -90,7 +90,7 @@ def delete(request):
 @login_message_required
 def update(request):
     if request.method == "POST":
-        form = CustomUserChangeForm(request.user, request.POST)
+        form = CustomUserChangeForm(request.user, request.POST, request.FILES)
 
         if form.is_valid():
             form.save()
@@ -142,6 +142,8 @@ def profile(request):
     for study in studies:
         if user in study.participated.all():
             joined_studies.append(study)
+    # 전체 나의 투두 달성률
+    todo
 
     context = {
         "user": user,

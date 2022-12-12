@@ -73,7 +73,7 @@
               </div>
               <fieldset class="study-info">
                 <legend>스터디 소개</legend>
-                <div>
+                <div class="study-desc">
                   {{study.desc}}
                 </div>
               </fieldset>
@@ -108,7 +108,7 @@
       <ul class="pagination">
         {% if page_list.has_previous %}
           <li class="page__btn">
-            <a class="page-link" href="?page={{ page_list.previous_page_number }}"><span class="material-symbols-outlined">chevron_left</span></a>
+            <a class="page-link" href="?page={{ page_list.previous_page_number }}&search={{search}}&tabmenu={{category}}"><span class="material-symbols-outlined">chevron_left</span></a>
           </li>
         {% else %}
           <li class="page__btn disabled">
@@ -119,18 +119,18 @@
           {% if page_number >= page_list.number|add:-5 and page_number <= page_list.number|add:5 %}
             {% if page_number == page_list.number %}
               <li class="page__numbers active">
-                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                <a class="page-link" href="?page={{ page_number }}&search={{search}}&tabmenu={{category}}">{{ page_number }}</a>
               </li>
             {% else %}
               <li class="page__numbers">
-                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                <a class="page-link" href="?page={{ page_number }}&search={{search}}&tabmenu={{category}}">{{ page_number }}</a>
               </li>
             {% endif %}
           {% endif %}
         {% endfor %}
         {% if page_list.has_next %}
           <li class="page__btn">
-            <a class="page-link" href="?page={{ page_list.next_page_number }}"><span class="material-symbols-outlined">chevron_right</span></a>
+            <a class="page-link" href="?page={{ page_list.next_page_number }}&search={{search}}&tabmenu={{category}}"><span class="material-symbols-outlined">chevron_right</span></a>
           </li>
         {% else %}
           <li class="page__btn disabled">
@@ -139,13 +139,16 @@
         {% endif %}
       </ul>
     </div>
+    <div class="upbtn">
+      
+    </div>
   </div>
 
   <script>
     const selectCategory = document.querySelector('#select-category');
     selectCategory.addEventListener('click', function (event) {
-      // selectCategory.action = 'http://localhost:8000/studies';
-      selectCategory.action = 'http://plan-t.site/studies'
+      selectCategory.action = document.location.href;
+      // selectCategory.action = 'http://plan-t.site/studies'
       selectCategory.method = 'GET';
       selectCategory.submit()
     })
@@ -160,6 +163,22 @@
         categories[idx].checked = true;
       }
     }
+
+    // study desc 부분 글자수 제한 30자
+    // link : https://stackoverflow.com/questions/21447269/how-to-limit-the-length-of-text-in-a-paragraph
+    function truncateText(node, maxLength) {
+        let truncated = node.innerText;
+    
+        if (truncated.length > maxLength) {
+            truncated = truncated.substr(0,maxLength) + '...';
+        }
+        
+        return truncated
+    }
+    document.querySelectorAll('.study-desc').forEach(function(v, i, o){
+        v.innerText = truncateText(v, 26);
+    })
+
   </script>
 
 {% endblock body %}
