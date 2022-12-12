@@ -75,6 +75,7 @@ try {
 } catch { }
 
 try {
+    //  로그인, 회원가입 인풋 효과
     const inputBox = document.getElementsByTagName('input');
 
     const loginActivate = function (e) {
@@ -162,7 +163,6 @@ try {
             target.style.removeProperty("overflow");
             target.style.removeProperty("transition-duration");
             target.style.removeProperty("transition-property");
-            //alert("!");
         }, duration);
     };
     let slideDown = (target, duration = 500) => {
@@ -203,7 +203,6 @@ try {
         }
     };
 
-    // ====
 
     let speedAnimation = 400;
     let target = document.querySelector('.today-section');
@@ -224,6 +223,7 @@ try {
     const taskList = document.querySelector('.today-task-list');
     const tasks = document.querySelectorAll('.today-task-list .task');
     let taskConts = document.querySelectorAll('.today-task-list .task .task-cont');
+
     const taskView = document.querySelector('#task-detail');
     const taskDetailForm = document.querySelector('#today-detail-form');
     const detailTit = document.querySelector('#detail-title');
@@ -238,6 +238,8 @@ try {
 
     // 할일 클릭 시 옆에 상세 토글 나오는 기능, json 데이터 비동기, 할일 active 토글 기능
     const taskMenu = function (e) {
+        const tasks = document.querySelectorAll('.today-task-list .task');
+
         e.preventDefault();
 
         for (let i = 0; i < tasks.length; i++) {
@@ -275,17 +277,16 @@ try {
                 todoTasks = JSON.parse(data);
                 // console.log(data2);
                 // tags = JSON.parse(data2[0])
-                // console.log(todoTasks);
-
-                // console.log(tagPks);
-
 
                 const nodes = [...tasks];
+                console.log(nodes);
                 const idx = nodes.indexOf(this.parentElement);
                 detailBtnDel.setAttribute("data-idx", idx)
-                console.log(detailBtnDel.dataset.idx);
+                console.log(idx);
+                // console.log(detailBtnDel.dataset.idx);
 
                 // todo 수정 업데이트 버튼 actions 속성 부여
+                console.log(todoTasks);
                 const todoPK = todoTasks[idx].pk;
 
                 for (let i = 0; i < data2.length; i++) {
@@ -376,7 +377,6 @@ try {
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
         let urls = detailDelForm.getAttribute('action');
 
-
         axios({
             method: 'POST',
             url: `${urls}`,
@@ -394,7 +394,49 @@ try {
                 taskView.classList.remove('activate');
 
                 taskConts = document.querySelectorAll('.today-task-list .task .task-cont');
-                console.log(taskConts);
+
+                // 타임테이블도 삭제
+                const testBox = document.querySelectorAll('.testbox');
+                const timetableAreaL = document.querySelector('.timetable-left');
+                const timetableAreaR = document.querySelector('.timetable-right');
+                let lng = testBox[targetIdx].dataset.timeArray.length - 1;
+                let arr = testBox[targetIdx].dataset.timeArray.substring(1, lng);
+
+                arr = arr.split(', ')
+                let startAt = Number(arr[0]);
+                let minCnt = Number(arr[1]);
+
+                if (startAt > 54) {
+                    startAt -= 54;
+                    for (let j = startAt; j < startAt + minCnt; j++) {
+                        timetableAreaR.children[j].classList.remove('activate');
+                    }
+                } else {
+                    if (minCnt > 7) {
+                        let minCntR = 0;
+                        if (startAt + minCnt > 54) {
+                            minCntR = startAt + minCnt - 54;
+                            for (let j = startAt; j < startAt + minCnt - minCntR; j++) {
+                                timetableAreaL.children[j].classList.remove('activate');
+                            }
+                            for (let k = 0; k < minCntR; k++) {
+                                timetableAreaR.children[k].classList.remove('activate');
+                            }
+
+                        } else {
+                            for (let j = startAt; j < startAt + minCnt; j++) {
+                                timetableAreaL.children[j].classList.remove('activate');
+                            }
+                        }
+                    } else {
+                        for (let j = startAt; j < startAt + minCnt; j++) {
+                            timetableAreaL.children[j].classList.remove('activate');
+                        }
+                    }
+                }
+                const testBoxCont = document.querySelector('.time-test');
+                testBoxCont.children[targetIdx].remove();
+
             })
     })
 
@@ -430,7 +472,9 @@ try {
         timetableHourR.appendChild(hourTimeR);
     }
 
+
     // 장고 템플릿으로 time_list 값 넣어둔 DOM 가져오기
+
     const testBox = document.querySelectorAll('.testbox');
 
     for (let i = 0; i < testBox.length; i++) {
@@ -450,12 +494,34 @@ try {
             }
         } else {
             if (minCnt > 7) {
-                let minCntR = minCnt - 7;
-                for (let j = startAt; j < startAt + 6; j++) {
-                    timetableAreaL.children[j].classList.add('activate');
-                }
-                for (let k = startAt + 6 - 54; k < minCntR; k++) {
-                    timetableAreaR.children[k].classList.add('activate');
+                let minCntR = 0;
+                // let minCntR = minCnt - 7;
+                // console.log(startAt + minCnt);
+                // for (let j = startAt; j < startAt + minCnt; j++) {
+                //     timetableAreaL.children[j].classList.add('activate');
+                // }
+                if (startAt + minCnt > 54) {
+                    minCntR = startAt + minCnt - 54;
+                    for (let j = startAt; j < startAt + minCnt - minCntR; j++) {
+                        timetableAreaL.children[j].classList.add('activate');
+                    }
+                    for (let k = 0; k < minCntR; k++) {
+                        timetableAreaR.children[k].classList.add('activate');
+                    }
+                    // for (let j = startAt; j < startAt + 6; j++) {
+                    //     timetableAreaL.children[j].classList.add('activate');
+                    // }
+                    // if (startAt + 6 - 54 > 0) {
+                    //     for (let k = startAt + 6 - 54; k < minCntR; k++) {
+                    //         timetableAreaR.children[k].classList.add('activate');
+                    //     }
+                    // } else {
+                    //     console.log(54 - startAt + 6);
+                    // }
+                } else {
+                    for (let j = startAt; j < startAt + minCnt; j++) {
+                        timetableAreaL.children[j].classList.add('activate');
+                    }
                 }
             } else {
                 for (let j = startAt; j < startAt + minCnt; j++) {
@@ -463,9 +529,8 @@ try {
                 }
             }
         }
+
     }
-
-
 } catch { }
 
 try {
