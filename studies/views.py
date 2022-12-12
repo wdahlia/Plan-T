@@ -194,7 +194,7 @@ def detail(request, study_pk):
             #
             # 가입된 멤버
             joined_member = []
-            # 가입 신청 멤버
+            # 수락은 안된 가입 신청 멤버
             application_member = []
             for user in study_.participated.all():
                 for study in user.join_study.all():
@@ -299,6 +299,24 @@ def accept_and_drive_out(request, user_pk, study_pk):
     else:
         if study.max_people > study.member_number:
             user.join_study.add(study)
+            today = str(datetime.now())[:10]
+            #
+            study_todos = StudyTodos.objects.filter(
+                user_id=study.owner,
+                study_pk=study,
+                end__gte=today,
+            )
+            for study_todo in study_todos:
+                StudyTodos.objects.create(
+                    study_pk=study,
+                    management_pk=study_todo.management_pk,
+                    user_id=user,
+                    title=study_todo.title,
+                    content=study_todo.content,
+                    start=study_todo.start,
+                    end=study_todo.end,
+                )
+            #
             owner__ = True
         else:
             messages.error(request, "최대 인원을 초과하였습니다.")
