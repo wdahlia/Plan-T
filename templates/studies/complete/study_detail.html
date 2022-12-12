@@ -6,8 +6,12 @@
     <div class="box detail-box">
       <section id="study-detail-area">
         <div class="study-detail-btn">
-
+          
           <!-- 스터디 수정, 되돌아가기 버튼 -->
+          <form action="{% url 'chat:room' study.pk %}">
+            <label for="chat-btn"><span class="chat-icon_img material-symbols-outlined">sms</span></label>
+            <input type="submit" id="chat-btn" value="">
+          </form>
           <a href="{% url 'studies:update' study.pk %}" class="edit-direct-btn">
             <span class="edit-icon_img material-symbols-outlined">edit_note</span>
           </a>
@@ -36,14 +40,19 @@
         <!-- 스터디 인원 -->
         <label for="study-members-num"># 스터디 인원</label>
         <div class="members-area" id="study-members-num">
-          <div class="study-membernum">{{study.member_number}}명</div>
+          <div id="study-number" class="study-membernum">{{study.member_number}}명</div>
           <span>/</span>
           <div class="study-totalnum">{{study.max_people}}명</div>
         </div>
 
         <!-- 스터디 신청 목록 -->
-        <div class="box approve-area">
-          {% if request.user == study.owner %}
+        {% if request.user == study.owner %}
+          <div class="box approve-area">
+            {% if application_member %}
+              <div id="study-number2">현재 가입 신청 인원:{{application_member|length }}</div>
+            {% else %}
+              <div>신청 인원이 없어요</div>
+            {% endif %}
             <ul class="approve-members">
               {% for user in application_member %}
                 <li>
@@ -59,19 +68,19 @@
                   </div>
                   <div class="detail-btn-group">
                     <!-- approval btn -->
-                    <form action="{% url 'studies:accept_and_drive_out' study.pk user.pk%}">
+                    <form class="detail-accept" data-study-id="{{study.pk}}" data-user-id="{{user.pk}}">
                       <input type="submit" value="승인" class="approval-btn">
                     </form>
                     <!-- reject btn -->
-                    <form action="{% url 'studies:refusal' study.pk user.pk%}">
+                    <form class="detail-refusal" data-study-id="{{study.pk}}" data-user-id="{{user.pk}}">
                       <input type="submit" value="거절" class="reject-btn">
                     </form>
                   </div>
                 </li>
               {% endfor %}
             </ul>
-          {% endif %}
-        </div>
+          </div>
+        {% endif %}
 
       </section>
       <!-- 할일은 반장만 할 수 있게 -->
@@ -142,13 +151,11 @@
       </form>
     {% else %}
       <!-- 스터디 탈퇴 (스터디 원) -->
-      <form action="{% url 'studies:accept_and_drive_out' study.pk request.user.pk%}">
+      <form method="POST" action="{% url 'studies:accept_and_drive_out' study.pk request.user.pk%}">
+        {% csrf_token %}
         <input type="submit" class="dropout-btn" value="탈퇴">
       </form>
     {% endif %}
-    <form action="{% url 'chat:room' study.pk %}">
-      <input type="submit" class="dropout-btn" value="채팅">
-    </form>
   </div>
 </div>
 
@@ -314,6 +321,73 @@
         .remove()
     })
   })
+</script>
+<script>
+  // 승인 비동기
+  const detailAccepts = document.querySelectorAll(`.detail-accept`)
+  for (const detailAccept of detailAccepts) {
+    detailAccept.addEventListener("submit", function (event) {
+      event.preventDefault()
+      const csrftoken = document
+        .querySelector('[name=csrfmiddlewaretoken]')
+        .value;
+      const studyId = event.target.dataset.studyId;
+      const userId = event.target.dataset.userId;
+      axios({
+        method: "post",
+        url: `/studies/detail/${studyId}/${userId}/accept_and_drive_out`,
+        headers: {
+          'X-CSRFToken': csrftoken
+        }
+      }).then(response => {
+        const studyNumber = document.querySelector("#study-number");
+        const studyJoinNumber = document.querySelector("#study-number2");
+        studyNumber.innerText = response.data.member_number + "명";
+        if (response.data.studyJoinNumber === 0) {
+          studyJoinNumber.innerText = "신청 인원이 없어요";
+        } else {
+          studyJoinNumber.innerText = "현재 가입 신청 인원: " + response.data.studyJoinNumber + "명";
+        };
+        detailAccept
+          .parentNode
+          .parentNode
+          .classList
+          .add('hidden');
+      })
+    })
+  };
+
+  // 거절 비동기
+  const detailRefusals = document.querySelectorAll(`.detail-refusal`)
+  for (const detailRefusal of detailRefusals) {
+    detailRefusal.addEventListener("submit", function (event) {
+      event.preventDefault()
+      const csrftoken = document
+        .querySelector('[name=csrfmiddlewaretoken]')
+        .value;
+      const studyId = event.target.dataset.studyId;
+      const userId = event.target.dataset.userId;
+      axios({
+        method: "post",
+        url: `/studies/detail/${studyId}/${userId}/refusal`,
+        headers: {
+          'X-CSRFToken': csrftoken
+        }
+      }).then(response => {
+        const studyJoinNumber = document.querySelector("#study-number2");
+        if (response.data.studyJoinNumber === 0) {
+          studyJoinNumber.innerText = "신청 인원이 없어요";
+        } else {
+          studyJoinNumber.innerText = "현재 가입 신청 인원: " + response.data.studyJoinNumber + "명";
+        };
+        detailRefusal
+          .parentNode
+          .parentNode
+          .classList
+          .add('hidden');
+      })
+    })
+  };
 </script>
 <script>
   const startTaskDate = document.querySelector("#studytask-start");
