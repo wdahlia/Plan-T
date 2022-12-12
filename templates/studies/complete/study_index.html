@@ -144,7 +144,7 @@
   <script>
     const selectCategory = document.querySelector('#select-category');
     selectCategory.addEventListener('click', function (event) {
-      selectCategory.action = 'http://localhost:8000/studies';
+      selectCategory.action = document.location.href;
       // selectCategory.action = 'http://plan-t.site/studies'
       selectCategory.method = 'GET';
       selectCategory.submit()
