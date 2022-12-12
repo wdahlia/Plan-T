@@ -73,7 +73,7 @@
               </div>
               <fieldset class="study-info">
                 <legend>스터디 소개</legend>
-                <div>
+                <div class="study-desc">
                   {{study.desc}}
                 </div>
               </fieldset>
@@ -160,6 +160,22 @@
         categories[idx].checked = true;
       }
     }
+
+    // study desc 부분 글자수 제한 30자
+    // link : https://stackoverflow.com/questions/21447269/how-to-limit-the-length-of-text-in-a-paragraph
+    function truncateText(node, maxLength) {
+        let truncated = node.innerText;
+    
+        if (truncated.length > maxLength) {
+            truncated = truncated.substr(0,maxLength) + '...';
+        }
+        
+        return truncated
+    }
+    document.querySelectorAll('.study-desc').forEach(function(v, i, o){
+        v.innerText = truncateText(v, 26);
+    })
+
   </script>
 
 {% endblock body %}
