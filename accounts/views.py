@@ -143,13 +143,21 @@ def profile(request):
         if user in study.participated.all():
             joined_studies.append(study)
     # 전체 나의 투두 달성률
-    todo
 
+    # >>> pubs = Publisher.objects.annotate(num_books=Count('book'))
+    # >>> pubs
+    # <QuerySet [<Publisher: BaloneyPress>, <Publisher: SalamiPress>, ...]>
+    # >>> pubs[0].num_books
+    if len(todo) != 0:
+        percent = round(todo.filter(is_completed=True).count() / todo.count() * 100)
+    else:
+        percent = 0
     context = {
         "user": user,
         "todos": todo,
         "result": result,
         "joined_studies": joined_studies,
+        "percent": percent,
     }
     return render(request, "accounts/working/mypage.html", context)
 
