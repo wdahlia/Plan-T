@@ -35,9 +35,9 @@
     <header id="header">
       <div class="container">
         <nav class="navi">
-          <div class="logo">
+          <a href="{% url 'todos:today' %}" class="logo">
             <img src="{% static 'img/planT_logo.svg' %}" alt="Plant_logo">
-          </div>
+          </a>
           <div class="gnb-area">
             <ul class="gnb tit">
               <li class="activate">

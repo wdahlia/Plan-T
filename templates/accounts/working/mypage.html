@@ -4,11 +4,11 @@
 <div class="container">
     <div class="box" id="mypage">
         <div class="user-info">
-            <div class="profile-img shd">
+            <div class="profile-img">
                 {% if user.image %}
-                <img src="{{user.image.url}}" alt="프로필 이미지">
+                <img src="{{user.image.url}}" width="150" height="150" class="profimg" alt="프로필 이미지">
                 {% else %}
-                <img src="https://dummyimage.com/150x150" alt="프로필 이미지">
+                <img src="https://dummyimage.com/150x150" width="150" height="150" class="profimg" alt="프로필 이미지">
                 {% endif %}
             </div>
             <a href="{% url 'accounts:update' %}" class="update-btn"><span class="material-symbols-outlined">

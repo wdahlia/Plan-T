@@ -338,23 +338,6 @@
 
   activate();
 
-  // <!-- file input 표시 -->
-
-  let uploadFile = document.getElementById("today-task-imgfile");
-  let loadedFile = document.querySelector(".loaded-file")
-  const noneFile = document.querySelector(".upload-none")
-
-  loadedFile.style.display = "none";
-
-  uploadFile.onchange = () => {
-    noneFile.style.display = "none";
-    loadedFile.style.display = "block";
-    let uploadFileName = uploadFile
-      .files[0]
-      .name;
-    loadedFile.innerText = `${uploadFileName}`;
-  }
-
   // <!-- study todo div -->
 
   const studyArea = document.querySelector('.today-study-area');

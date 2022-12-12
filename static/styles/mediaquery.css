@@ -112,13 +112,24 @@
   #week .week-area .task {
     width: 60vw;
   }
-  #week .week-btn-area .week-btn-prev{
-    padding-left: 0.3rem;
-  }
   #week .week-btn-area .week-btn-prev,
   #week .week-btn-area .week-btn-next {
     font-size: 2rem;
+    margin: 0 3rem;
     padding-top: 0.3rem;
+  }
+  #week .week-btn-area .week-btn-next {
+    margin: 0 2.4rem;
+  } 
+  #week .week-btn-area .week-btn .prev-week {
+    position: absolute;
+    top: 3.5rem;
+    left: 0.6rem;
+  }
+  #week .week-btn-area .week-btn .next-week {
+    position: absolute;
+    top: 3.4rem;
+    right: 0.4rem;
   }
 }
 
