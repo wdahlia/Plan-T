@@ -3,16 +3,6 @@
 {% block body %}
 
 <div class="container" id="today">
-  <!-- 메세지 -->
-  {% if messages %}
-  {% for message in messages %}
-  <div>
-    <h1 class="message">{{ message.message }}</h1>
-    <button class="message-button">ok</button>
-  </div>
-  {% endfor %}
-  {% endif %}
-  <!-- 메세지 -->
   <div class="lnb-area">
     <div class="lnb">
       <input type="radio" name="tabmenu" id="tab1" class="tabs">

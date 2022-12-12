@@ -1,33 +1,30 @@
-from django.shortcuts import render
-from random import randrange
+from django.shortcuts import render, redirect
+from studies.models import Study
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
-anonymous_list = dict.fromkeys(range(1, 101), False)
 
 # Create your views here.
 @login_required
-def index(request):
-    return render(request, "chat/index.html")
+def room(request, study_pk):
+    user = request.user
+    study = Study.objects.get(id=study_pk)
 
+    # 로그인 검증 및 스터디원 여부 파악
+    if user.is_authenticated:
+        if user in study.participated.all() and study in user.join_study.all():
+            nickname = user.username
+        else:
+            messages.error(request, "스터디에 가입해주세요.")
 
-@login_required
-def room(request, room_name):
-    if request.user.is_authenticated:
-        nickname = request.user.username
-    # 임시로 만들었다.
-    # 비로그인 회원인 경우 1 ~ 100 까지의 값 중 중복이 안된 녀석을 끌고와서
-    # 해당 고유값을 "anonymous user" 뒤에 붙인다.
+            return redirect("studies:detail", study_pk)
     else:
-        rnd = randrange(1, 101)
-        while rnd in anonymous_list.keys():
-            rnd = randrange(1, 101)
+        messages.error(request, "로그인을 해주세요.")
 
-        anonymous_list[rnd] = True
-
-        nickname = "anonymous user" + rnd
+        return redirect("studies:detail", study_pk)
 
     context = {
-        "room_name": room_name,
+        "room_id": study_pk,
         "nickname": nickname,
     }
 
