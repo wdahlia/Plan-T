@@ -56,6 +56,18 @@
                                 </li>
                             </ul>
                         </div>
+                        {% empty %}
+                        <div class="past-date_all">
+                            <div class="past-date">
+                                <span class="arrow-icon">
+                                    <img src="{% static 'img/arrow_forward.svg' %}" alt="">
+                                </span>
+                                <button class="datetime">
+                                    작성된 할일이 없어요 :(
+                                </button>
+                            </div>
+                        </div>
+
                         {% endfor %}
                     </div>
                     <div class="today-timeline">
@@ -95,21 +107,11 @@
                 <div class="box timedetail-form" id="timedetail-form-area">
                     <form action="" method="post" id="today-detail-form">
                         <input type="text" name="today_task-title" value="task title" class="today_task-title">
-                        <div class="keyword-box">
-                            <span>keyword</span>
-                        </div>
+
                         <textarea name="today_task-textarea" class="today_task-textarea" cols="30" rows="10"></textarea>
-                        <!-- <fieldset class="today-task-fileadd">
-                            <legend>Image/File</legend>
-                            <label for="today-task-imgfile">
-                                <div class="loaded-file"></div>
-                                <div class="upload-none">
-                                    <span class="attach_img-icon material-symbols-outlined">imagesmode</span>
-                                    사진/파일을 첨부하세요
-                                </div>
-                            </label>
-                            <input type="file" name="today_task-img" class="today_task-img" id="today-task-imgfile">
-                        </fieldset> -->
+                        <div class="keyword-box">
+                            <input type="text" name="tags" id="detail-tag" placeholder="#keyword">
+                        </div>
                     </form>
                 </div>
             </div>

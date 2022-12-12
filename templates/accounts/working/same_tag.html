@@ -3,14 +3,14 @@
 {% block body %}
 
 <div class="box" id="tag-list">
-  <h3 class="tit">#{{tag}} 태그의 할일</h3>
+  <h3 class="tit"><span>#{{tag}}</span> 태그의 할일</h3>
   <p></p>
   {% for tag in same_tags %}
-  <div class="box">
-    <p>할일: {{ tag.todo.title }}</p>
-    <p>할일 상세: {{ tag.todo.content }}</p>
-    <p>할일 날짜: {{ tag.todo.when }}</p>
-    <p>완료 :{{ tag.todo.is_completed }}</p>
+  <div class="box tag-box">
+    <p class="tag-tit">{{ tag.todo.title }}</p>
+    <p class="tag-cont">{{ tag.todo.content }}</p>
+    <p class="tag-date">{{ tag.todo.when }}</p>
+    <!-- <p>완료 :{{ tag.todo.is_completed }}</p> -->
   </div>
   {% endfor %}
 
