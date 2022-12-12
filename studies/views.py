@@ -264,81 +264,97 @@ def join(request, study_pk):
 # 반장이 가입신청 인원 수락 거절(가입 신청기록 삭제)
 @login_required
 def refusal(request, study_pk, user_pk):
-    study = get_object_or_404(Study, pk=study_pk)
-    user = get_object_or_404(get_user_model(), pk=user_pk)
-    # 거절
-    study.participated.remove(user)
-
-    return redirect("studies:detail", study_pk)
+    if request.method:
+        study = get_object_or_404(Study, pk=study_pk)
+        user = get_object_or_404(get_user_model(), pk=user_pk)
+        # 거절
+        study.participated.remove(user)
+        studyJoinNumber = len(study.participated.all()) - 1
+        context = {"studyJoinNumber": studyJoinNumber}
+        return JsonResponse(context)
+    else:
+        messages.error(request, "잘못된 요청입니다.")
+        return redirect("studies:detail", study_pk)
 
 
 @login_required
 def accept_and_drive_out(request, user_pk, study_pk):
-    user = get_object_or_404(get_user_model(), pk=user_pk)
-    study = get_object_or_404(Study, pk=study_pk)
+    if request.method == "POST":
+        user = get_object_or_404(get_user_model(), pk=user_pk)
+        study = get_object_or_404(Study, pk=study_pk)
 
-    # 강퇴 & 탈퇴(수락 거절 + 가입 신청 거절)
-    if user.join_study.filter(pk=study_pk).exists():
-        user.join_study.remove(study)
-        study.participated.remove(user)
-        # 스터디 관련 todos 삭제
-        delete_studies_todos = StudyTodos.objects.filter(
-            user_id=user,
-            study_pk=study,
-        )
-        for delete_studies_todo in delete_studies_todos:
-            delete_studies_todo.delete()
-        #
-        # 반장이 하면 강퇴(화면 유지), 멤버가 하면 탈퇴(index페이지로 이동)
-        if study.owner == request.user:
-            owner__ = True
-        else:
-            owner__ = False
-        #
-    # 수락 or 초대
-    else:
-        if study.max_people > study.member_number:
-            user.join_study.add(study)
-            today = str(datetime.now())[:10]
-            #
-            study_todos = StudyTodos.objects.filter(
-                user_id=study.owner,
+        # 강퇴 & 탈퇴(수락 거절 + 가입 신청 거절)
+        if user.join_study.filter(pk=study_pk).exists():
+            user.join_study.remove(study)
+            study.participated.remove(user)
+            # 스터디 관련 todos 삭제
+            delete_studies_todos = StudyTodos.objects.filter(
+                user_id=user,
                 study_pk=study,
-                end__gte=today,
             )
-            for study_todo in study_todos:
-                StudyTodos.objects.create(
-                    study_pk=study,
-                    management_pk=study_todo.management_pk,
-                    user_id=user,
-                    title=study_todo.title,
-                    content=study_todo.content,
-                    start=study_todo.start,
-                    end=study_todo.end,
-                )
+            for delete_studies_todo in delete_studies_todos:
+                delete_studies_todo.delete()
             #
-            owner__ = True
+            # 반장이 하면 강퇴(화면 유지), 멤버가 하면 탈퇴(index페이지로 이동)
+            if study.owner == request.user:
+                owner__ = True
+            else:
+                owner__ = False
+            #
+        # 수락 or 초대
         else:
-            messages.error(request, "최대 인원을 초과하였습니다.")
-            return redirect("studies:detail", study_pk)
+            if study.max_people > study.member_number:
+                user.join_study.add(study)
+                today = str(datetime.now())[:10]
+                # 수락과 동시에 아직 안끝난 studies_todos 생성
+                study_todos = StudyTodos.objects.filter(
+                    user_id=study.owner,
+                    study_pk=study,
+                    end__gte=today,
+                )
+                for study_todo in study_todos:
+                    StudyTodos.objects.create(
+                        study_pk=study,
+                        management_pk=study_todo.management_pk,
+                        user_id=user,
+                        title=study_todo.title,
+                        content=study_todo.content,
+                        start=study_todo.start,
+                        end=study_todo.end,
+                    )
+                #
+                owner__ = True
+            else:
+                messages.error(request, "최대 인원을 초과하였습니다.")
+                return redirect("studies:detail", study_pk)
 
-    # 가입된 멤버 수 최신화
-    member_number = 0
-    member = []
-    for user_application in study.participated.all():
-        for study_joined in user_application.join_study.all():
-            if study_joined.pk == study_pk:
-                member_number += 1
-                member.append(user_application)
-                break
-    # # test
-    # print(member)
-    # print(len(member))
-    # print(member_number)
-    study.member_number = member_number
-    study.save()
-
-    if owner__ == True:
-        return redirect("studies:detail", study_pk)
+        # 가입된 멤버 수 최신화
+        member_number = 0
+        studyJoinNumber = 0
+        member = []
+        for user_application in study.participated.all():
+            for study_joined in user_application.join_study.all():
+                if study_joined.pk == study_pk:
+                    member_number += 1
+                    member.append(user_application)
+                    break
+            else:
+                studyJoinNumber += 1
+            #
+        # # test
+        # print(member)
+        # print(len(member))
+        # print(member_number)
+        study.member_number = member_number
+        study.save()
+        if owner__ == True:
+            context = {
+                "member_number": member_number,
+                "studyJoinNumber": studyJoinNumber,
+            }
+            return JsonResponse(context)
+        else:
+            return redirect("studies:index")
     else:
-        return redirect("studies:index")
+        messages.error(request, "잘못된 요청입니다.")
+        return redirect("studies:detail", study_pk)

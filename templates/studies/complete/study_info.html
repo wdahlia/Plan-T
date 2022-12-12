@@ -97,7 +97,11 @@
                 <div class="enter-btn">가입신청불가</div>
                 <div id="join-study" style="display: none;">찾는 id가 없으면 오류걸리니까</div>
               {% else %}
-                <div class="enter-btn" id="join-study" data-study-id="{{ study.pk }}">가입신청중</div>
+                <form class="enter-btn" id="join-study" data-study-id="{{ study.pk }}">
+                  {% csrf_token %}
+                  <input id="join-study-input" type="submit" value="">
+                  <label id="join-study-input-label" for="join-study-input">가입신청중</label>
+                </form>
               {% endif %}
             {% endif %}
           {% else %}
@@ -105,7 +109,11 @@
               <div class="enter-btn">가입신청불가</div>
               <div id="join-study" style="display: none;">찾는 id가 없으면 오류걸리니까</div>
             {% else %}
-              <div class="enter-btn" id="join-study" data-study-id="{{ study.pk }}">가입</div>
+              <form class="enter-btn" id="join-study" data-study-id="{{ study.pk }}">
+                {% csrf_token %}
+                <input id="join-study-input" type="submit" value="">
+                <label id="join-study-input-label" for="join-study-input">가입</label>
+              </form>
             {% endif %}
           {% endif %}
           <!-- 스터디 index로 다시 돌아가기 -->
@@ -132,14 +140,24 @@
   <script>
     // 가입 신청 비동기
     const joinStudy = document.querySelector("#join-study");
-    joinStudy.addEventListener('click', function (event) {
-      axios({method: 'get', url: `/studies/detail/${event.target.dataset.studyId}/join`}).then(response => {
-
+    joinStudy.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const csrftoken = document
+        .querySelector('[name=csrfmiddlewaretoken]')
+        .value;
+      axios({
+        method: 'post',
+        url: `/studies/detail/${event.target.dataset.studyId}/join`,
+        headers: {
+          'X-CSRFToken': csrftoken
+        }
+      }).then(response => {
+        const joinStudyInputLabel = document.querySelector("#join-study-input-label")
         if (response.data.is_participated === true) {
-          event.target.innerText = "가입신청중"
+          joinStudyInputLabel.innerText = "가입신청중"
 
         } else {
-          event.target.innerText = "가입"
+          joinStudyInputLabel.innerText = "가입"
         }
       })
     })
