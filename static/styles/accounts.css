@@ -246,12 +246,17 @@
 #mypage .user-info {
 	display: grid;
 	justify-content: center;
-	justify-items: end;
+	justify-items: start;
 }
 #mypage .user-info .profile-img {
 	position: absolute;
-	left: 80px;
-	top: -80px;
+	left: 90px;
+	top: -70px;
+	border-radius: 50%;
+	border: 6px solid var(--gr);
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+#mypage .user-info .profile-img .profimg {
 	border-radius: 50%;
 	overflow: hidden;
 }
