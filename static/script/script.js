@@ -778,3 +778,12 @@ try {
 
 } catch { }
 
+
+try {
+    const startDate = document.querySelector("#study-start-date");
+    const endDate = document.querySelector("#study-end-date");
+    startDate.addEventListener("input", function (event) {
+        endDate.min = event.target.value;
+    });
+} catch { }
+

@@ -147,9 +147,9 @@
         {% endif %}
       </ul>
     </div>
-    <div class="upbtn">
-      
-    </div>
+  </div>
+  <div class="topbtn">
+    <span class="topbtn-icon material-symbols-outlined">arrow_upward</span>
   </div>
 
   <script>
@@ -186,6 +186,18 @@
     document.querySelectorAll('.study-desc').forEach(function(v, i, o){
         v.innerText = truncateText(v, 26);
     })
+
+  </script>
+
+  <script>
+    const topBtn = document.querySelector('.topbtn');
+
+    window.addEventListener('scroll', () => {
+      topBtn.style.display = "block";
+      topBtn.addEventListener('click', (e) => {
+        window.scrollTo(0, 0);
+      })
+    });
 
   </script>
 

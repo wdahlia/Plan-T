@@ -222,10 +222,18 @@
   #study-info-area input[id="study-start-date"],
   #study-info-area input[id="study-end-date"] {
     text-align: center;
+    width: 167.78px;
+    margin: 0 1.5rem;
   }
   .pagination {
     width: 55vw;
   }
   
+}
+
+@media all and (min-width: 575px) {
+  .topbtn {
+    opacity: 0;
+  }
 }
 

@@ -194,6 +194,8 @@
 #study-info-area textarea[id="study-info-text"],
 #create-study-form textarea[id="study-info-text"],
 #update-study-form textarea[id="update-info-text"]{
+  font-family: Noto-sans;
+  font-size: 15px;
   background-color: var(--bg);
   border: none;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
