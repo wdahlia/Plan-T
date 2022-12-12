@@ -25,7 +25,7 @@ def index(request):
 
     # 검색
     search = request.GET.get("search")
-    if search is not None:
+    if search is not None and search != "None":
         studies = Study.objects.all()
         search_lists = studies.filter(
             Q(title__icontains=search) | Q(desc__icontains=search)
@@ -40,6 +40,7 @@ def index(request):
         "category_studies": category_studies,
         "page_list": page_list,
         "category": category,
+        "search": search,
     }
 
     return render(request, "studies/complete/study_index.html", context)
