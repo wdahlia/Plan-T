@@ -16,6 +16,7 @@
 	--wrn: #ff8b8b;
 	--gr-wrn: #ff8b8ba9;
 	--sub-wrn: #ff8b8b5d;
+	--bl: rgba(108, 177, 250, 0.552);
 }
 
 body {
@@ -164,4 +165,49 @@ footer {
 	text-align: center;
 	position: relative;
 	bottom: 0;
+}
+
+
+/* 오류 message 창 */
+
+#message-card {
+	position: absolute;
+	top: 5rem;
+	right: 1rem;
+	width: 25vw;
+	z-index: 50;
+	background-color: var(--bg);
+	text-align: end;
+	border: 2px solid var(--sub-wrn);
+}
+
+#message-card .message-header {
+	color: var(--wrn);
+	padding-bottom: 10px;
+	font-weight: 500;
+	border-bottom: 2px solid var(--gr);
+	letter-spacing: -1px;
+	text-align: start;
+}
+
+#message-card .noti-icon {
+	font-weight: 700;
+	font-size: 20px;
+	vertical-align: text-bottom;
+	margin-right: 5px;
+}
+
+#message-card .message-text {
+	margin: 1rem 0;
+	text-align: start;
+}
+
+#message-card .message-button {
+	text-align: end;
+	color: var(--bg);
+	padding: 7px 10px;
+	/* font-weight: 700; */
+	letter-spacing: -1px;
+	border-radius: 5px;
+	background-color: var(--wrn);
 }

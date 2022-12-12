@@ -48,6 +48,10 @@
   #header .navi .user-area a {
     margin-right: 0;
   }
+  /* message */
+  #message-card {
+    width: 60vw;
+  }
 }
 
 /* accounts App Responsive */
@@ -61,8 +65,13 @@
     transform: scale(0.8) translate(20px, -10px);
     opacity: 1;
   }
+  #mypage .user-info .profile-img {
+    left: 30px;
+  }
+  #mypage .box {
+    margin: 0.8rem 0.15rem;
+  }
 }
-
 
 /* todo App Responsive */
 @media all and (max-width: 575px) {
