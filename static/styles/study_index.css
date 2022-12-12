@@ -349,6 +349,11 @@
   /* box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.08),
   inset 5px 5px 15px rgba(0, 0, 0, 0.03); */
 }
+
+.page-link {
+  padding: 1.2rem;
+}
+
 .page__numbers:hover {
   color: var(--bg);
   background-color: var(--main);
