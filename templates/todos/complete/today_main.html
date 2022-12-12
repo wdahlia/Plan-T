@@ -163,10 +163,17 @@
     <div class="study-tasklist-area">
       <h3 class="tit">Study</h3>
       <ul class="study-task-list">
-        {% for study_todos in today_study_todos %}
+        {% for study_todo in today_study_todos %}
         <li class="task">
-          <a href="{% url 'studies:detail' study_todos.pk %}">
-            {{study_todos.title}}
+          <a href="{% url 'studies:detail' study_todo.study_pk.pk %}">
+            <div>
+              <p style="padding: 5px 0px;">{{study_todo.title}}</p>
+              <div style="text-align: right;">
+                <p style="display:inline-block; padding: 7px 12px; border-radius: 10px;">
+                  {{ study_todo.study_pk.title}}
+                </p>
+              </div>
+            </div>
           </a>
         </li>
         {% endfor %}
