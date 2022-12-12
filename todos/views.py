@@ -139,7 +139,7 @@ def create(request):
 
         return redirect("todos:today")
     else:
-        messages.warning(request, "잘 못 된 접근입니다.")
+        messages.warning(request, "잘못된 접근입니다.")
         return redirect("todos:today")
 
 

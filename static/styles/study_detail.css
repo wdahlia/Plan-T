@@ -9,11 +9,13 @@
 	padding-bottom: 5rem;
 } */
 /* 스터디 아이콘 */
+
 #study-todo-area .study-detail-btn {
 	display: flex;
 	justify-content: end;
 }
 
+#study-todo-area .chat-icon_img,
 #study-todo-area .edit-icon_img,
 #study-todo-area .goback-icon_img {
 	padding: 10px;
@@ -22,6 +24,12 @@
 	background-color: var(--bg);
 	border-radius: 50px;
 	box-shadow: 5px 5px 16px rgba(0, 0, 0, 0.1);
+}
+
+#study-todo-area .chat-icon_img{
+	background-color: var(--bl);
+	margin-right: 1rem;
+	color: var(--txt);
 }
 
 #study-todo-area .goback-icon_img {
