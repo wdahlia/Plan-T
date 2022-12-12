@@ -53,7 +53,11 @@
           {% if request.user.is_authenticated %}
             <div class="user-area">
               <div class="user-prof">
-                <img src="https://dummyimage.com/30x30" alt="">
+                {% if request.user.image %}
+                  <img src="{{ request.user.image.url }}" width="30" height="30" alt="">
+                {% else %}
+                  <img src="https://dummyimage.com/30x30" alt="">
+                {% endif %}
               </div>
               <a href="{% url 'accounts:profile' %}" class="username">
                 {{request.user}}

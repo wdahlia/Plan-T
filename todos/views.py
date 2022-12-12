@@ -227,6 +227,8 @@ def update(request, pk):
                 taglist = []
                 for tag in tags.split(","):
                     taglist.append(tag.replace(" ", ""))
+                if taglist[-1] == "":
+                    taglist = taglist[:-1]
                 for t in taglist[:5]:
                     Tag.objects.create(todo=todo, content=t)
 

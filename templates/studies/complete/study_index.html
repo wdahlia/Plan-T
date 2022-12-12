@@ -108,7 +108,7 @@
       <ul class="pagination">
         {% if page_list.has_previous %}
           <li class="page__btn">
-            <a class="page-link" href="?page={{ page_list.previous_page_number }}"><span class="material-symbols-outlined">chevron_left</span></a>
+            <a class="page-link" href="?page={{ page_list.previous_page_number }}&search={{search}}&tabmenu={{category}}"><span class="material-symbols-outlined">chevron_left</span></a>
           </li>
         {% else %}
           <li class="page__btn disabled">
@@ -119,18 +119,18 @@
           {% if page_number >= page_list.number|add:-5 and page_number <= page_list.number|add:5 %}
             {% if page_number == page_list.number %}
               <li class="page__numbers active">
-                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                <a class="page-link" href="?page={{ page_number }}&search={{search}}&tabmenu={{category}}">{{ page_number }}</a>
               </li>
             {% else %}
               <li class="page__numbers">
-                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                <a class="page-link" href="?page={{ page_number }}&search={{search}}&tabmenu={{category}}">{{ page_number }}</a>
               </li>
             {% endif %}
           {% endif %}
         {% endfor %}
         {% if page_list.has_next %}
           <li class="page__btn">
-            <a class="page-link" href="?page={{ page_list.next_page_number }}"><span class="material-symbols-outlined">chevron_right</span></a>
+            <a class="page-link" href="?page={{ page_list.next_page_number }}&search={{search}}&tabmenu={{category}}"><span class="material-symbols-outlined">chevron_right</span></a>
           </li>
         {% else %}
           <li class="page__btn disabled">
