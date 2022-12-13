@@ -33,7 +33,7 @@
             {% if study.owner.image %}
               <img src="{{ study.owner.image.url }}" alt="" width="55" height="55">
             {% else %}
-              <img src="https://scontent.cdnsnapwidget.com/vp/4aefafd3bee59d1d0fa2b29a59fc2bc5/5D7701C4/t51.2885-15/sh0.08/e35/s640x640/47690229_1430752333723397_2893005724802088960_n.jpg" alt="" width="55" height="55">
+              <img src="https://dummyimage.com/55x55/ccccd4/000000.png" alt="" width="55" height="55">
             {% endif %}
           </div>
         </div>
@@ -50,9 +50,12 @@
         {% if request.user == study.owner %}
           <div class="box approve-area">
             {% if application_member %}
-              <div id="study-number2">현재 가입 신청 인원:{{application_member|length }}</div>
+            <div class="noti-area">
+              <div class="noti-txt" id="study-number2"><span class="noti-icon material-symbols-outlined">notifications_active</span>현재 가입 신청 인원 <span class="down-icon material-symbols-outlined">arrow_drop_down</span></div>      
+              <div class="noti-num">{{application_member|length }}명</div>
+            </div>
             {% else %}
-              <div>신청 인원이 없어요</div>
+            <div class="noti-txt"><span class="noti-icon material-symbols-outlined">notifications_active</span>신청 인원이 없어요</div>
             {% endif %}
             <ul class="approve-members">
               {% for user in application_member %}
@@ -60,9 +63,9 @@
                   <div class="approve-user-info">
                     <!-- user profile img -->
                     {% if user.image %}
-                      <img src="user.image.url" alt="" class="study-detail-userimg">
+                      <img src="{{ user.image.url }}" alt="" width="40" height="40" class="study-detail-userimg">
                     {% else %}
-                      <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" alt="" class="study-detail-userimg">
+                      <img src="https://dummyimage.com/40x40/bab3ba/000000.jpg" width="40" height="40" alt="" class="study-detail-userimg">
                     {% endif %}
                     <!-- username -->
                     <h6>{{user.username}}</h6>
@@ -163,11 +166,15 @@
 <script>
   const approveSection = document.querySelector(".approve-area");
   const approvalList = document.querySelector(".approve-members");
+  const approvalTitle = document.querySelector(".noti-area");
   approveSection.addEventListener('click', () => {
     approvalList
       .classList
       .toggle('activate');
     approveSection
+      .classList
+      .toggle('activate');
+    approvalTitle
       .classList
       .toggle('activate');
   });

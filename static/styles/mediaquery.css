@@ -32,7 +32,10 @@
   #header {
     padding: 1rem 0.5rem;
   }
-  #header .logo {
+  #header .logo img {
+    width: 5rem;
+  }
+  #header .logo a {
     width: 60px;
     margin-right: 2rem;
   }

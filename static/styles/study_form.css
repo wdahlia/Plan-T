@@ -331,13 +331,55 @@
   margin-top: 1rem;
   width: 350px;
   align-self: center;
+  justify-content: center;
+  height: 50px;
   transition: all 0.8s;
-  height: 30px;
+  position: relative;
 }
 
 #study-detail-area .approve-area.activate {
+  height: 250px;
+  overflow-y: scroll;
+  transition: all 0.8s ease-in-out;
+}
+#study-detail-area .noti-area {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
   height: 100%;
-  transition: 0.8s ease-out;
+  top: 0;
+  left: 1rem;
+  font-weight: 700;
+  color: var(--main-dark);
+  letter-spacing: -1px;
+  opacity: 1;
+}
+
+#study-detail-area .noti-area.activate{
+  opacity: 0;
+}
+
+#study-detail-area .noti-area .noti-num {
+  background-color: var(--main);
+  padding: 0.4rem 0.8rem;
+  color: var(--txt);
+  border-radius: 15px;
+}
+
+#study-detail-area .noti-txt {
+  vertical-align: text-top;
+}
+#study-detail-area .noti-icon {
+  vertical-align: text-bottom;
+  margin-right: 10px;
+  font-weight: 700;
+}
+
+#study-detail-area .down-icon {
+  vertical-align: middle;
+  font-weight: 700;
 }
 
 #study-detail-area .approve-members {
