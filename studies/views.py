@@ -75,11 +75,14 @@ def create(request):
 
                 form.participated.add(request.user)
                 request.user.join_study.add(form)
-            return redirect("studies:index")
-        # 종료시점이 시작시점보다 먼저 있을 때
+                return redirect("studies:index")
+            # 필수 입력 사항을 빼먹을때
+            messages.warning(request, "좀 더 자세히 입력해 주세요~")
+            return redirect("studies:create")
         else:
+            # 종료시점이 시작시점보다 먼저 있을 때
             messages.warning(request, "시작시점과 종료시점을 바르게 입력하세요")
-            return render(request, "studies/complete/create_study.html", context)
+            return redirect("studies:create")
 
     else:
         studyform = StudyForm()
