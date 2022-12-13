@@ -87,7 +87,7 @@
               <div class="message-area">${message}{</div>
             </li>
         `;
-        let tag = (nickname == "{{ nickname }}") ? tag.replace("chat-message others", "chat-message") : tag;
+        tag = (nickname == "{{ nickname }}") ? tag.replace("chat-message others", "chat-message") : tag;
         chatLog.insertAdjacentHTML(tag);
 
         // scrolling
