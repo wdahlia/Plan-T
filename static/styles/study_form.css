@@ -205,6 +205,16 @@
   padding: 15px;
   margin-bottom: 2.5rem;
   width: 100%;
+  overflow: scroll;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+}
+
+#study-todo-area textarea[id="study-detail-text"]::-webkit-scrollbar,
+#study-info-area textarea[id="study-info-text"]::-webkit-scrollbar,
+#create-study-form textarea[id="study-info-text"]::-webkit-scrollbar,
+#update-study-form textarea[id="update-info-text"]::-webkit-scrollbar {
+  display: none;
 }
 
 #study-todo-area textarea[id="study-detail-text"] {
@@ -381,8 +391,13 @@
 #study-detail-area .approve-area.activate {
   height: 250px;
   overflow-y: scroll;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
   transition: all 0.8s ease-in-out;
   opacity: 1;
+}
+#study-detail-area .approve-area.activate::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리, 오페라, 엣지 */
 }
 
 #study-detail-area .approve-members {
