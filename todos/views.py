@@ -131,13 +131,13 @@ def create(request):
 
             # tag create
             if tags != "":
-                taglist = []
-                for tag in tags.split(","):
-                    tag_ = tag.replace(" ", "")
-                    if tag_ != "":
-                        taglist.append(tag_)
-                for t in taglist[:5]:
-                    Tag.objects.create(todo=todo, content=t)
+                tags.replace(" ", "")
+                if "," in tags:
+                    for tag in tags.split(",")[:5]:
+                        if tag != "":
+                            Tag.objects.create(todo=todo, content=tag)
+                else:
+                    Tag.objects.create(todo=todo, content=tags)
 
         return redirect("todos:today")
     else:
@@ -225,15 +225,13 @@ def update(request, pk):
             for todo_tag in todo_tags:
                 todo_tag.delete()
             if tags != "":
-                taglist = []
-                for tag in tags.split(","):
-                    tag_ = tag.replace(" ", "")
-                    if tag_ != "":
-                        taglist.append(tag_)
-                if taglist[-1] == "":
-                    taglist = taglist[:-1]
-                for t in taglist[:5]:
-                    Tag.objects.create(todo=todo, content=t)
+                tags.replace(" ", "")
+                if "," in tags:
+                    for tag in tags.split(",")[:5]:
+                        if tag != "":
+                            Tag.objects.create(todo=todo, content=tag)
+                else:
+                    Tag.objects.create(todo=todo, content=tags)
 
         todo_tags = Tag.objects.filter(todo=pk)
         if todo_tags:
