@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="container" id="study-chat-area">
+  <div class="box">
+
+    <div class="chat-header-area">
+      <a href="" class="logo">
+        <img src="{% static 'img/planT_logo.svg' %}" width="80" height="50" alt="Plant_logo">
+      </a>
+      <div class="study-name-area">
+        {% if study.owner.image %}
+          <img src="{{ study.owner.image.url }}" width="50" height="50" class="chat-pfimg" alt="leader-img">
+        {% else %}
+          <img src="https://dummyimage.com/150x150" width="50" height="50" class="chat-pfimg" alt="none">
+        {% endif %}
+        <h4>{{ study.title }}</h4>
+      </div>
+    </div>
+
+    <div class="chat-body-area">
+      <ul>
+        <!-- 내 닉네임 -->
+        <li class="chat-message">
+          <div class="user-field">
+            {% if memberimg.url %}
+            <img src="{{ memberimg.url }}" width="40" height="40" class="userpf" alt="">
+            {% else %}
+            <img src="https://dummyimage.com/150x150" width="40" height="40" class="userpf" alt="">
+            {% endif %}
+            <h6>{{ nickname }}</h6>
+          </div>
+          <div class="message-area">안녕하세요</div>
+        </li>
+        
+  
+        <!-- 그외의 나머지 js 코드에 class .others 추가하는 방식으로 하면될듯? -->
+        <li class="chat-message others">
+          <div class="user-field">
+            <img src="https://dummyimage.com/150x150" width="40" height="40" class="userpf" alt="">
+            <h6>admin1</h6>
+          </div>
+          <div class="message-area">안녕하세요</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="chat-send-area">
+      <input id="chat-message-input" type="text">
+      <input id="chat-message-submit" type="button" value="Send">
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock body %}
