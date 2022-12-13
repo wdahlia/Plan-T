@@ -224,6 +224,7 @@ def detail(request, study_pk):
             }
 
             return render(request, "studies/complete/study_detail.html", context)
+    messages.error(request, "인증된 유저만 접근 할 수 있습니다.")
     return redirect("studies:index")
 
 
@@ -381,10 +382,7 @@ def accept_and_drive_out(request, user_pk, study_pk):
         elif owner__ == False:
             # messages.success(request, "정상적으로 탈퇴가 되었습니다.")
             return redirect("studies:index")
-        else:
-            # 정상적이지 않은 루트로 들어올 때인데 어떻게 테스트를 해야 할지 모르겠다.
-            messages.error(request, "어떻게 들어오셨어요OoO?")
-            return redirect("studies:index")
+
     else:
         # 정상적이지 않은 루트로 들어올 때인데 어떻게 테스트를 해야 할지 모르겠다.
         messages.error(request, "잘못된 요청입니다.")

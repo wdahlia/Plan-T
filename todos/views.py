@@ -225,13 +225,14 @@ def update(request, pk):
             for todo_tag in todo_tags:
                 todo_tag.delete()
             if tags != "":
-                tags.replace(" ", "")
-                if "," in tags:
+                tags_ = tags.replace(" ", "")
+                if "," in tags_:
                     for tag in tags.split(",")[:5]:
-                        if tag != "":
-                            Tag.objects.create(todo=todo, content=tag)
+                        tag_ = tag.replace(" ", "")
+                        if tag_ != "":
+                            Tag.objects.create(todo=todo, content=tag_)
                 else:
-                    Tag.objects.create(todo=todo, content=tags)
+                    Tag.objects.create(todo=todo, content=tags_)
 
         todo_tags = Tag.objects.filter(todo=pk)
         if todo_tags:
