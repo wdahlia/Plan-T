@@ -20,7 +20,7 @@
     </div>
 
     <div class="chat-body-area">
-      <ul>
+      <ul class="chat-message-list">
         <!-- 내 닉네임 -->
         <li class="chat-message">
           <div class="user-field">
@@ -53,6 +53,66 @@
   </div>
 </div>
 
+{{ room_id|json_script:"room-name" }}
+<script>
+    const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/chat/'
+        + roomName
+        + '/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        let chatLog = document.querySelector('.chat-message-list');
+
+        // Line Feed check
+        let message = (data.message.includes('\n')) ? data.message.replace("\n", "") : data.message;
+
+        // ready for user data
+        const userImage = "{{ memberimg.url }}"
+        const nickname = data.message.split(" : ")[0];
+        message = data.message.split(" : ")[1];
+
+        // add message
+        let tag = `
+            <li class="chat-message others">
+              <div class="user-field">
+                <img src="${userImage}" width="40" height="40" class="userpf" alt="">
+                <h6>${nickname}</h6>
+              </div>
+              <div class="message-area">${message}{</div>
+            </li>
+        `;
+        let tag = (nickname == "{{ nickname }}") ? tag.replace("chat-message others", "chat-message") : tag;
+        chatLog.insertAdjacentHTML(tag);
+
+        // scrolling
+        chatLog.scrollTop = chatLog.scrollHeight;
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = "{{ nickname }}" + " : " +  messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+        messageInputDom.value = '';
+    };
+</script>
 
 {% endblock body %}
