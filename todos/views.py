@@ -133,7 +133,9 @@ def create(request):
             if tags != "":
                 taglist = []
                 for tag in tags.split(","):
-                    taglist.append(tag.replace(" ", ""))
+                    tag_ = tag.replace(" ", "")
+                    if tag_ != "":
+                        taglist.append(tag_)
                 for t in taglist[:5]:
                     Tag.objects.create(todo=todo, content=t)
 
@@ -225,7 +227,9 @@ def update(request, pk):
             if tags != "":
                 taglist = []
                 for tag in tags.split(","):
-                    taglist.append(tag.replace(" ", ""))
+                    tag_ = tag.replace(" ", "")
+                    if tag_ != "":
+                        taglist.append(tag_)
                 if taglist[-1] == "":
                     taglist = taglist[:-1]
                 for t in taglist[:5]:
@@ -344,13 +348,12 @@ def read_all(request):
     # months=1을 통하여 월별 관리, 모든 과거: lte
     few_month_ago = str(now - relativedelta(months=1))[:10]
     past_data = Todos.objects.filter(
-        user_id=request.user, 
-        when__range=(few_month_ago, yesterday)
+        user_id=request.user, when__range=(few_month_ago, yesterday)
     ).order_by("-when")
 
     # 각 데이터에서 when 필드를 문자열로 추출해서 중복을 제거함
     # 각 날짜를 키를 하는 딕셔너리를 생성
-    past_date = set(map(lambda x : x.when.strftime("%Y-%m-%d"), past_data))
+    past_date = set(map(lambda x: x.when.strftime("%Y-%m-%d"), past_data))
     past = dict.fromkeys(past_date)
 
     # 각 데이터의 날짜를 문자열로 만들고
@@ -358,7 +361,7 @@ def read_all(request):
     # 생성 후 해당 리스트에 날짜에 맞는 데이터가 쌓임
     for i in past_data:
         date = i.when.strftime("%Y-%m-%d")
-        
+
         if not past[date]:
             past[date] = []
 
@@ -372,7 +375,7 @@ def read_all(request):
     future = Todos.objects.filter(user_id=request.user, when__gte=tomorrow).order_by(
         "when"
     )
-    
+
     context = {
         "past": past,
         "present": present,
@@ -439,8 +442,6 @@ def detail_asyn(request):
 
     todo = Todos.objects.filter(id=pk)
 
-    context = {
-        "todo": serializers.serialize("json", todo)
-    }
+    context = {"todo": serializers.serialize("json", todo)}
 
     return JsonResponse(context)

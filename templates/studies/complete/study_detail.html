@@ -6,10 +6,11 @@
     <div class="box detail-box">
       <section id="study-detail-area">
         <div class="study-detail-btn">
-          
+
           <!-- 스터디 수정, 되돌아가기 버튼 -->
           <form action="{% url 'chat:room' study.pk %}">
-            <label for="chat-btn"><span class="chat-icon_img material-symbols-outlined">sms</span></label>
+            <label for="chat-btn">
+              <span class="chat-icon_img material-symbols-outlined">sms</span></label>
             <input type="submit" id="chat-btn" value="">
           </form>
           <a href="{% url 'studies:update' study.pk %}" class="edit-direct-btn">
@@ -351,8 +352,7 @@
         detailAccept
           .parentNode
           .parentNode
-          .classList
-          .add('hidden');
+          .remove()
       })
     })
   };
@@ -383,8 +383,7 @@
         detailRefusal
           .parentNode
           .parentNode
-          .classList
-          .add('hidden');
+          .remove()
       })
     })
   };
@@ -393,8 +392,8 @@
   const startTaskDate = document.querySelector("#studytask-start");
   const endTaskDate = document.querySelector('#studytask-end');
   startTaskDate.addEventListener("input", function (event) {
-      console.log(event.target);
-      endTaskDate.min = event.target.value;
+    console.log(event.target);
+    endTaskDate.min = event.target.value;
   });
 </script>
 {% endblock body %}
