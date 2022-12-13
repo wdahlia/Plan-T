@@ -244,7 +244,6 @@ def info(request, study_pk):
     return render(request, "studies/complete/study_info.html", context)
 
 
-@login_required
 def join(request, study_pk):
     study = get_object_or_404(Study, pk=study_pk)
     # 신청 취소
@@ -262,7 +261,6 @@ def join(request, study_pk):
 
 
 # 반장이 가입신청 인원 수락 거절(가입 신청기록 삭제)
-@login_required
 def refusal(request, study_pk, user_pk):
     if request.method:
         study = get_object_or_404(Study, pk=study_pk)
@@ -277,7 +275,6 @@ def refusal(request, study_pk, user_pk):
         return redirect("studies:detail", study_pk)
 
 
-@login_required
 def accept_and_drive_out(request, user_pk, study_pk):
     if request.method == "POST":
         user = get_object_or_404(get_user_model(), pk=user_pk)
