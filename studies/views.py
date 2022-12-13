@@ -4,7 +4,7 @@ from .forms import StudyForm, StudyTodosForm
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-from datetime import datetime, timedelta
+from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from accounts.decorator import login_message_required
 from django.core.paginator import Paginator
@@ -245,19 +245,23 @@ def info(request, study_pk):
 
 
 def join(request, study_pk):
-    study = get_object_or_404(Study, pk=study_pk)
-    # 신청 취소
-    if study.participated.filter(pk=request.user.pk).exists():
-        study.participated.remove(request.user)
-        is_participated = False
-    # 가입신청
+    if request.method == "POST":
+        study = get_object_or_404(Study, pk=study_pk)
+        # 신청 취소
+        if study.participated.filter(pk=request.user.pk).exists():
+            study.participated.remove(request.user)
+            is_participated = False
+        # 가입신청
+        else:
+            study.participated.add(request.user)
+            is_participated = True
+        context = {
+            "is_participated": is_participated,
+        }
+        return JsonResponse(context)
     else:
-        study.participated.add(request.user)
-        is_participated = True
-    context = {
-        "is_participated": is_participated,
-    }
-    return JsonResponse(context)
+        messages.error(request, "잘못된 요청입니다.")
+        return redirect("studies:index")
 
 
 # 반장이 가입신청 인원 수락 거절(가입 신청기록 삭제)
@@ -265,14 +269,15 @@ def refusal(request, study_pk, user_pk):
     if request.method:
         study = get_object_or_404(Study, pk=study_pk)
         user = get_object_or_404(get_user_model(), pk=user_pk)
-        # 거절
-        study.participated.remove(user)
-        studyJoinNumber = len(study.participated.all()) - 1
-        context = {"studyJoinNumber": studyJoinNumber}
-        return JsonResponse(context)
-    else:
-        messages.error(request, "잘못된 요청입니다.")
-        return redirect("studies:detail", study_pk)
+        # 오직 반장만 거절 가능
+        if request.user == study.owner:
+            study.participated.remove(user)
+            studyJoinNumber = len(study.participated.all()) - 1
+            context = {"studyJoinNumber": studyJoinNumber}
+            return JsonResponse(context)
+
+    messages.error(request, "잘못된 요청입니다.")
+    return redirect("studies:index")
 
 
 def accept_and_drive_out(request, user_pk, study_pk):
@@ -280,10 +285,21 @@ def accept_and_drive_out(request, user_pk, study_pk):
         user = get_object_or_404(get_user_model(), pk=user_pk)
         study = get_object_or_404(Study, pk=study_pk)
 
-        # 강퇴 & 탈퇴(수락 거절 + 가입 신청 거절)
+        # 반장은 owner, 멤버는 not owner, 나쁜 사용자는 redirect
+        if request.user == study.owner:
+            owner__ = True
+        elif request.user == user:
+            owner__ = False
+        else:
+            messages.error(request, "잘못된 요청입니다.")
+            return redirect("studies:index")
+
+        # 강퇴 & 탈퇴 기능
         if user.join_study.filter(pk=study_pk).exists():
+            # 강퇴 & 탈퇴(수락 거절 + 가입 신청 거절)
             user.join_study.remove(study)
             study.participated.remove(user)
+
             # 스터디 관련 todos 삭제
             delete_studies_todos = StudyTodos.objects.filter(
                 user_id=user,
@@ -292,39 +308,35 @@ def accept_and_drive_out(request, user_pk, study_pk):
             for delete_studies_todo in delete_studies_todos:
                 delete_studies_todo.delete()
             #
-            # 반장이 하면 강퇴(화면 유지), 멤버가 하면 탈퇴(index페이지로 이동)
-            if study.owner == request.user:
-                owner__ = True
-            else:
-                owner__ = False
-            #
-        # 수락 or 초대
-        else:
-            if study.max_people > study.member_number:
-                user.join_study.add(study)
-                today = str(datetime.now())[:10]
-                # 수락과 동시에 아직 안끝난 studies_todos 생성
-                study_todos = StudyTodos.objects.filter(
-                    user_id=study.owner,
-                    study_pk=study,
-                    end__gte=today,
-                )
-                for study_todo in study_todos:
-                    StudyTodos.objects.create(
-                        study_pk=study,
-                        management_pk=study_todo.management_pk,
-                        user_id=user,
-                        title=study_todo.title,
-                        content=study_todo.content,
-                        start=study_todo.start,
-                        end=study_todo.end,
-                    )
-                #
-                owner__ = True
-            else:
-                messages.error(request, "최대 인원을 초과하였습니다.")
-                return redirect("studies:detail", study_pk)
 
+        # 수락
+        else:
+            if owner__ == True:
+                if study.max_people > study.member_number:
+                    user.join_study.add(study)
+                    today = str(datetime.now())[:10]
+                    # 수락과 동시에 아직 안끝난 studies_todos 생성
+                    study_todos = StudyTodos.objects.filter(
+                        user_id=study.owner,
+                        study_pk=study,
+                        end__gte=today,
+                    )
+                    for study_todo in study_todos:
+                        StudyTodos.objects.create(
+                            study_pk=study,
+                            management_pk=study_todo.management_pk,
+                            user_id=user,
+                            title=study_todo.title,
+                            content=study_todo.content,
+                            start=study_todo.start,
+                            end=study_todo.end,
+                        )
+                else:
+                    messages.error(request, "최대 인원을 초과하였습니다.")
+                    return redirect("studies:detail", study_pk)
+            else:
+                messages.error(request, "어떻게 들어오셨어요OoO?")
+                return redirect("studies:index")
         # 가입된 멤버 수 최신화
         member_number = 0
         studyJoinNumber = 0
@@ -344,14 +356,19 @@ def accept_and_drive_out(request, user_pk, study_pk):
         # print(member_number)
         study.member_number = member_number
         study.save()
+        # 반장이면 페이지 유지
         if owner__ == True:
             context = {
                 "member_number": member_number,
                 "studyJoinNumber": studyJoinNumber,
             }
             return JsonResponse(context)
+        # 멤버면 index로 보냄
+        elif owner__ == False:
+            return redirect("studies:index")
         else:
+            messages.error(request, "어떻게 들어오셨어요OoO?")
             return redirect("studies:index")
     else:
         messages.error(request, "잘못된 요청입니다.")
-        return redirect("studies:detail", study_pk)
+        return redirect("studies:index")
