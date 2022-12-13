@@ -15,7 +15,7 @@ def room(request, study_pk):
     if user.is_authenticated:
         if user in study.participated.all() and study in user.join_study.all():
             nickname = user.username
-            memberimg = user.image
+            memberimg = user.image.url if user.image else 'https://dummyimage.com/150x150'
         else:
             messages.error(request, "스터디에 가입해주세요.")
 
@@ -32,4 +32,4 @@ def room(request, study_pk):
         "memberimg": memberimg,
     }
 
-    return render(request, "chat/test.html", context)
+    return render(request, "chat/room.html", context)

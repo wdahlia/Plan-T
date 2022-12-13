@@ -337,7 +337,8 @@
   const detailAccepts = document.querySelectorAll(`.detail-accept`)
   for (const detailAccept of detailAccepts) {
     detailAccept.addEventListener("submit", function (event) {
-      event.preventDefault()
+      event.preventDefault();
+      event.stopPropagation();
       const csrftoken = document
         .querySelector('[name=csrfmiddlewaretoken]')
         .value;
@@ -374,7 +375,8 @@
   const detailRefusals = document.querySelectorAll(`.detail-refusal`)
   for (const detailRefusal of detailRefusals) {
     detailRefusal.addEventListener("submit", function (event) {
-      event.preventDefault()
+      event.preventDefault();
+      event.stopPropagation();
       const csrftoken = document
         .querySelector('[name=csrfmiddlewaretoken]')
         .value;
