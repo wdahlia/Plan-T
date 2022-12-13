@@ -32,4 +32,4 @@ def room(request, study_pk):
         "memberimg": memberimg,
     }
 
-    return render(request, "chat/test.html", context)
+    return render(request, "chat/room.html", context)
