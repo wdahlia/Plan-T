@@ -339,6 +339,7 @@
     detailAccept.addEventListener("submit", function (event) {
       console.log(event)
       event.preventDefault();
+      event.stopPropagation();
       const csrftoken = document
         .querySelector('[name=csrfmiddlewaretoken]')
         .value;
@@ -383,6 +384,7 @@
   for (const detailRefusal of detailRefusals) {
     detailRefusal.addEventListener("submit", function (event) {
       event.preventDefault();
+      event.stopPropagation();
       const csrftoken = document
         .querySelector('[name=csrfmiddlewaretoken]')
         .value;

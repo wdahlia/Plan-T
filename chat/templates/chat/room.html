@@ -1,55 +1,97 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Chat Room</title>
-</head>
-<body>
-    <textarea id="chat-log" cols="100" rows="20" disabled></textarea><br>
-    <input id="chat-message-input" type="text" size="100"><br>
-    <input id="chat-message-submit" type="button" value="Send">
-    {{ room_id|json_script:"room-name" }}
-    <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
 
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/chat/'
-            + roomName
-            + '/'
-        );
+<div class="container" id="study-chat-area">
+  <div class="box">
 
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            let chatLog = document.querySelector('#chat-log');
+    <div class="chat-header-area">
+      <a href="" class="logo">
+        <img src="{% static 'img/planT_logo.svg' %}" width="80" height="50" alt="Plant_logo">
+      </a>
+      <div class="study-name-area">
+        {% if study.owner.image %}
+          <img src="{{ study.owner.image.url }}" width="50" height="50" class="chat-pfimg" alt="leader-img">
+        {% else %}
+          <img src="https://dummyimage.com/150x150" width="50" height="50" class="chat-pfimg" alt="none">
+        {% endif %}
+        <h4>{{ study.title }}</h4>
+      </div>
+    </div>
 
-            // Line Feed check
-            chatLog.value += (data.message.includes('\n')) ? data.message : (data.message + '\n');
+    <div class="chat-body-area">
+      <ul class="chat-message-list">
+      </ul>
+    </div>
 
-            // scrolling
-            chatLog.scrollTop = chatLog.scrollHeight;
-        };
+    <div class="chat-send-area">
+      <input id="chat-message-input" type="text">
+      <input id="chat-message-submit" type="button" value="Send">
+    </div>
+  </div>
+</div>
 
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
+{{ room_id|json_script:"room-name" }}
+<script>
+    const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#chat-message-submit').click();
-            }
-        };
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/chat/'
+        + roomName
+        + '/'
+    );
 
-        document.querySelector('#chat-message-submit').onclick = function(e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = "{{ nickname }}" + " : " +  messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
-            messageInputDom.value = '';
-        };
-    </script>
-</body>
-</html>
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        let chatLog = document.querySelector('.chat-message-list');
+
+        // Line Feed check
+        let message = (data.message.includes('\n')) ? data.message.replace("\n", "") : data.message;
+
+        // ready for user data
+        const userImage = data.message.split(" : ")[2];
+        const nickname = data.message.split(" : ")[0];
+        message = data.message.split(" : ")[1];
+
+        // add message
+        let tag = `
+            <li class="chat-message others">
+              <div class="user-field">
+                <img src="${userImage}" width="40" height="40" class="userpf" alt="">
+                <h6>${nickname}</h6>
+              </div>
+              <div class="message-area">${message}</div>
+            </li>
+        `;
+        tag = (nickname == "{{ nickname }}") ? tag.replace("chat-message others", "chat-message") : tag;
+        chatLog.insertAdjacentHTML("beforeend", tag);
+
+        // scrolling
+        let chatBodyArea = document.querySelector('.chat-body-area');
+        chatBodyArea.scrollTop = chatBodyArea.scrollHeight;
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = "{{ nickname }}" + " : " +  messageInputDom.value + " : " + "{{ memberimg }}";
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+        messageInputDom.value = '';
+    };
+</script>
+
+{% endblock body %}
