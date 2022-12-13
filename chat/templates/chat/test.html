@@ -88,7 +88,7 @@
             </li>
         `;
         tag = (nickname == "{{ nickname }}") ? tag.replace("chat-message others", "chat-message") : tag;
-        chatLog.insertAdjacentHTML(tag);
+        chatLog.insertAdjacentHTML("beforeend", tag);
 
         // scrolling
         chatLog.scrollTop = chatLog.scrollHeight;
