@@ -13,9 +13,11 @@
               <span class="chat-icon_img material-symbols-outlined">sms</span></label>
             <input type="submit" id="chat-btn" value="">
           </form>
-          <a href="{% url 'studies:update' study.pk %}" class="edit-direct-btn">
-            <span class="edit-icon_img material-symbols-outlined">edit_note</span>
-          </a>
+          {% if request.user == study.owner %}
+            <a href="{% url 'studies:update' study.pk %}" class="edit-direct-btn">
+              <span class="edit-icon_img material-symbols-outlined">edit_note</span>
+            </a>
+          {% endif %}
           <a href="{% url 'studies:info' study.pk %}">
             <span class="goback-icon_img material-symbols-outlined">undo</span>
           </a>
