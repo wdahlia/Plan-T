@@ -73,7 +73,7 @@
         let message = (data.message.includes('\n')) ? data.message.replace("\n", "") : data.message;
 
         // ready for user data
-        const userImage = "{{ memberimg|default_if_none:'https://dummyimage.com/150x150'  }}";
+        const userImage = "{{ memberimg.url|default_if_none:'https://dummyimage.com/150x150' }}";
         const nickname = data.message.split(" : ")[0];
         message = data.message.split(" : ")[1];
 
@@ -84,7 +84,7 @@
                 <img src="${userImage}" width="40" height="40" class="userpf" alt="">
                 <h6>${nickname}</h6>
               </div>
-              <div class="message-area">${message}{</div>
+              <div class="message-area">${message}</div>
             </li>
         `;
         tag = (nickname == "{{ nickname }}") ? tag.replace("chat-message others", "chat-message") : tag;
