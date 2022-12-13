@@ -341,19 +341,23 @@
           'X-CSRFToken': csrftoken
         }
       }).then(response => {
-        const studyNumber = document.querySelector("#study-number");
-        const studyJoinNumber = document.querySelector("#study-number2");
-        studyNumber.innerText = response.data.member_number + "명";
-        if (response.data.studyJoinNumber === 0) {
-          studyJoinNumber.innerText = "신청 인원이 없어요";
+        if (response.data.check === true) {
+          const studyNumber = document.querySelector("#study-number");
+          const studyJoinNumber = document.querySelector("#study-number2");
+          studyNumber.innerText = response.data.member_number + "명";
+          if (response.data.studyJoinNumber === 0) {
+            studyJoinNumber.innerText = "신청 인원이 없어요";
+          } else {
+            studyJoinNumber.innerText = "현재 가입 신청 인원: " + response.data.studyJoinNumber + "명";
+          };
+          detailAccept
+            .parentNode
+            .parentNode
+            .remove()
         } else {
-          studyJoinNumber.innerText = "현재 가입 신청 인원: " + response.data.studyJoinNumber + "명";
-        };
-        detailAccept
-          .parentNode
-          .parentNode
-          .remove()
-      })
+          location.reload();
+        }
+      });
     })
   };
 
