@@ -327,39 +327,19 @@
 
 
 /* study detail 승인, 거절 Area */
-#study-detail-area .approve-area {
-  margin-top: 1rem;
-  width: 350px;
-  align-self: center;
-  justify-content: center;
-  height: 50px;
-  transition: all 0.8s;
-  position: relative;
-}
-
-#study-detail-area .approve-area.activate {
-  height: 250px;
-  overflow-y: scroll;
-  transition: all 0.8s ease-in-out;
-}
 #study-detail-area .noti-area {
-  position: absolute;
+  margin-top: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
-  height: 100%;
-  top: 0;
-  left: 1rem;
+  align-self: center;
+  width: 350px;
+  height: 50px;
   font-weight: 700;
   color: var(--main-dark);
   letter-spacing: -1px;
-  opacity: 1;
 }
 
-#study-detail-area .noti-area.activate{
-  opacity: 0;
-}
 
 #study-detail-area .noti-area .noti-num {
   background-color: var(--main);
@@ -371,6 +351,11 @@
 #study-detail-area .noti-txt {
   vertical-align: text-top;
 }
+
+#study-detail-area #study-number {
+  color: var(--wrn);
+}
+
 #study-detail-area .noti-icon {
   vertical-align: text-bottom;
   margin-right: 10px;
@@ -380,6 +365,23 @@
 #study-detail-area .down-icon {
   vertical-align: middle;
   font-weight: 700;
+}
+
+#study-detail-area .approve-area {
+  margin-top: 1rem;
+  width: 350px;
+  align-self: center;
+  justify-content: center;
+  height: 50px;
+  transition: all 0.8s;
+  opacity: 0;
+}
+
+#study-detail-area .approve-area.activate {
+  height: 250px;
+  overflow-y: scroll;
+  transition: all 0.8s ease-in-out;
+  opacity: 1;
 }
 
 #study-detail-area .approve-members {

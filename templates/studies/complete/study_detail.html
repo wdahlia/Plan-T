@@ -43,22 +43,25 @@
         <!-- 스터디 인원 -->
         <label for="study-members-num"># 스터디 인원</label>
         <div class="members-area" id="study-members-num">
-          <div id="study-number" class="study-membernum">{{study.member_number}}명</div>
+          <div class="study-membernum">{{study.member_number}}명</div>
           <span>/</span>
           <div class="study-totalnum">{{study.max_people}}명</div>
         </div>
 
         <!-- 스터디 신청 목록 -->
         {% if request.user == study.owner %}
-          <div class="box approve-area">
-            {% if application_member %}
-            <div class="noti-area">
+          {% if application_member %}
+            <div class="box noti-area">
               <div class="noti-txt" id="study-number2"><span class="noti-icon material-symbols-outlined">notifications_active</span>현재 가입 신청 인원 <span class="down-icon material-symbols-outlined">arrow_drop_down</span></div>      
               <div class="noti-num">{{application_member|length }}명</div>
             </div>
-            {% else %}
-            <div class="noti-txt"><span class="noti-icon material-symbols-outlined">notifications_active</span>신청 인원이 없어요</div>
-            {% endif %}
+          {% else %}
+            <div class="box noti-area">
+              <div class="noti-txt" id="study-number"><span class="noti-icon material-symbols-outlined">notifications_active</span>신청 인원이 없어요</div>
+              <div class="noti-num zero">0명</div>
+            </div>
+          {% endif %}
+          <div class="box approve-area">
             <ul class="approve-members">
               {% for user in application_member %}
                 <li>
@@ -169,14 +172,11 @@
   const approveSection = document.querySelector(".approve-area");
   const approvalList = document.querySelector(".approve-members");
   const approvalTitle = document.querySelector(".noti-area");
-  approveSection.addEventListener('click', () => {
+  approvalTitle.addEventListener('click', () => {
     approvalList
       .classList
       .toggle('activate');
     approveSection
-      .classList
-      .toggle('activate');
-    approvalTitle
       .classList
       .toggle('activate');
   });
@@ -334,10 +334,11 @@
 </script>
 <script>
   // 승인 비동기
-  const detailAccepts = document.querySelectorAll(`.detail-accept`)
+  const detailAccepts = document.querySelectorAll(`.detail-accept`);
   for (const detailAccept of detailAccepts) {
     detailAccept.addEventListener("submit", function (event) {
-      event.preventDefault()
+      console.log(event)
+      event.preventDefault();
       const csrftoken = document
         .querySelector('[name=csrfmiddlewaretoken]')
         .value;
@@ -351,13 +352,20 @@
         }
       }).then(response => {
         if (response.data.check === true) {
+          const studyMemberNum = document.querySelector(".study-membernum");
           const studyNumber = document.querySelector("#study-number");
           const studyJoinNumber = document.querySelector("#study-number2");
-          studyNumber.innerText = response.data.member_number + "명";
+          const approvalNumber = document.querySelector(".noti-num");
+          studyMemberNum.innerText = response.data.member_number + "명";
           if (response.data.studyJoinNumber === 0) {
-            studyJoinNumber.innerText = "신청 인원이 없어요";
+            studyJoinNumber.style.color = "var(--wrn)";
+            studyJoinNumber.innerHTML = `
+              <span class="noti-icon material-symbols-outlined">notifications_active</span>신청 인원이 없어요<span class="down-icon material-symbols-outlined">arrow_drop_down</span>`;
+            approvalNumber.innerText = response.data.studyJoinNumber + "명";
           } else {
-            studyJoinNumber.innerText = "현재 가입 신청 인원: " + response.data.studyJoinNumber + "명";
+            studyJoinNumber.innerHTML = `
+              <span class="noti-icon material-symbols-outlined">notifications_active</span>현재 가입 신청 인원 <span class="down-icon material-symbols-outlined">arrow_drop_down</span>`;
+            approvalNumber.innerText = response.data.studyJoinNumber + "명";
           };
           detailAccept
             .parentNode
@@ -371,10 +379,10 @@
   };
 
   // 거절 비동기
-  const detailRefusals = document.querySelectorAll(`.detail-refusal`)
+  const detailRefusals = document.querySelectorAll(`.detail-refusal`);
   for (const detailRefusal of detailRefusals) {
     detailRefusal.addEventListener("submit", function (event) {
-      event.preventDefault()
+      event.preventDefault();
       const csrftoken = document
         .querySelector('[name=csrfmiddlewaretoken]')
         .value;
@@ -387,11 +395,21 @@
           'X-CSRFToken': csrftoken
         }
       }).then(response => {
+        const studyMemberNum = document.querySelector(".study-membernum");
+        // const studyNumber = document.querySelector("#study-number");
+        const approvalNumber = document.querySelector(".noti-num");
         const studyJoinNumber = document.querySelector("#study-number2");
-        if (response.data.studyJoinNumber === 0) {
-          studyJoinNumber.innerText = "신청 인원이 없어요";
+        let innerNum = Number(approvalNumber.innerText.split("명")[0]);
+        if (innerNum === 1) {
+          studyJoinNumber.style.color = "var(--wrn)";
+          studyJoinNumber.innerHTML = `<span class="noti-icon material-symbols-outlined">notifications_active</span>신청 인원이 없어요<span class="down-icon material-symbols-outlined">arrow_drop_down</span>`;
+          innerNum -= 1
+          approvalNumber.innerText = innerNum + "명";
         } else {
-          studyJoinNumber.innerText = "현재 가입 신청 인원: " + response.data.studyJoinNumber + "명";
+          studyJoinNumber.innerHTML = `
+          <span class="noti-icon material-symbols-outlined">notifications_active</span>현재 가입 신청 인원 <span class="down-icon material-symbols-outlined">arrow_drop_down</span>`;
+          innerNum -= 1
+          approvalNumber.innerText = innerNum + "명";
         };
         detailRefusal
           .parentNode
