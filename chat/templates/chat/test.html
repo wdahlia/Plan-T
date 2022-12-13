@@ -73,7 +73,7 @@
         let message = (data.message.includes('\n')) ? data.message.replace("\n", "") : data.message;
 
         // ready for user data
-        const userImage = "{{ memberimg.url }}"
+        const userImage = ("{{ memberimg.url }}" === "") ? "https://dummyimage.com/150x150" : "{{ memberimg.url }}";
         const nickname = data.message.split(" : ")[0];
         message = data.message.split(" : ")[1];
 
