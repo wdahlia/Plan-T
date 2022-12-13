@@ -727,7 +727,10 @@ try {
     document.querySelectorAll(".task").forEach(
         function (v, i, o) {
             // 자식들 중 input 태그를 지정함
-            inputTags.push(o[i].children[1]);
+            // 더미 데이터들은 p 태그 하나 뿐이므로 
+            // 아래 if 문으로 실 데이터를 구분한다.
+            if(v.children.length > 1)
+                inputTags.push(o[i].children[1]);
         }
     );
 
