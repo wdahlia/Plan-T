@@ -29,6 +29,11 @@ body {
 	-moz-user-select: none;
 	-ms-use-select: none;
 	user-select: none;
+	-ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+ display: none;
 }
 
 /* commons */

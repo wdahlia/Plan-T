@@ -139,9 +139,32 @@
     left: 0.6rem;
   }
   #week .week-btn-area .week-btn .next-week {
-    position: absolute;
+    position: block;
     top: 3.4rem;
     right: 0.4rem;
+  }
+
+  /* alltask.html */
+  #timeline-box-area {
+    display: block;
+  }
+  .task-timeline .timedetail-form {
+    margin-top: 1rem;
+    position: static;
+    overflow: visible;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.3s ease-in;
+  }
+  .task-timeline .time-box-area.activate {
+    width: 100%;
+  }
+  .task-timeline .timedetail-form.activate {
+    width: 100%;
+    display: static;
+    opacity: 1;
+    transition: all 0.3s ease-out;
   }
 }
 

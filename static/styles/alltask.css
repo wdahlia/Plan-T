@@ -36,6 +36,7 @@
 	z-index: 0;
 	transition: 0.3s ease;
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+	align-self: center;
 }
 
 /* timeline area */
@@ -68,6 +69,7 @@
   height: 39px;
   line-height: 43px;
   cursor: pointer;
+	margin-bottom: 0.5rem;
 }
 
 .timeline-box:hover > .arrow-icon {
@@ -106,7 +108,8 @@
 
 .past-date_all .past-date {
 	display: flex;
-	margin-left: 2.8rem;
+	align-items: center;
+	margin-left: 3rem;
 }
 
 .past-date_all .past-date:first-child {
@@ -116,19 +119,24 @@
 .past-date_all .past-date .datetime {
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
 	background-color: var(--bg);
-	border: 2px solid var(--bg-dark);
+	border: 2px solid var(--gr-dark);
 	border-radius: 15px;
-	width: 500px;
+	width: 430px;
 	text-align: start;
 	padding: 0.8rem 1rem;
 	margin-right: 1rem;
+	/* margin-bottom: 1rem; */
 	cursor: pointer;
 }
 
 
 
 .past-date_all .task_listup{
-  margin-left: 7rem;
+  margin-left: 4rem;
+}
+
+.past-date_all .task_listup:last-child {
+	margin-bottom: 1rem;
 }
 
 .task_listup .task-li-content{
@@ -136,23 +144,30 @@
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   height: 50px;
-  max-width: 420px;
-  margin-top: 1rem;
+	max-width: 400px;
+  margin-bottom: 1rem;
   display: none;
   padding: 1rem 2rem;
   align-items: center;
   justify-content: space-between;
+	letter-spacing: -1px;
 }
 
+
 .task_listup .task-li-content.activate{
-  display: flex;
+	display: flex;
+}
+.task_listup .task-li-content.activate:first-child {
+	margin-top: 1rem;
 }
 
 .today-timeline .task_listup .task-li-content.activate,
-.tommorrow-timeline .task_listup .task-li-content.activate{
-  display: flex;
+.tomorrow-timeline .task_listup .task-li-content.activate{
+	display: flex;
   margin-left: 4rem;
+	margin-bottom: 1rem;
 }
+
 
 input[id="past-check"]{
   display: none;
@@ -174,4 +189,12 @@ input[id="past-check"] + label {
 
 #today-detail-form .today_task-img {
 	padding: 2.6rem 0;
+}
+
+#timedetail-form-area {
+	height: 100%;
+}
+
+#timedetail-form-area textarea[name="today_task-textarea"] {
+	margin-top: 1rem;
 }

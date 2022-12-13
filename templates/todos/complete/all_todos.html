@@ -36,9 +36,6 @@
                         {% for date, todos in past.items %}
                         <div class="past-date_all">
                             <div class="past-date">
-                                <span class="arrow-icon">
-                                    <img src="{% static 'img/arrow_forward.svg' %}" alt="">
-                                </span>
                                 <button class="datetime">
                                     {{ date }}
                                 </button>
@@ -47,8 +44,6 @@
                             <ul class="task_listup">
                                 <li class="task-li-content" id="task-li-content{{ todo.pk }}">
                                     <span> {{ todo.title }} </span>
-                                    <input type="checkbox" name="" id="past-check">
-                                    <label for="past-check"></label>
                                 </li>
                             </ul>
                             {% endfor %}
@@ -56,9 +51,6 @@
                         {% empty %}
                         <div class="past-date_all">
                             <div class="past-date">
-                                <span class="arrow-icon">
-                                    <img src="{% static 'img/arrow_forward.svg' %}" alt="">
-                                </span>
                                 <button class="datetime">
                                     작성된 할일이 없어요 :(
                                 </button>
@@ -80,8 +72,6 @@
                             {% for today in present %}
                             <li class="task-li-content" id="task-li-content{{ today.pk }}">
                                 <span> {{today.title}} </span>
-                                <input type="checkbox" name="" id="past-check">
-                                <label for="past-check"></label>
                             </li>
                             {% empty %}
                             <li class="task-li-content">
@@ -95,20 +85,28 @@
                             <span class="arrow-icon">
                                 <img src="{% static 'img/arrow_forward.svg' %}" alt="">
                             </span>
-                            <button class="time-point">
+                            <button class="times">
                                 내일
                             </button>
                         </div>
+                        <ul class="task_listup">
+                            {% for ft in future %}
+                            <li class="task-li-content" id="task-li-content{{ ft.pk }}">
+                                <span> {{ft.title}} </span>
+                            </li>
+                            {% empty %}
+                            <li class="task-li-content">
+                                <span>아직 작성된 할일이 없어요 :(</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
                 <div class="box timedetail-form" id="timedetail-form-area">
                     <form action="" method="post" id="today-detail-form">
-                        <input type="text" name="today_task-title" value="task title" class="today_task-title">
+                        <input type="text" name="today_task-title" value="task title" class="today_task-title" disabled>
 
-                        <textarea name="today_task-textarea" class="today_task-textarea" cols="30" rows="10"></textarea>
-                        <div class="keyword-box">
-                            <input type="text" name="tags" id="detail-tag" placeholder="#keyword">
-                        </div>
+                        <textarea name="today_task-textarea" class="today_task-textarea" cols="30" rows="10" disabled></textarea>
                     </form>
                 </div>
             </div>
@@ -159,22 +157,6 @@
     });
 
 
-
-</script>
-
-<script>
-    let uploadFile = document.getElementById("today-task-imgfile");
-    let loadedFile = document.querySelector(".loaded-file")
-    const noneFile = document.querySelector(".upload-none")
-
-    loadedFile.style.display = "none";
-
-    uploadFile.onchange = () => {
-        noneFile.style.display = "none";
-        loadedFile.style.display = "block";
-        let uploadFileName = uploadFile.files[0].name;
-        loadedFile.innerText = `${uploadFileName}`;
-    }
 
 </script>
 <!-- 과거, 오늘, 내일 토글 -->

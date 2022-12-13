@@ -28,8 +28,10 @@
 
 #study-todo-area .chat-icon_img{
 	background-color: var(--bl);
-	margin-right: 1rem;
 	color: var(--txt);
+}
+#study-todo-area .edit-icon_img {
+	margin-left: 1rem;
 }
 
 #study-todo-area .goback-icon_img {
