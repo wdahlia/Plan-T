@@ -86,10 +86,12 @@
 
     document.querySelector('#chat-message-submit').onclick = function(e) {
         const messageInputDom = document.querySelector('#chat-message-input');
-        const message = "{{ nickname }}" + " : " +  messageInputDom.value + " : " + "{{ memberimg }}";
-        chatSocket.send(JSON.stringify({
-            'message': message
-        }));
+        if(messageInputDom.value !== ""){
+          const message = "{{ nickname }}" + " : " +  messageInputDom.value + " : " + "{{ memberimg }}";
+          chatSocket.send(JSON.stringify({
+              'message': message
+          }));
+        }
         messageInputDom.value = '';
     };
 </script>
