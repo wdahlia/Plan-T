@@ -75,11 +75,14 @@ def create(request):
 
                 form.participated.add(request.user)
                 request.user.join_study.add(form)
-            return redirect("studies:index")
-        # 종료시점이 시작시점보다 먼저 있을 때
+                return redirect("studies:index")
+            # 필수 입력 사항을 빼먹을때
+            messages.warning(request, "좀 더 자세히 입력해 주세요~")
+            return redirect("studies:create")
         else:
+            # 종료시점이 시작시점보다 먼저 있을 때
             messages.warning(request, "시작시점과 종료시점을 바르게 입력하세요")
-            return render(request, "studies/complete/create_study.html", context)
+            return redirect("studies:create")
 
     else:
         studyform = StudyForm()
@@ -291,6 +294,7 @@ def accept_and_drive_out(request, user_pk, study_pk):
         elif request.user == user:
             owner__ = False
         else:
+            # 정상적이지 않은 루트로 들어올 때인데 어떻게 테스트를 해야 할지 모르겠다.
             messages.error(request, "잘못된 요청입니다.")
             return redirect("studies:index")
 
@@ -333,8 +337,10 @@ def accept_and_drive_out(request, user_pk, study_pk):
                         )
                 else:
                     messages.error(request, "최대 인원을 초과하였습니다.")
-                    return redirect("studies:detail", study_pk)
+                    context = {"check": False}
+                    return JsonResponse(context)
             else:
+                # 정상적이지 않은 루트로 들어올 때인데 어떻게 테스트를 해야 할지 모르겠다.
                 messages.error(request, "어떻게 들어오셨어요OoO?")
                 return redirect("studies:index")
         # 가입된 멤버 수 최신화
@@ -361,14 +367,18 @@ def accept_and_drive_out(request, user_pk, study_pk):
             context = {
                 "member_number": member_number,
                 "studyJoinNumber": studyJoinNumber,
+                "check": True,
             }
             return JsonResponse(context)
         # 멤버면 index로 보냄
         elif owner__ == False:
+            # messages.success(request, "정상적으로 탈퇴가 되었습니다.")
             return redirect("studies:index")
         else:
+            # 정상적이지 않은 루트로 들어올 때인데 어떻게 테스트를 해야 할지 모르겠다.
             messages.error(request, "어떻게 들어오셨어요OoO?")
             return redirect("studies:index")
     else:
+        # 정상적이지 않은 루트로 들어올 때인데 어떻게 테스트를 해야 할지 모르겠다.
         messages.error(request, "잘못된 요청입니다.")
         return redirect("studies:index")

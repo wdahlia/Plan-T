@@ -2,15 +2,14 @@
 {% load static %}
 
 {% block body %}
-<div class="container" id="create-study-area">
-  <div class="box study-create-box">
-    <form action="" method="post" id="create-study-form">
-      {% csrf_token %}
+  <div class="container" id="create-study-area">
+    <div class="box study-create-box">
+      <form action="" method="post" id="create-study-form">
+        {% csrf_token %}
 
-      <!-- 스터디 title -->
-      <label for="create-study-name"># 스터디 이름</label>
-      <input type="text" name="title" value="" placeholder="" class="create-study-title" id="create-study-name"
-        maxlength="50">
+        <!-- 스터디 title -->
+        <label for="create-study-name"># 스터디 이름</label>
+        <input type="text" name="title" value="" placeholder="" class="create-study-title" id="create-study-name" maxlength="50">
 
       <!-- 스터디 category -->
       <fieldset class="study-create-categories">
@@ -35,45 +34,47 @@
         </div>
       </fieldset>
 
-      <!-- 스터디 인원 -->
-      <label for="study-members-num"># 스터디 인원</label>
-      <input type="number" name="max_people" value="2" min="2" max="" id="study-members-num">
+        <!-- 스터디 인원 -->
+        <label for="study-members-num"># 스터디 인원</label>
+        <input type="number" name="max_people" value="2" min="2" max="" id="study-members-num">
 
-      <!-- 스터디 소개 -->
-      <label for="study-info-text"># 스터디 소개</label>
-      <textarea name="desc" id="study-info-text" cols="30" rows="10"></textarea>
+        <!-- 스터디 소개 -->
+        <label for="study-info-text"># 스터디 소개</label>
+        <textarea name="desc" id="study-info-text" cols="30" rows="10"></textarea>
 
-      <!-- 시작일, 종료일-->
-      <div class="study-datepicker">
-        <fieldset class="study-start-picker">
-          <legend># 시작일</legend>
-          <input type="date" name="start_at" id="study-start-date">
-        </fieldset>
-        <fieldset class="study-end-picker">
-          <legend># 종료일</legend>
-          <input type="date" name="end_at" id="study-end-date">
-        </fieldset>
-      </div>
+        <!-- 시작일, 종료일-->
+        <div class="study-datepicker">
+          <fieldset class="study-start-picker">
+            <legend># 시작일</legend>
+            <input type="date" name="start_at" id="study-start-date">
+          </fieldset>
+          <fieldset class="study-end-picker">
+            <legend># 종료일</legend>
+            <input type="date" name="end_at" id="study-end-date">
+          </fieldset>
+        </div>
 
-      <!-- 생성, 취소 버튼 -->
-      <div class="study-btn-area">
-        <input type="submit" value="생성" class="study-create-btn">
-        <a href="./study_index.html" class="study-cancel-btn">취소</a>
-      </div>
-    </form>
+        <!-- 생성, 취소 버튼 -->
+        <div class="study-btn-area">
+          <input type="submit" value="생성" class="study-create-btn">
+          <a href="{% url 'studies:index' %}" class="study-cancel-btn">취소</a>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 
 {% endblock body %}
 {% block js %}
-<!-- html에서 시작일 종료일 잘못입력 방지 -->
-<script>
-  message = document.querySelectorAll('.message-button')
-  console.log(message)
-  message.forEach(function (v, i, o) {
-    v.addEventListener('click', event => {
-      v.parentElement.remove()
+  <!-- html에서 시작일 종료일 잘못입력 방지 -->
+  <script>
+    message = document.querySelectorAll('.message-button')
+    console.log(message)
+    message.forEach(function (v, i, o) {
+      v.addEventListener('click', event => {
+        v
+          .parentElement
+          .remove()
+      })
     })
-  })
-</script>
+  </script>
 {% endblock js %}
