@@ -22,10 +22,11 @@
 .task-timeline .timedetail-form {
 	overflow: hidden;
 	position: absolute;
-	width: 0px;
-	height: 0px;
+	width: 0;
+	height: 0;
 	z-index: -1;
 	box-shadow: none;
+	opacity: 0;
 }
 
 .task-timeline .timedetail-form.activate {
@@ -37,6 +38,7 @@
 	transition: 0.3s ease;
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
 	align-self: center;
+	opacity: 1;
 }
 
 /* timeline area */
