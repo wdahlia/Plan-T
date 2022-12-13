@@ -208,7 +208,7 @@
 }
 
 #study-todo-area textarea[id="study-detail-text"] {
-  padding: 2rem;
+  padding: 1.5rem;
 
 }
 
@@ -284,7 +284,8 @@
 #study-info-area .study-cancel-btn,
 #study-info-area .detail-direct-btn,
 #study-info-area .enter-btn,
-.study-footer-btn .study-del-btn {
+.study-footer-btn .study-del-btn,
+.study-footer-btn .dropout-btn {
   padding: 0.8rem 1.5rem;
   border-radius: 10px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
@@ -445,7 +446,7 @@
 
 #study-detail-area .detail-btn-group .reject-btn,
 .study-footer-btn .study-del-btn,
-.stduy-footer-btn .dropout-btn {
+.study-footer-btn .dropout-btn {
   background-color: var(--gr-wrn);
 }
 

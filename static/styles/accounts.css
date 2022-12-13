@@ -242,6 +242,9 @@
 #mypage .box {
 	margin-top: 2.5rem;
 }
+#mypage .box.study-box {
+	margin-top: 0;
+}
 
 #mypage .user-info {
 	display: grid;
@@ -344,6 +347,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+	margin-top: 1rem;
 }
 /* #mypage .user-study-area .study-box{} */
 #mypage .user-study-area .tit {
