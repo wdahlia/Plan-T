@@ -361,7 +361,6 @@ try {
 
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
         let urls = taskDetailForm.getAttribute('action');
-        console.log(urls);
         axios({
             method: 'POST',
             url: `${urls}`,
@@ -370,16 +369,27 @@ try {
                 'Content-Type': 'multipart/form-data'
             },
             data: new FormData(taskDetailForm),
-        })
-            .then((res) => {
-                console.log(res.data.tagJson);
-                const data2 = res.data;
-                for (let i = 0; i < taskConts.length; i++) {
-                    if (taskConts[i].parentElement.classList.contains('activate')) {
-                        taskConts[i].innerText = data2.todoTitle;
-                    }
+        }).then((res) => {
+            const data2 = res.data;
+            for (let i = 0; i < taskConts.length; i++) {
+                if (taskConts[i].parentElement.classList.contains('activate')) {
+                    taskConts[i].innerText = data2.todoTitle;
                 }
-            })
+            }
+            for (let i = 0; i < tasks.length; i++) {
+                if (tasks[i].classList.contains('activate')) {
+                    tasks[i].classList.remove('activate');
+                }
+            }
+            todayStudyArea.classList.toggle('hide');
+            taskView.classList.toggle('activate');
+            // this.classList.toggle('activate');
+            /*if (taskView.classList.contains('activate')) {
+                this.parentElement.classList.add('activate');
+            } else {
+                this.parentElement.classList.remove('activate');
+            }*/
+        })
     });
 
     detailBtnDel.addEventListener('click', function (e) {
@@ -393,61 +403,70 @@ try {
             headers: {
                 'X-CSRFToken': csrftoken,
             },
-        })
-            .then((res) => {
-                const data = res.data.resJson;
-                const jsonParse = JSON.parse(data)
+        }).then((res) => {
+            const data = res.data.resJson;
+            const jsonParse = JSON.parse(data)
+            
+            // 이전에는 tasks[targetIdx].remove() 를 썻는데
+            // 3개의 데이터가 있을 때, 가운데 값을 제외한 나머지를 삭제시킨 뒤
+            // 마지막 데이터가 가장 최근에 삭제된 데이터의 title 로 변한다.
+            // 새로고침되면 정상적이지만 문제라고 생각되어 아래와 같이 바꾼다.
+            const targetIdx = Number(e.target.dataset.idx);
+            tasks.forEach(function (v, i, o) {
+                if (v.classList.contains('activate'))
+                {
+                    v.remove();
+                    return false;
+                }
+            });
 
-                const targetIdx = Number(e.target.dataset.idx);
-                tasks[targetIdx].remove();
+            taskView.classList.remove('activate');
 
-                taskView.classList.remove('activate');
+            taskConts = document.querySelectorAll('.today-task-list .task .task-cont');
 
-                taskConts = document.querySelectorAll('.today-task-list .task .task-cont');
+            // 타임테이블도 삭제
+            const testBox = document.querySelectorAll('.testbox');
+            const timetableAreaL = document.querySelector('.timetable-left');
+            const timetableAreaR = document.querySelector('.timetable-right');
+            let lng = testBox[targetIdx].dataset.timeArray.length - 1;
+            let arr = testBox[targetIdx].dataset.timeArray.substring(1, lng);
 
-                // 타임테이블도 삭제
-                const testBox = document.querySelectorAll('.testbox');
-                const timetableAreaL = document.querySelector('.timetable-left');
-                const timetableAreaR = document.querySelector('.timetable-right');
-                let lng = testBox[targetIdx].dataset.timeArray.length - 1;
-                let arr = testBox[targetIdx].dataset.timeArray.substring(1, lng);
+            arr = arr.split(', ')
+            let startAt = Number(arr[0]);
+            let minCnt = Number(arr[1]);
 
-                arr = arr.split(', ')
-                let startAt = Number(arr[0]);
-                let minCnt = Number(arr[1]);
-
-                if (startAt > 54) {
-                    startAt -= 54;
-                    for (let j = startAt; j < startAt + minCnt; j++) {
-                        timetableAreaR.children[j].classList.remove('activate');
-                    }
-                } else {
-                    if (minCnt > 7) {
-                        let minCntR = 0;
-                        if (startAt + minCnt > 54) {
-                            minCntR = startAt + minCnt - 54;
-                            for (let j = startAt; j < startAt + minCnt - minCntR; j++) {
-                                timetableAreaL.children[j].classList.remove('activate');
-                            }
-                            for (let k = 0; k < minCntR; k++) {
-                                timetableAreaR.children[k].classList.remove('activate');
-                            }
-
-                        } else {
-                            for (let j = startAt; j < startAt + minCnt; j++) {
-                                timetableAreaL.children[j].classList.remove('activate');
-                            }
+            if (startAt > 54) {
+                startAt -= 54;
+                for (let j = startAt; j < startAt + minCnt; j++) {
+                    timetableAreaR.children[j].classList.remove('activate');
+                }
+            } else {
+                if (minCnt > 7) {
+                    let minCntR = 0;
+                    if (startAt + minCnt > 54) {
+                        minCntR = startAt + minCnt - 54;
+                        for (let j = startAt; j < startAt + minCnt - minCntR; j++) {
+                            timetableAreaL.children[j].classList.remove('activate');
                         }
+                        for (let k = 0; k < minCntR; k++) {
+                            timetableAreaR.children[k].classList.remove('activate');
+                        }
+
                     } else {
                         for (let j = startAt; j < startAt + minCnt; j++) {
                             timetableAreaL.children[j].classList.remove('activate');
                         }
                     }
+                } else {
+                    for (let j = startAt; j < startAt + minCnt; j++) {
+                        timetableAreaL.children[j].classList.remove('activate');
+                    }
                 }
-                const testBoxCont = document.querySelector('.time-test');
-                testBoxCont.children[targetIdx].remove();
+            }
+            const testBoxCont = document.querySelector('.time-test');
+            testBoxCont.children[targetIdx].remove();
 
-            })
+        })
     })
 
 
