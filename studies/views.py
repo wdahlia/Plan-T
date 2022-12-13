@@ -95,18 +95,25 @@ def update(request, study_pk):
     study_ = get_object_or_404(Study, pk=study_pk)
 
     if request.method == "POST":
-        studyform = StudyForm(request.POST, instance=study_)
+        if request.user == study_.owner:
+            studyform = StudyForm(request.POST, instance=study_)
 
-        if studyform.is_valid():
-            form = studyform.save(commit=False)
-            # 시간저장(선택)
-            start, end = (
-                request.POST.get("start_at"),
-                request.POST.get("end_at"),
-            )
-            form.start_at = start
-            form.end_at = end
-            form.save()
+            if studyform.is_valid():
+                form = studyform.save(commit=False)
+                # 시간저장(선택)
+                start, end = (
+                    request.POST.get("start_at"),
+                    request.POST.get("end_at"),
+                )
+                form.start_at = start
+                form.end_at = end
+                form.save()
+                return redirect("studies:detail", study_pk)
+            else:
+                messages.warning(request, "값이 잘못되었습니다.")
+                return redirect("studies:detail", study_pk)
+        else:
+            messages.warning(request, "반장만 스터디를 바꿀 수 있습니다 ")
             return redirect("studies:detail", study_pk)
     else:
         studyform = StudyForm(instance=study_)
