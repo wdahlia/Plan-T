@@ -248,10 +248,6 @@ def week_asyn(request, few_week):
 @login_required
 def read_all(request):
     # 값 보내기 위한 알고리즘(past, present, future)
-    # 현재 생각하는 문제
-    # 페이지 네이션을 쓰는지
-    # 스터디 todos는 어떻게 처리 할 것인지 or 4주씩 하는 것인지
-    # 한달 단위로 한다고 했는데 그러면 미래도 한달단위인지?
     now = datetime.now()
     today = str(now)[:10]
     yesterday = str(now - timedelta(1))[:10]
@@ -294,34 +290,6 @@ def read_all(request):
         "future": future,
     }
     return render(request, "todos/complete/all_todos.html", context)
-
-
-@login_required
-def stuty_list(request):
-    today = str(datetime.now())[:10]
-    # 로그인 유저의 today todos 찾기
-    today_todos = Todos.objects.filter(user_id=request.user, when=today).order_by(
-        "started_at"
-    )
-    # timetable 넘겨주기 위해
-    time_list = []
-    for todo in today_todos:
-        if todo.started_at is not None and todo.expired_at is not None:
-            start = change_value(todo.started_at)
-            end = change_value(todo.expired_at)
-            time = end - start
-
-            time_list.append(start)
-            time_list.append(time)
-
-    todosForm = TodosForm()
-
-    context = {
-        "time_list": time_list,
-        "today_todos": today_todos,
-        "todosForm": todosForm,
-    }
-    return render(request, "todos/test/study_list.html", context)
 
 
 # checkbox 비동기
