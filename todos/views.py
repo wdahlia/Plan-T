@@ -276,6 +276,8 @@ def read_all(request):
         temp = past[date]
         temp.append(i)
 
+    past = dict(sorted(past.items(), reverse=True))
+
     # 현재
     present = Todos.objects.filter(user_id=request.user, when=today)
     # 미래
