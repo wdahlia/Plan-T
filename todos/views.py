@@ -16,27 +16,20 @@ from studies.models import StudyTodos
 # Create your views here.
 @login_message_required
 def today(request):
+
     today = str(datetime.now())[:10]
+
     # 로그인 유저의 today todos 찾기
     today_todos = Todos.objects.filter(user_id=request.user, when=today).order_by(
         "started_at"
     )
-    # 오늘 해야 하는 스터디 todos
-    today_study_todos = StudyTodos.objects.filter(
-        user_id=request.user, start__lte=today, end__gte=today
-    )
 
-    # timetable 넘겨주기 위해 & 달성율 체크
+    # timetable 넘겨주기 위해 & 태그 보여주기 위해
     time_list = []
     tag_list = []
 
     for todo in today_todos:
-        if (
-            todo.started_at is not None  # 나중에 지워야됨
-            and todo.expired_at is not None  # 나중에 지워야됨
-            and todo.started_at != ""
-            and todo.expired_at != ""
-        ):
+        if todo.started_at != "" and todo.expired_at != "":
             start = change_value(todo.started_at)
             end = change_value(todo.expired_at)
             time = end - start
@@ -45,23 +38,15 @@ def today(request):
             time_list[-1].append(start)
             time_list[-1].append(time)
 
-        # print(Todos.objects.get(pk=todo.pk).tagged.all())
+        # 업데이트 화면 태크 보여주기
         today_tag = Todos.objects.get(pk=todo.pk).tagged.all()
         if today_tag:
-            # tag_list.append(today_tag)
             tag_json = serializers.serialize("json", today_tag)
             tag_list.append(tag_json)
         else:
             tag_list.append("")
 
-    if len(today_todos) != 0:
-        achievement_rate = round(
-            100 * (today_todos.filter(is_completed=True).count() / len(today_todos))
-        )
-    else:
-        achievement_rate = 0
-    todosForm = TodosForm()
-
+    # 비동기 보여주기 (업데이트)
     if request.method == "POST":
         res_json = serializers.serialize(
             "json",
@@ -69,8 +54,22 @@ def today(request):
                 "started_at"
             ),
         )
-        # res_json2 = serializers.serialize("json", tag_list)
         return JsonResponse({"resJson": res_json, "resJson2": tag_list})
+
+    # 오늘 해야 하는 스터디 todos
+    today_study_todos = StudyTodos.objects.filter(
+        user_id=request.user, start__lte=today, end__gte=today
+    )
+
+    # 달성율
+    if len(today_todos) != 0:
+        achievement_rate = round(
+            100 * (today_todos.filter(is_completed=True).count() / len(today_todos))
+        )
+    else:
+        achievement_rate = 0
+
+    todosForm = TodosForm()
 
     context = {
         "time_list": time_list,
