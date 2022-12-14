@@ -4,7 +4,7 @@ from .forms import TodosForm
 from .models import Todos, Tag
 from datetime import datetime, timedelta
 from django.contrib import messages
-from function import change_value
+from function import change_value, create_tag
 from django.http import JsonResponse
 from django.core import serializers
 import json
@@ -99,7 +99,7 @@ def create(request):
         # 시간 입력이 잘못되었을때
         exist = set()
         for todo in today_todos:
-            if todo.started_at != "":
+            if todo.started_at != "" and todo.expired_at != "":
                 st = change_value(todo.started_at)
                 ed = change_value(todo.expired_at)
                 for t in range(st, ed + 1):
@@ -129,14 +129,7 @@ def create(request):
             todo.save()
 
             # tag create
-            if tags != "":
-                tags.replace(" ", "")
-                if "," in tags:
-                    for tag in tags.split(",")[:5]:
-                        if tag != "":
-                            Tag.objects.create(todo=todo, content=tag)
-                else:
-                    Tag.objects.create(todo=todo, content=tags)
+            create_tag(tags, Tag, todo)
 
         return redirect("todos:today")
     else:
@@ -207,8 +200,6 @@ def update(request, pk):
         #     messages.error(request, "시작 시간을 입력해주세요.")
         #     return redirect("todos:today")
 
-        # 해당 투두에 태그가 있을 때 json으로 보냄
-
         if todoForm.is_valid():
             todo = todoForm.save(commit=False)
             todo.user_id, todo.when, todo.started_at, todo.expired_at = (
@@ -223,16 +214,9 @@ def update(request, pk):
             todo_tags = Tag.objects.filter(todo=pk)
             for todo_tag in todo_tags:
                 todo_tag.delete()
-            if tags != "":
-                tags_ = tags.replace(" ", "")
-                if "," in tags_:
-                    for tag in tags.split(",")[:5]:
-                        tag_ = tag.replace(" ", "")
-                        if tag_ != "":
-                            Tag.objects.create(todo=todo, content=tag_)
-                else:
-                    Tag.objects.create(todo=todo, content=tags_)
+            create_tag(tags, Tag, todo)
 
+        # 해당 투두에 태그가 있을 때 json으로 보냄
         todo_tags = Tag.objects.filter(todo=pk)
         if todo_tags:
             tag_json = serializers.serialize("json", todo_tags.order_by("id"))
