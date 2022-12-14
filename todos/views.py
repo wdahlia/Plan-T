@@ -14,7 +14,6 @@ from django.views.decorators.http import require_POST
 from studies.models import StudyTodos
 from dateutil.relativedelta import relativedelta
 
-
 # Create your views here.
 @login_message_required
 def today(request):
@@ -236,7 +235,9 @@ def week_asyn(request, few_week):
         temp_time = temp.strftime("%Y-%m-%d")
         time_list.append(Todos.objects.filter(when=temp_time, user_id=request.user))
         # 비동기
-        res_json = serializers.serialize("json", Todos.objects.filter(when=temp_time))
+        res_json = serializers.serialize(
+            "json", Todos.objects.filter(when=temp_time, user_id=request.user)
+        )
         res.append(res_json)
 
     # todos = TodosForm()
