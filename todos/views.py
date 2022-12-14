@@ -4,7 +4,7 @@ from .forms import TodosForm
 from .models import Todos, Tag
 from datetime import datetime, timedelta
 from django.contrib import messages
-from function import change_value, create_tag
+from function import change_value, create_tag, check_time
 from django.http import JsonResponse
 from django.core import serializers
 import json
@@ -12,6 +12,8 @@ from accounts.decorator import login_message_required
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from studies.models import StudyTodos
+from dateutil.relativedelta import relativedelta
+
 
 # Create your views here.
 @login_message_required
@@ -97,25 +99,7 @@ def create(request):
         today_todos = Todos.objects.filter(user_id=request.user, when=today)
 
         # 시간 입력이 잘못되었을때
-        exist = set()
-        for todo in today_todos:
-            if todo.started_at != "" and todo.expired_at != "":
-                st = change_value(todo.started_at)
-                ed = change_value(todo.expired_at)
-                for t in range(st, ed + 1):
-                    exist.add(t)
-        if (start != "") and (end != ""):
-            timetable = set(range(change_value(start), change_value(end) + 1))
-            if (start <= end) and (timetable.isdisjoint(exist)):
-                pass
-            else:
-                messages.warning(request, "시간이 잘못되었습니다.")
-                return redirect("todos:today")
-        elif (start != "") and (end == ""):
-            messages.error(request, "끝나는 시간을 입력해주세요.")
-            return redirect("todos:today")
-        elif (start == "") and (end != ""):
-            messages.error(request, "시작 시간을 입력해주세요.")
+        if check_time(request, today_todos, start, end, messages) == False:
             return redirect("todos:today")
 
         if todoForm.is_valid():
@@ -156,7 +140,6 @@ def delete(request, todos_pk):
         Todos.objects.filter(user_id=request.user, when=today).order_by("started_at"),
     )
     return JsonResponse({"resJson": res_json})
-    # return redirect("todos:today")  # 추후에 비동기로 바꾸는거 권장
 
 
 @login_message_required
@@ -176,28 +159,8 @@ def update(request, pk):
 
         # 시간은 수정 기능 막아둬서 주석 처리함
 
-        # today_todos = Todos.objects.filter(user_id=request.user, when=today)
         # 시간 입력이 잘못되었을때
-        # exist = set()
-        # for todo in today_todos:
-        #     if todo.started_at != "":
-        #         st = change_value(todo.started_at)
-        #         ed = change_value(todo.expired_at)
-        #         for t in range(st, ed + 1):
-        #             exist.add(t)
-
-        # if (start != "") and (end != ""):
-        #     timetable = set(range(change_value(start), change_value(end) + 1))
-        #     if (start <= end) and (timetable.isdisjoint(exist)):
-        #         pass
-        #     else:
-        #         messages.warning(request, "시간이 잘못되었습니다.")
-        #         return redirect("todos:today")
-        # elif (start != "") and (end == ""):
-        #     messages.error(request, "끝나는 시간을 입력해주세요.")
-        #     return redirect("todos:today")
-        # elif (start == "") and (end != ""):
-        #     messages.error(request, "시작 시간을 입력해주세요.")
+        # if check_time(request, today_todos, start, end, messages) == False:
         #     return redirect("todos:today")
 
         if todoForm.is_valid():
@@ -210,7 +173,7 @@ def update(request, pk):
             )
             todo.save()
 
-            # 태그 업데이트
+            # 태그 업데이트 => 삭제 후 다시 생성
             todo_tags = Tag.objects.filter(todo=pk)
             for todo_tag in todo_tags:
                 todo_tag.delete()
@@ -240,79 +203,45 @@ def update(request, pk):
 
 @login_required
 def week(request):
-    # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
-    few_week = 0  # int(few_week)
-    next_ = +1
-    last_ = -1
+    # 오늘 날짜 기준 정렬
+    few_week = 0
     today = datetime.today().weekday() + 1
     now = datetime.now()
     week = now + timedelta(weeks=few_week, days=-(today % 7))
-    print("today :", today)
-    print("현재 : ", now)
-    print("기준 날짜 : ", week)
 
     time_list = []
     for i in range(7):
         temp = week + timedelta(days=i)
-        # RuntimeWarning: 이 나온다.
         temp_time = temp.strftime("%Y-%m-%d")
         time_list.append(Todos.objects.filter(when=temp_time, user_id=request.user))
     todos = TodosForm()
     context = {
         "todos": todos,
         "time_list": time_list,
-        "next": next_,
-        "last": last_,
     }
     return render(request, "todos/complete/week_todos.html", context)
 
 
 @login_required
 def week_asyn(request, few_week):
-    # 추후 프론트에서 다음주 지난주 어떻게 보낼줄 지 정해주면 수정하면 됨
     few_week = int(few_week)
-    # next_ = few_week + 1
-    # last_ = few_week - 1
     today = datetime.today().weekday() + 1
     now = datetime.now()
     week = now + timedelta(weeks=few_week, days=-(today % 7))
-    print("today :", today)
-    print("현재 : ", now)
-    print("기준 날짜 : ", week)
 
     time_list = []
     res = []
     for i in range(7):
         temp = week + timedelta(days=i)
-        # RuntimeWarning: 이 나온다.
         temp_time = temp.strftime("%Y-%m-%d")
         time_list.append(Todos.objects.filter(when=temp_time, user_id=request.user))
+        # 비동기
         res_json = serializers.serialize("json", Todos.objects.filter(when=temp_time))
-        # print(res_json)
         res.append(res_json)
-        # print(res[i])
 
-    todos = TodosForm()
-
+    # todos = TodosForm()
     if request.method == "GET":
-        # print(res)
         return JsonResponse({"resJson": res})
-
-    # temp = week + timedelta(days=i)
-    # temp_time = temp.strftime("%Y-%m-%d") + " 09:00:00"
-    # res_json = serializers.serialize("json", Todos.objects.filter(when=temp_time))
-
-    # print(res)
-    context = {
-        "todos": todos,
-        "time_list": time_list,
-        # "next": next_,
-        # "last": last_,
-    }
-    return render(request, "todos/complete/week_todos.html", context)
-
-
-from dateutil.relativedelta import relativedelta
 
 
 @login_required
