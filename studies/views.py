@@ -351,7 +351,7 @@ def accept_and_drive_out(request, user_pk, study_pk):
                 # 정상적이지 않은 루트로 들어올 때인데 어떻게 테스트를 해야 할지 모르겠다.
                 messages.error(request, "어떻게 들어오셨어요OoO?")
                 return redirect("studies:index")
-        # 가입된 멤버 수 최신화
+        # 가입된 멤버 수 최신화(멤버 최신화를 대비 수정해 놓음 => 아직 적용X)
         member_number = 0
         studyJoinNumber = 0
         member = []
@@ -364,10 +364,6 @@ def accept_and_drive_out(request, user_pk, study_pk):
             else:
                 studyJoinNumber += 1
             #
-        # # test
-        # print(member)
-        # print(len(member))
-        # print(member_number)
         study.member_number = member_number
         study.save()
         # 반장이면 페이지 유지
