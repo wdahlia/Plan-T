@@ -18,3 +18,26 @@ def create_tag(tags, Tag, todo):
                     Tag.objects.create(todo=todo, content=tag_)
         else:
             Tag.objects.create(todo=todo, content=tags_)
+
+
+def check_time(request, today_todos, start, end, messages):
+    exist = set()
+    for todo in today_todos:
+        if todo.started_at != "" and todo.expired_at != "":
+            st = change_value(todo.started_at)
+            ed = change_value(todo.expired_at)
+            for t in range(st, ed + 1):
+                exist.add(t)
+    if (start != "") and (end != ""):
+        timetable = set(range(change_value(start), change_value(end) + 1))
+        if (start <= end) and (timetable.isdisjoint(exist)):
+            return True
+        else:
+            messages.warning(request, "시간이 잘못되었습니다.")
+            return False
+    elif (start != "") and (end == ""):
+        messages.error(request, "끝나는 시간을 입력해주세요.")
+        return False
+    elif (start == "") and (end != ""):
+        messages.error(request, "시작 시간을 입력해주세요.")
+        return False
